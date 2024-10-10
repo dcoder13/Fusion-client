@@ -8,6 +8,7 @@ import Profile from "./Modules/Profile/profile";
 import LoginPage from "./pages/login";
 import ForgotPassword from "./pages/forgotPassword";
 import AcademicPage from "./Modules/Academic/index";
+import IwdPage from "./Modules/Iwd/index";
 import ValidateAuth from "./helper/validateauth";
 
 export default function App() {
@@ -45,6 +46,14 @@ export default function App() {
           element={
             <Layout>
               <Profile />
+            </Layout>
+          }
+        />
+        <Route
+          path="/iwd"
+          element={
+            <Layout>
+              <IwdPage />
             </Layout>
           }
         />
