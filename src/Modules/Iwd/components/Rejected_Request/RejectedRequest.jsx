@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 function RejectedRequest() {
+  const [activeTab, makeActive] = useState(3)
+  const tabList = ["Update Request", "Create Request", "Request Status", "Rejected Request"]
+  
   return (
     <div className="container">
       {/* Breadcrumb */}
@@ -12,10 +15,16 @@ function RejectedRequest() {
       <div className="tabs">
         <div className="buttons-container">
           <span className="arrow left-arrow">&#9664;</span>
-          <button className="bold-button">Update Request</button>
-          <button>Create Request</button>
-          <button>Request Status</button>
-          <button>Rejected Request</button>
+          {tabList.map((tab, index) => (
+            <button
+              key={index}
+              id={index}
+              style={{fontWeight: activeTab === index ? "bold" : "normal"}}
+              onClick={() => {console.log({index});makeActive(index)}}
+            >
+              {tab}
+            </button>
+          ))}
           <span className="arrow right-arrow">&#9654;</span>
         </div>
       </div>
