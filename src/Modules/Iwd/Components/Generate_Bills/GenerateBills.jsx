@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 function GenerateBills() {
+  const [activeTab, makeActive] = useState(0)
+  const tabList = ["Generate Bills", "Create Request", "Request Status", "Rejected Request"]
+  
   return (
     <div className="container">
       {/* Breadcrumb */}
@@ -12,10 +15,16 @@ function GenerateBills() {
       <div className="tabs">
         <div className="buttons-container">
           <span className="arrow left-arrow">&#9664;</span>
-          <button className="bold-button">Generate Bills</button>
-          <button>Create Request</button>
-          <button>Request Status</button>
-          <button>Rejected Request</button>
+          {tabList.map((tab, index) => (
+            <button
+              key={index}
+              id={index}
+              style={{fontWeight: activeTab === index ? "bold" : "normal"}}
+              onClick={() => {console.log({index});makeActive(index)}}
+            >
+              {tab}
+            </button>
+          ))}
           <span className="arrow right-arrow">&#9654;</span>
         </div>
       </div>
