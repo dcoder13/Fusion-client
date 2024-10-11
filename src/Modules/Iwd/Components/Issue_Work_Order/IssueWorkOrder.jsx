@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 
 function IssueWorkOrder() {
-  const [activeTab, makeActive] = useState(0)
-  const tabList = ["Update Request", "Create Request", "Request Status", "Rejected Request"]
-  
+  const [activeTab, makeActive] = useState(0);
+  const tabList = [
+    "Update Request",
+    "Create Request",
+    "Request Status",
+    "Rejected Request",
+  ];
+
   return (
     <div className="container">
       {/* Breadcrumb */}
@@ -19,8 +24,11 @@ function IssueWorkOrder() {
             <button
               key={index}
               id={index}
-              style={{fontWeight: activeTab === index ? "bold" : "normal"}}
-              onClick={() => {console.log({index});makeActive(index)}}
+              style={{ fontWeight: activeTab === index ? "bold" : "normal" }}
+              onClick={() => {
+                console.log({ index });
+                makeActive(index);
+              }}
             >
               {tab}
             </button>

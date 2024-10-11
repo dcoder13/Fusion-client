@@ -25,7 +25,6 @@ import DeanProcessRequest from "./Modules/Iwd/Director/Dean_Process_Request/Dean
 import EngineerCreateRequest from "./Modules/Iwd/Pages/EngineerCreateRequest";
 import EngineerIssueWorkOrder from "./Modules/Iwd/Pages/EngineerIssueWorkOrder";
 
-
 export default function App() {
   const location = useLocation();
   return (
@@ -97,7 +96,6 @@ export default function App() {
           }
         />
         <Route
-
           path="/iwd/iwd_admin/budget"
           element={
             <Layout>
@@ -130,7 +128,6 @@ export default function App() {
           }
         />
         <Route
-
           path="/academics"
           element={
             <Layout>

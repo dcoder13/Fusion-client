@@ -1,9 +1,14 @@
 import React from "react";
 
 function RequestInProgress() {
-  const [activeTab, makeActive] = useState(3)
-  const tabList = ["Update Request", "Create Request", "Request Status", "Rejected Request"]
-  
+  const [activeTab, makeActive] = useState(3);
+  const tabList = [
+    "Update Request",
+    "Create Request",
+    "Request Status",
+    "Rejected Request",
+  ];
+
   return (
     <div className="container">
       {/* Breadcrumb */}
