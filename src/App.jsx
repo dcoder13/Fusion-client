@@ -16,6 +16,8 @@ import RejectedRequest from "./Modules/Iwd/components/Rejected_Request/RejectedR
 import GenerateBills from "./Modules/Iwd/components/Generate_Bills/GenerateBills";
 import FinalBillRequest from "./Modules/Iwd/components/Final_Bill_Request/FinalBillRequest";
 import CreatedRequest from "./Modules/Iwd/components/Created_Request/CreatedRequest";
+import EngineerCreateRequest from "./Modules/Iwd/Pages/EngineerCreateRequest";
+import EngineerIssueWorkOrder from "./Modules/Iwd/Pages/EngineerIssueWorkOrder";
 
 export default function App() {
   const location = useLocation();
@@ -108,6 +110,22 @@ export default function App() {
           element={
             <Layout>
               <IwdPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/iwd/createRequest"
+          element={
+            <Layout>
+              <EngineerCreateRequest />
+            </Layout>
+          }
+        />
+        <Route
+          path="/iwd/issueWorkOrder"
+          element={
+            <Layout>
+              <EngineerIssueWorkOrder />
             </Layout>
           }
         />
