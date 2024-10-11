@@ -16,8 +16,15 @@ import RejectedRequest from "./Modules/Iwd/Components/Rejected_Request/RejectedR
 import GenerateBills from "./Modules/Iwd/Components/Generate_Bills/GenerateBills";
 import FinalBillRequest from "./Modules/Iwd/Components/Final_Bill_Request/FinalBillRequest";
 import CreatedRequest from "./Modules/Iwd/Components/Created_Request/CreatedRequest";
+
+import Budget from "./Modules/Iwd/IWD_Admin/Budget/Budget";
+import ViewBudget from "./Modules/Iwd/Auditor/View_Budget/ViewBudget";
+import ProcessedBills from "./Modules/Iwd/Account_Admin/Processed_Bills/ProcessedBills";
+import DeanProcessRequest from "./Modules/Iwd/Director/Dean_Process_Request/DeanProcessRequest";
+
 import EngineerCreateRequest from "./Modules/Iwd/Pages/EngineerCreateRequest";
 import EngineerIssueWorkOrder from "./Modules/Iwd/Pages/EngineerIssueWorkOrder";
+
 
 export default function App() {
   const location = useLocation();
@@ -90,6 +97,40 @@ export default function App() {
           }
         />
         <Route
+
+          path="/iwd/iwd_admin/budget"
+          element={
+            <Layout>
+              <Budget />
+            </Layout>
+          }
+        />
+        <Route
+          path="/iwd/iwd_auditor/view_budget"
+          element={
+            <Layout>
+              <ViewBudget />
+            </Layout>
+          }
+        />
+        <Route
+          path="/iwd/account_admin/processed_bills"
+          element={
+            <Layout>
+              <ProcessedBills />
+            </Layout>
+          }
+        />
+        <Route
+          path="/iwd/director/dean_process_request"
+          element={
+            <Layout>
+              <DeanProcessRequest />
+            </Layout>
+          }
+        />
+        <Route
+
           path="/academics"
           element={
             <Layout>
