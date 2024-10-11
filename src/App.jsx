@@ -10,12 +10,16 @@ import ForgotPassword from "./pages/forgotPassword";
 import AcademicPage from "./Modules/Academic/index";
 import IwdPage from "./Modules/Iwd/index";
 import ValidateAuth from "./helper/validateauth";
-import IssueWorkOrder from "./Modules/Iwd/components/Issue_Work_Order/IssueWorkOrder";
-import RequestInProgress from "./Modules/Iwd/components/Request_progress/RequestInProgress";
-import RejectedRequest from "./Modules/Iwd/components/Rejected_Request/RejectedRequest";
-import GenerateBills from "./Modules/Iwd/components/Generate_Bills/GenerateBills";
-import FinalBillRequest from "./Modules/Iwd/components/Final_Bill_Request/FinalBillRequest";
-import CreatedRequest from "./Modules/Iwd/components/Created_Request/CreatedRequest";
+import IssueWorkOrder from "./Modules/Iwd/Components/Issue_Work_Order/IssueWorkOrder";
+import RequestInProgress from "./Modules/Iwd/Components/Request_progress/RequestInProgress";
+import RejectedRequest from "./Modules/Iwd/Components/Rejected_Request/RejectedRequest";
+import GenerateBills from "./Modules/Iwd/Components/Generate_Bills/GenerateBills";
+import FinalBillRequest from "./Modules/Iwd/Components/Final_Bill_Request/FinalBillRequest";
+import CreatedRequest from "./Modules/Iwd/Components/Created_Request/CreatedRequest";
+import Budget from "./Modules/Iwd/IWD_Admin/Budget/Budget";
+import ViewBudget from "./Modules/Iwd/Auditor/View_Budget/ViewBudget";
+import ProcessedBills from "./Modules/Iwd/Account_Admin/Processed_Bills/ProcessedBills";
+import DeanProcessRequest from "./Modules/Iwd/Director/Dean_Process_Request/DeanProcessRequest";
 
 export default function App() {
   const location = useLocation();
@@ -84,6 +88,38 @@ export default function App() {
           element={
             <Layout>
               <CreatedRequest />
+            </Layout>
+          }
+        />
+        <Route
+          path="/iwd/iwd_admin/budget"
+          element={
+            <Layout>
+              <Budget />
+            </Layout>
+          }
+        />
+        <Route
+          path="/iwd/iwd_auditor/view_budget"
+          element={
+            <Layout>
+              <ViewBudget />
+            </Layout>
+          }
+        />
+        <Route
+          path="/iwd/account_admin/processed_bills"
+          element={
+            <Layout>
+              <ProcessedBills />
+            </Layout>
+          }
+        />
+        <Route
+          path="/iwd/director/dean_process_request"
+          element={
+            <Layout>
+              <DeanProcessRequest />
             </Layout>
           }
         />
