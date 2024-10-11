@@ -10,6 +10,12 @@ import ForgotPassword from "./pages/forgotPassword";
 import AcademicPage from "./Modules/Academic/index";
 import IwdPage from "./Modules/Iwd/index";
 import ValidateAuth from "./helper/validateauth";
+import IssueWorkOrder from "./Modules/Iwd/components/Issue_Work_Order/IssueWorkOrder";
+import RequestInProgress from "./Modules/Iwd/components/Request_progress/RequestInProgress";
+import RejectedRequest from "./Modules/Iwd/components/Rejected_Request/RejectedRequest";
+import GenerateBills from "./Modules/Iwd/components/Generate_Bills/GenerateBills";
+import FinalBillRequest from "./Modules/Iwd/components/Final_Bill_Request/FinalBillRequest";
+import CreatedRequest from "./Modules/Iwd/components/Created_Request/CreatedRequest";
 
 export default function App() {
   const location = useLocation();
@@ -30,6 +36,54 @@ export default function App() {
           element={
             <Layout>
               <Dashboard />
+            </Layout>
+          }
+        />
+        <Route
+          path="/iwd/iwd_work_order"
+          element={
+            <Layout>
+              <IssueWorkOrder />
+            </Layout>
+          }
+        />
+        <Route
+          path="/iwd/iwd_request_progress"
+          element={
+            <Layout>
+              <RequestInProgress />
+            </Layout>
+          }
+        />
+        <Route
+          path="/iwd/iwd_rejected_request"
+          element={
+            <Layout>
+              <RejectedRequest />
+            </Layout>
+          }
+        />
+        <Route
+          path="/iwd/iwd_generate_Bills"
+          element={
+            <Layout>
+              <GenerateBills />
+            </Layout>
+          }
+        />
+        <Route
+          path="/iwd/iwd_final_bill"
+          element={
+            <Layout>
+              <FinalBillRequest />
+            </Layout>
+          }
+        />
+        <Route
+          path="/iwd/iwd_created_request"
+          element={
+            <Layout>
+              <CreatedRequest />
             </Layout>
           }
         />
