@@ -1,0 +1,54 @@
+.container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  
+  .breadcrumb {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  .tabs button {
+    margin-right: 10px;
+    padding: 5px 15px;
+    background:transparent;
+    border-radius: none;
+    cursor: pointer;
+  }
+  
+  .tabs button:hover {
+    background-color: #ddd;
+  }
+  
+  .work-orders {
+    margin-top: 20px;
+  }
+  
+  .work-order-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .work-order-table th, .work-order-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .work-order-table th {
+    background-color: #f0f0f0;
+  }
+  
+  .issue-btn {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .issue-btn:hover {
+    background-color: #1976D2;
+  }
+  

@@ -133,10 +133,10 @@ const Modules = [
     url: "/",
   },
   {
-    label: "Institute Work Departments",
+    label: "Institute Works Department",
     id: "iwd",
     icon: <IWDIcon size={18} />,
-    url: "/",
+    url: "/iwd",
   },
   {
     label: "Hostel Management",
