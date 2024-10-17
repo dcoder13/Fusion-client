@@ -7,8 +7,6 @@ import {
   Loader,
   Paper,
   Text,
-  Textarea,
-  Select,
   Center,
   CheckIcon,
   TextInput,
@@ -16,23 +14,34 @@ import {
 import PropTypes from "prop-types";
 import classes from "../iwd.module.css";
 
-function UpdateRequestForm({ selectedRequest, onBack }) {
+function EditBudget({ selectedBudget, onBack, checkOperation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: {
-      name: selectedRequest.name,
-      description: selectedRequest.description,
-      area: selectedRequest.area,
+    initialValues: checkOperation === "edit" && {
+      name: selectedBudget.name,
+      "budget-issued": selectedBudget["budget-issued"],
     },
   });
   console.log(form.getInputProps("description"));
-  const handleSubmitButtonClick = () => {
+  const handleEditBudget = () => {
     setIsLoading(true);
     setIsSuccess(false);
     // TODO:
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsSuccess(true);
 
+      setTimeout(() => {
+        onBack();
+      }, 1000);
+    }, 1000);
+  };
+  const handleAddBudget = () => {
+    setIsLoading(true);
+    setIsSuccess(false);
+    // TODO:
     setTimeout(() => {
       setIsLoading(false);
       setIsSuccess(true);
@@ -49,7 +58,11 @@ function UpdateRequestForm({ selectedRequest, onBack }) {
       <div className="container">
         <form
           onSubmit={form.onSubmit((values) => {
-            handleSubmitButtonClick();
+            if (checkOperation === "edit") {
+              handleEditBudget();
+            } else {
+              handleAddBudget();
+            }
             console.log(values);
           })}
         >
@@ -75,10 +88,21 @@ function UpdateRequestForm({ selectedRequest, onBack }) {
             >
               <Flex direction="column">
                 <Text size="22px" style={{ fontWeight: "bold" }}>
-                  New Request
+                  Edit Budget
                 </Text>
               </Flex>
-
+              {checkOperation === "edit" && (
+                <Flex direction="column" gap="xs" justify="flex-start">
+                  <TextInput
+                    label="id"
+                    placeholder=""
+                    classNames={classes}
+                    key={form.key("id")}
+                    {...form.getInputProps("id")}
+                    readOnly
+                  />
+                </Flex>
+              )}
               <Flex direction="column" gap="xs" justify="flex-start">
                 <TextInput
                   label="Name"
@@ -86,46 +110,17 @@ function UpdateRequestForm({ selectedRequest, onBack }) {
                   classNames={classes}
                   key={form.key("name")}
                   {...form.getInputProps("name")}
-                  readOnly
-                />
-              </Flex>
-
-              <Flex direction="column" gap="xs">
-                <Textarea
-                  placeholder="Description"
-                  variant="filled"
-                  key={form.key("description")}
-                  {...form.getInputProps("description")}
-                  style={{ width: "100%" }}
-                  required
-                  backgroundColor="#efefef"
-                  cols={50}
-                  rows={3}
                 />
               </Flex>
 
               <Flex direction="column" gap="xs" justify="flex-start">
                 <TextInput
-                  label="Area"
-                  placeholder="area"
+                  label="budget-issued"
+                  placeholder="budget issued"
                   classNames={classes}
                   required
-                  key={form.key("area")}
-                  {...form.getInputProps("area")}
-                />
-              </Flex>
-
-              <Flex direction="column" gap="xs" justify="flex-start">
-                <Select
-                  mt="md"
-                  comboboxProps={{ withinPortal: true }}
-                  data={["Director", "Dean", "Executive Engineer(dvijay)"]}
-                  placeholder="select"
-                  label="Send To"
-                  key={form.key("sendto")}
-                  {...form.getInputProps("sendto")}
-                  required
-                  classNames={classes}
+                  key={form.key("budget-issued")}
+                  {...form.getInputProps("budget-issued")}
                 />
               </Flex>
 
@@ -161,7 +156,7 @@ function UpdateRequestForm({ selectedRequest, onBack }) {
                   size="sm"
                   variant="filled"
                   color="#1E90FF"
-                  onClick={handleSubmitButtonClick}
+                  onClick={onBack}
                   disabled={isLoading || isSuccess}
                   style={{
                     border: "none",
@@ -180,15 +175,14 @@ function UpdateRequestForm({ selectedRequest, onBack }) {
   );
 }
 
-UpdateRequestForm.propTypes = {
-  selectedRequest: PropTypes.shape({
+EditBudget.propTypes = {
+  selectedBudget: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    description: PropTypes.string,
-    area: PropTypes.string,
-    "created-by": PropTypes.string,
-  }).isRequired,
+    "budget-issued": PropTypes.isRequired,
+  }),
   onBack: PropTypes.func.isRequired,
+  checkOperation: PropTypes.oneOf(["add", "edit"]),
 };
 
-export default UpdateRequestForm;
+export default EditBudget;

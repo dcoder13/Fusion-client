@@ -9,6 +9,7 @@ import IssueWorkOrder from "./components/IssueWorkOrder";
 import RejectedRequests from "./components/RejectedRequest";
 import RequestsInProgress from "./components/RequestsInProgress";
 import FinalBillRequest from "./components/FinalBillRequest";
+import ManageBudget from "./components/ManageBudget";
 
 function IwdPage() {
   const [activeTab, setActiveTab] = useState("0");
@@ -20,6 +21,7 @@ function IwdPage() {
     { title: "Generate Final Request", component: <FinalBillRequest /> },
     { title: "Rejected Requests", component: <RejectedRequests /> },
     { title: "Requests in Progress", component: <RequestsInProgress /> },
+    { title: "Manage Budget", component: <ManageBudget /> },
   ];
   const handleTabChange = (direction) => {
     const newIndex =

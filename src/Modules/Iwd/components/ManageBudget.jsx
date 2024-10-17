@@ -1,92 +1,85 @@
 import React, { useState } from "react";
-import IssueWorkOrderForm from "./IssueWorkOrderForm";
+import EditBudget from "./EditBudget";
 
-function IssueWorkOrder() {
-  // const navigate = useNavigate();
-  const [selectedWorkOrder, setSelectedWorkOrder] = useState(null);
-  // const HandleWorkOrder = (e) => {
-  //   navigate(`/issue-work-order-form/${e.id}`, { state: { e } });
-  // };
-  const handleWorkOrderSelect = (workOrder) => {
-    setSelectedWorkOrder(workOrder);
+function ManageBudget() {
+  const [selectedBudget, setSelectedBudget] = useState(null);
+  const [operation, setOperation] = useState(null);
+  const handleBudgetSelect = (budget) => {
+    setSelectedBudget(budget);
   };
-
+  console.log(typeof operation);
   const handleBackToList = () => {
-    setSelectedWorkOrder(null);
+    setSelectedBudget(null);
+    setOperation(null);
   };
-  const workOrderData = [
+  const budgetList = [
     {
       id: "1",
       name: "divyansh",
-      description: "ahgo",
-      area: "lhtc",
-      "created-by": "me",
-    },
-    {
-      id: "3",
-      name: "dvijay",
-      description: "ahgo",
-      area: "lhtc",
-      "created-by": "me",
-    },
-    {
-      id: "4",
-      name: "suniljatt",
-      description: "ahgo",
-      area: "lhtc",
-      "created-by": "me",
+      "budget-issued": 1000,
     },
   ];
   return (
-    <div className="container">
-      {!selectedWorkOrder ? (
-        <div className="work-orders-table">
-          <div className="table-header">
-            <span className="issue-work-order-button">Details</span>
-          </div>
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Area</th>
-                <th>Created By</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {workOrderData.map((request, index) => (
-                <tr key={index} id={request.id}>
-                  <td>{request.id}</td>
-                  <td>{request.name}</td>
-                  <td>{request.description}</td>
-                  <td>{request.area}</td>
-                  <td>{request["created-by"]}</td>
-                  <td>
-                    <button
-                      className="issue-work-order-button"
-                      onClick={() => handleWorkOrderSelect(request)}
-                    >
-                      Issue Work Order
-                    </button>
-                  </td>
+    <div>
+      {!operation ? (
+        <div className="container">
+          {/* Budget table */}
+          <div className="work-orders-table">
+            <div className="table-header">
+              <span className="issue-work-order-button">Details</span>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Budget Issued</th>
+                  <th>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {budgetList.map((budget) => (
+                  <tr key={budget.id}>
+                    <td>{budget.id}</td>
+                    <td>{budget.name}</td>
+                    <td>{budget["budget-issued"]}</td>
+                    <td>
+                      <button
+                        className="issue-work-order-button"
+                        onClick={() => {
+                          handleBudgetSelect(budget);
+                          setOperation("edit");
+                        }}
+                      >
+                        Edit
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+              <button
+                className="issue-work-order-button"
+                onClick={() => {
+                  setOperation("add");
+                }}
+              >
+                Add Budget
+              </button>
+            </table>
+          </div>
         </div>
       ) : (
-        <IssueWorkOrderForm
-          workOrder={selectedWorkOrder}
+        <EditBudget
+          selectedBudget={selectedBudget}
           onBack={handleBackToList}
+          checkOperation={operation}
         />
       )}
     </div>
   );
 }
 
-export default IssueWorkOrder;
+export default ManageBudget;
 
 const styles = `
   .body {
@@ -183,6 +176,7 @@ const styles = `
   }
 
   .issue-work-order-button {
+  margin-top:10px;
     padding: 10px 20px;
     background-color: #1E90FF;
     color: white;

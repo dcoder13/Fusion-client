@@ -33,7 +33,6 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
       }, 1000);
     }, 1000);
   };
-
   return (
     <Grid mt="xl">
       <div className="container">
