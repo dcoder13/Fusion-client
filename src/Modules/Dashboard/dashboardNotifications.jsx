@@ -370,7 +370,7 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
+export { NotificationItem };
 NotificationItem.propTypes = {
   notification: PropTypes.shape({
     id: PropTypes.number.isRequired,

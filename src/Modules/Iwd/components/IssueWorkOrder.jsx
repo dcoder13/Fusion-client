@@ -1,74 +1,88 @@
 import React, { useState } from "react";
+import IssueWorkOrderForm from "./IssueWorkOrderForm";
 
 function IssueWorkOrder() {
-  const [activeTab, makeActive] = useState(0);
-  const tabList = [
-    "Update Request",
-    "Create Request",
-    "Request Status",
-    "Rejected Request",
-  ];
+  // const navigate = useNavigate();
+  const [selectedWorkOrder, setSelectedWorkOrder] = useState(null);
+  // const HandleWorkOrder = (e) => {
+  //   navigate(`/issue-work-order-form/${e.id}`, { state: { e } });
+  // };
+  const handleWorkOrderSelect = (workOrder) => {
+    setSelectedWorkOrder(workOrder);
+  };
 
+  const handleBackToList = () => {
+    setSelectedWorkOrder(null);
+  };
+
+  const workOrderData = [
+    {
+      id: "1",
+      name: "divyansh",
+      description: "ahgo",
+      area: "lhtc",
+      "created-by": "me",
+    },
+    {
+      id: "3",
+      name: "dvijay",
+      description: "ahgo",
+      area: "lhtc",
+      "created-by": "me",
+    },
+    {
+      id: "4",
+      name: "suniljatt",
+      description: "ahgo",
+      area: "lhtc",
+      "created-by": "me",
+    },
+  ];
   return (
     <div className="container">
-      {/* Breadcrumb */}
-      <nav className="breadcrumb">
-        Home &gt; Other &gt; IWD &gt; Issue Work Orders
-      </nav>
-
-      {/* Tabs */}
-      <div className="tabs">
-        <div className="buttons-container">
-          <span className="arrow left-arrow">&#9664;</span>
-          {tabList.map((tab, index) => (
-            <button
-              key={index}
-              id={index}
-              style={{ fontWeight: activeTab === index ? "bold" : "normal" }}
-              onClick={() => {
-                console.log({ index });
-                makeActive(index);
-              }}
-            >
-              {tab}
-            </button>
-          ))}
-          <span className="arrow right-arrow">&#9654;</span>
+      {!selectedWorkOrder ? (
+        <div className="work-orders-table">
+          <div className="table-header">
+            <span className="issue-work-order-button">Details</span>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Area</th>
+                <th>Created By</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {workOrderData.map((request, index) => (
+                <tr key={index} id={request.id}>
+                  <td>{request.id}</td>
+                  <td>{request.name}</td>
+                  <td>{request.description}</td>
+                  <td>{request.area}</td>
+                  <td>{request["created-by"]}</td>
+                  <td>
+                    <button
+                      className="issue-work-order-button"
+                      onClick={() => handleWorkOrderSelect(request)}
+                    >
+                      Issue Work Order
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      </div>
-
-      {/* Work Orders Table */}
-      <div className="work-orders-table">
-        <div className="table-header">
-          <span className="issue-work-order-button">Details</span>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Area</th>
-              <th>Created By</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Request 1</td>
-              <td>Description</td>
-              <td>Area</td>
-              <td>Ajay</td>
-              <td>
-                <button className="issue-work-order-button">
-                  Issue Work Order
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      ) : (
+        <IssueWorkOrderForm
+          workOrder={selectedWorkOrder}
+          onBack={handleBackToList}
+        />
+      )}
     </div>
   );
 }

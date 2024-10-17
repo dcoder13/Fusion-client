@@ -1,65 +1,11 @@
-// import { useState } from 'react';
-// import { DateInput } from '@mantine/dates';
-// import { Select, TextInput, NumberInput } from '@mantine/core';
-// import classes from './EngineerIssueWorkOrder.module.css';
-
-// function EngineerIssueWorkOrder() {
-//     const [value, setValue] = useState(null);
-
-//     return (
-//         <div>
-//             <h1 style={{ marginLeft: '16px' }}>New Order</h1>
-//             <div className={classes.parentContainer}>
-//                 <div className={classes.issueWorkOrderForm}>
-
-//                     <div className={classes.containerDiv}>
-//                         <TextInput label="Request ID" placeholder="" classNames={classes} />
-//                         <TextInput label="Request" placeholder="" classNames={classes} />
-//                     </div>
-
-//                     <DateInput
-//                         value={value}
-//                         onChange={setValue}
-//                         label="Date"
-//                         placeholder="dd/mm/yyyy"
-//                         classNames={classes}
-//                     />
-
-//                     <NumberInput
-//                         label="Amount"
-//                         description=""
-//                         placeholder=""
-//                         classNames={classes}
-//                     />
-
-//                     <Select
-//                         mt="md"
-//                         comboboxProps={{ withinPortal: true }}
-//                         data={['React', 'Angular', 'Svelte', 'Vue']}
-//                         placeholder="Pick one"
-//                         label="Your favorite library/framework"
-//                         classNames={classes}
-//                     />
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// }
-
-// export default EngineerIssueWorkOrder;
-
 import React, { useState } from "react";
 import {
   Button,
-  //   Container,
   Flex,
   Grid,
   Loader,
-  //   Tabs,
   Paper,
   Text,
-  //   Textarea,
-  //   Select,
   Center,
   CheckIcon,
   TextInput,
@@ -69,17 +15,10 @@ import { DateInput } from "@mantine/dates";
 import PropTypes from "prop-types";
 import classes from "./EngineerIssueWorkOrder.module.css";
 
-function EngineerIssueWorkOrder({ setSelectedComplaint }) {
-  // const handleSubmitButtonClick = () => {
-  //     setSelectedComplaint(null);
-  // };
-
-  const handleBackButtonClick = () => {
-    setSelectedComplaint(null);
-  };
-
+function IssueWorkOrderForm({ workOrder, onBack }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [dateValue, setDateValue] = useState(null);
 
   const handleSubmitButtonClick = () => {
     setIsLoading(true);
@@ -90,31 +29,14 @@ function EngineerIssueWorkOrder({ setSelectedComplaint }) {
       setIsSuccess(true);
 
       setTimeout(() => {
-        setSelectedComplaint(null);
+        onBack();
       }, 1000);
     }, 1000);
   };
 
-  const [value, setValue] = useState(null);
-
   return (
     <Grid mt="xl">
       <div className="container">
-        <nav className="breadcrumb">
-          Home &gt; Other &gt; IWD &gt; Issue Work Order
-        </nav>
-
-        <div className="tabs">
-          <div className="buttons-container">
-            <span className="arrow left-arrow">&#9664;</span>
-            <button className="bold-button">Generate Bills</button>
-            <button>Create Request</button>
-            <button>Request Status</button>
-            <button>Rejected Request</button>
-            <button>Issue Work Order</button>
-            <span className="arrow right-arrow">&#9654;</span>
-          </div>
-        </div>
         <Paper
           radius="md"
           px="lg"
@@ -137,7 +59,7 @@ function EngineerIssueWorkOrder({ setSelectedComplaint }) {
           >
             <Flex direction="column">
               <Text size="22px" style={{ fontWeight: "bold" }}>
-                New Order
+                Issue Work Order
               </Text>
             </Flex>
 
@@ -146,7 +68,8 @@ function EngineerIssueWorkOrder({ setSelectedComplaint }) {
                 <Flex direction="column" gap="xs">
                   <TextInput
                     label="Request ID"
-                    placeholder=""
+                    value={workOrder.id}
+                    readOnly
                     classNames={classes}
                   />
                 </Flex>
@@ -154,8 +77,9 @@ function EngineerIssueWorkOrder({ setSelectedComplaint }) {
               <Grid.Col span={1}>
                 <Flex direction="column" gap="xs">
                   <TextInput
-                    label="Request"
-                    placeholder=""
+                    label="Request Name"
+                    value={workOrder.name}
+                    readOnly
                     classNames={classes}
                   />
                 </Flex>
@@ -166,8 +90,8 @@ function EngineerIssueWorkOrder({ setSelectedComplaint }) {
               <Grid.Col span={1}>
                 <Flex direction="column" gap="xs">
                   <DateInput
-                    value={value}
-                    onChange={setValue}
+                    value={dateValue}
+                    onChange={setDateValue}
                     label="Date"
                     placeholder="dd/mm/yyyy"
                     classNames={classes}
@@ -178,7 +102,7 @@ function EngineerIssueWorkOrder({ setSelectedComplaint }) {
                 <Flex direction="column" gap="xs">
                   <TextInput
                     label="Agency"
-                    placeholder=""
+                    placeholder="Agency Name"
                     classNames={classes}
                   />
                 </Flex>
@@ -191,7 +115,7 @@ function EngineerIssueWorkOrder({ setSelectedComplaint }) {
                   <NumberInput
                     label="Amount"
                     description=""
-                    placeholder=""
+                    placeholder="Enter amount"
                     classNames={classes}
                   />
                 </Flex>
@@ -201,7 +125,7 @@ function EngineerIssueWorkOrder({ setSelectedComplaint }) {
                   <NumberInput
                     label="Deposit"
                     description=""
-                    placeholder=""
+                    placeholder="Enter deposit"
                     classNames={classes}
                   />
                 </Flex>
@@ -211,33 +135,18 @@ function EngineerIssueWorkOrder({ setSelectedComplaint }) {
             <Flex direction="column" gap="xs" justify="flex-start">
               <TextInput
                 label="Alloted Time"
-                placeholder=""
+                placeholder="Enter allotted time"
                 classNames={classes}
                 style={{ width: "50%" }}
               />
             </Flex>
 
-            {/* <Flex direction="column" gap="xs">
-                    <Text size="18px" style={{ fontWeight: 'bold' }}>
-                        Please fill feedback*
-                    </Text>
-                    <Textarea
-                        placeholder="Please fill feedback"
-                        required
-                        variant="filled"
-                        style={{ width: "100%" }}
-                        backgroundColor="gray"
-                        cols={50}
-                        rows={3}
-                    />
-                </Flex> */}
-
             <Grid columns="2" style={{ width: "100%" }}>
               <Grid.Col span={1}>
                 <Flex direction="column" gap="xs">
                   <DateInput
-                    value={value}
-                    onChange={setValue}
+                    value={dateValue}
+                    onChange={setDateValue}
                     label="Start Date"
                     placeholder="dd/mm/yyyy"
                     classNames={classes}
@@ -247,8 +156,8 @@ function EngineerIssueWorkOrder({ setSelectedComplaint }) {
               <Grid.Col span={1}>
                 <Flex direction="column" gap="xs">
                   <DateInput
-                    value={value}
-                    onChange={setValue}
+                    value={dateValue}
+                    onChange={setDateValue}
                     label="End Date"
                     placeholder="dd/mm/yyyy"
                     classNames={classes}
@@ -288,7 +197,7 @@ function EngineerIssueWorkOrder({ setSelectedComplaint }) {
                 size="sm"
                 variant="filled"
                 color="#1E90FF"
-                onClick={handleBackButtonClick}
+                onClick={onBack}
                 disabled={isLoading || isSuccess}
                 style={{
                   border: "none",
@@ -304,8 +213,16 @@ function EngineerIssueWorkOrder({ setSelectedComplaint }) {
     </Grid>
   );
 }
-EngineerIssueWorkOrder.propTypes = {
-  setSelectedComplaint: PropTypes.func.isRequired,
+
+IssueWorkOrderForm.propTypes = {
+  workOrder: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    area: PropTypes.string,
+    "created-by": PropTypes.string,
+  }).isRequired,
+  onBack: PropTypes.func.isRequired,
 };
 
-export default EngineerIssueWorkOrder;
+export default IssueWorkOrderForm;

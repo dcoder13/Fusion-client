@@ -1,43 +1,48 @@
-import React, { useState } from "react";
-
-function RejectedRequest() {
-  const [activeTab, makeActive] = useState(3);
-  const tabList = [
-    "Update Request",
-    "Create Request",
-    "Request Status",
-    "Rejected Request",
+function RequestsInProgress() {
+  const handleMarkAsCompleted = (request) => {
+    // TODO:
+    console.log(request);
+  };
+  const handleDoneRequest = (request) => {
+    // TODO:
+    console.log(request);
+  };
+  const handleInventory = (request) => {
+    // TODO:
+    console.log(request);
+  };
+  const handleGenerateBill = (request) => {
+    // TODO:
+    console.log(request);
+  };
+  const RequestsInProgressData = [
+    {
+      id: "1",
+      name: "divyansh",
+      description: "ahgo",
+      area: "lhtc",
+      completed: false,
+      "created-by": "me",
+    },
+    {
+      id: "3",
+      name: "dvijay",
+      description: "ahgo",
+      area: "lhtc",
+      completed: true,
+      "created-by": "me",
+    },
+    {
+      id: "4",
+      name: "suniljatt",
+      description: "ahgo",
+      area: "lhtc",
+      completed: false,
+      "created-by": "me",
+    },
   ];
-
   return (
     <div className="container">
-      {/* Breadcrumb */}
-      <nav className="breadcrumb">
-        Home &gt; Other &gt; IWD &gt; Rejected Request
-      </nav>
-
-      {/* Tabs */}
-      <div className="tabs">
-        <div className="buttons-container">
-          <span className="arrow left-arrow">&#9664;</span>
-          {tabList.map((tab, index) => (
-            <button
-              key={index}
-              id={index}
-              style={{ fontWeight: activeTab === index ? "bold" : "normal" }}
-              onClick={() => {
-                console.log({ index });
-                makeActive(index);
-              }}
-            >
-              {tab}
-            </button>
-          ))}
-          <span className="arrow right-arrow">&#9654;</span>
-        </div>
-      </div>
-
-      {/* Work Orders Table */}
       <div className="work-orders-table">
         <div className="table-header">
           <span className="issue-work-order-button">Details</span>
@@ -54,36 +59,48 @@ function RejectedRequest() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Request 1</td>
-              <td>Description</td>
-              <td>Area</td>
-              <td>Ajay</td>
-              <td>
-                <button className="issue-work-order-button">Update</button>
-              </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Request 2</td>
-              <td>Description</td>
-              <td>Area</td>
-              <td>Ankit</td>
-              <td>
-                <button className="issue-work-order-button">Update</button>
-              </td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Request 3</td>
-              <td>Description</td>
-              <td>Area</td>
-              <td>Archit</td>
-              <td>
-                <button className="issue-work-order-button">Update</button>
-              </td>
-            </tr>
+            {RequestsInProgressData.map((request, index) => (
+              <tr key={index} id={request.id}>
+                <td>{request.id}</td>
+                <td>{request.name}</td>
+                <td>{request.description}</td>
+                <td>{request.area}</td>
+                <td>{request["created-by"]}</td>
+                <td>
+                  {request.completed ? (
+                    <>
+                      <button
+                        className="issue-work-order-button"
+                        onClick={() => handleGenerateBill(request)}
+                      >
+                        Generate Bill
+                      </button>
+                      <button
+                        className="issue-work-order-button"
+                        onClick={() => handleDoneRequest(request)}
+                      >
+                        Done
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        className="issue-work-order-button"
+                        onClick={() => handleMarkAsCompleted(request)}
+                      >
+                        Mark as Completed
+                      </button>
+                      <button
+                        className="issue-work-order-button"
+                        onClick={() => handleInventory(request)}
+                      >
+                        Inventory
+                      </button>
+                    </>
+                  )}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -91,7 +108,7 @@ function RejectedRequest() {
   );
 }
 
-export default RejectedRequest;
+export default RequestsInProgress;
 
 const styles = `
   .body {
