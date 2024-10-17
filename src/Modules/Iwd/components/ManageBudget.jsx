@@ -7,7 +7,6 @@ function ManageBudget() {
   const handleBudgetSelect = (budget) => {
     setSelectedBudget(budget);
   };
-  console.log(typeof operation);
   const handleBackToList = () => {
     setSelectedBudget(null);
     setOperation(null);

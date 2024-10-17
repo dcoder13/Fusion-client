@@ -1,58 +1,78 @@
-import React from "react";
+import React, { useState } from "react";
+import ViewRequestFile from "./ViewRequestFile";
 
 function ProcessedBills() {
+  const [selectedBill, setSelectedBill] = useState(null);
+  const handleViewFile = (bill) => {
+    // TODO:
+    setSelectedBill(bill);
+  };
+  const handleSettleBill = (bill) => {
+    // TODO:
+    console.log(bill);
+  };
+  const handleBackToBills = () => {
+    setSelectedBill(null);
+  };
+  const budgetList = [
+    {
+      id: "1",
+      bill: "bill_1.pdf",
+    },
+  ];
   return (
-    <div className="container">
-      {/* Breadcrumb */}
-      <nav className="breadcrumb">
-        Home &gt; Other &gt; IWD &gt; Processed Bills
-      </nav>
-
-      {/* Tabs */}
-      <div className="tabs">
-        <div className="buttons-container">
-          <span className="arrow left-arrow">&#9664;</span>
-          <button className="bold-button">Processed Bills</button>
-          <button>View Bills</button>
-          <span className="arrow right-arrow">&#9654;</span>
+    <div>
+      {!selectedBill ? (
+        <div className="container">
+          {/* Budget table */}
+          <div className="work-orders-table">
+            <div className="table-header">
+              <span className="issue-work-order-button">Details</span>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Bill</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {budgetList.map((bill) => (
+                  <tr key={bill.id}>
+                    <td>{bill.id}</td>
+                    <td>{bill.bill}</td>
+                    <td>
+                      <button
+                        className="issue-work-order-button"
+                        onClick={() => {
+                          handleViewFile(bill);
+                        }}
+                      >
+                        View File
+                      </button>
+                      <button
+                        className="issue-work-order-button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleSettleBill(bill);
+                        }}
+                      >
+                        Settle
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-
-      {/* Work Orders Table */}
-      <div className="work-orders-table">
-        <div className="table-header">
-          <span className="issue-work-order-button">Details</span>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Bills</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Request_id_1_final_bill.pdf</td>
-
-              <td>
-                <button className="issue-work-order-button">View Files</button>
-                <button className="issue-work-order-button">Settle</button>
-              </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Request_id_2_final_bill.pdf</td>
-
-              <td>
-                <button className="issue-work-order-button">View Files</button>
-                <button className="issue-work-order-button">Settle</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      ) : (
+        <ViewRequestFile
+          selectedBill={selectedBill}
+          onBack={handleBackToBills}
+        />
+      )}
     </div>
   );
 }
@@ -154,6 +174,7 @@ const styles = `
   }
 
   .issue-work-order-button {
+  margin-top:10px;
     padding: 10px 20px;
     background-color: #1E90FF;
     color: white;

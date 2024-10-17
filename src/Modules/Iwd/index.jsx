@@ -12,6 +12,7 @@ import FinalBillRequest from "./components/FinalBillRequest";
 import ManageBudget from "./components/ManageBudget";
 import CreatedRequests from "./components/CreatedRequests";
 import ViewBudget from "./components/ViewBudget";
+import ProcessedBills from "./components/ProcessedBills";
 
 function IwdPage() {
   const [activeTab, setActiveTab] = useState("0");
@@ -29,6 +30,7 @@ function IwdPage() {
     { title: "Manage Budget", component: <ManageBudget /> },
     { title: "Created Requests", component: <CreatedRequests /> },
     { title: "View Budget", component: <ViewBudget /> },
+    { title: "Processed Bills", component: <ProcessedBills /> },
   ];
   const handleTabChange = (direction) => {
     const newIndex =
