@@ -1,61 +1,86 @@
-import React from "react";
+import React, { useState } from "react";
+import ViewRequestFile from "./ViewRequestFile";
 
-function ViewBudget() {
+function CreatedRequests() {
+  const [selectedRequest, setSelectedRequest] = useState(null);
+  const handleViewRequest = (request) => {
+    // TODO:
+    setSelectedRequest(request);
+  };
+
+  const handleBackToList = () => {
+    setSelectedRequest(null);
+  };
+  const CreatedRequestsList = [
+    {
+      id: "1",
+      name: "divyansh",
+      description: "ahgo",
+      area: "lhtc",
+      "created-by": "me",
+    },
+    {
+      id: "3",
+      name: "dvijay",
+      description: "ahgo",
+      area: "lhtc",
+      "created-by": "me",
+    },
+    {
+      id: "4",
+      name: "suniljatt",
+      description: "ahgo",
+      area: "lhtc",
+      "created-by": "me",
+    },
+  ];
   return (
     <div className="container">
-      {/* Breadcrumb */}
-      <nav className="breadcrumb">
-        Home &gt; Other &gt; IWD &gt; View Budget
-      </nav>
-
-      {/* Tabs */}
-      <div className="tabs">
-        <div className="buttons-container">
-          <span className="arrow left-arrow">&#9664;</span>
-          <button className="bold-button">View Budget</button>
-          <button>Audit Document</button>
-          <span className="arrow right-arrow">&#9654;</span>
+      {!selectedRequest ? (
+        <div className="work-orders-table">
+          <div className="table-header">
+            <span className="issue-work-order-button">Details</span>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Area</th>
+                <th>Created By</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {CreatedRequestsList.map((request, index) => (
+                <tr key={index} id={request.id}>
+                  <td>{request.id}</td>
+                  <td>{request.name}</td>
+                  <td>{request.description}</td>
+                  <td>{request.area}</td>
+                  <td>{request["created-by"]}</td>
+                  <td>
+                    <button
+                      className="issue-work-order-button"
+                      onClick={() => handleViewRequest(request)}
+                    >
+                      View File
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      </div>
-
-      {/* Work Orders Table */}
-      <div className="work-orders-table">
-        <div className="table-header">
-          <span className="issue-work-order-button">Details</span>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Bills</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Request_id_1_final_bill.pdf</td>
-
-              <td>
-                <button className="issue-work-order-button">View Files</button>
-              </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Request_id_2_final_bill.pdf</td>
-
-              <td>
-                <button className="issue-work-order-button">View Files</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      ) : (
+        <ViewRequestFile request={selectedRequest} onBack={handleBackToList} />
+      )}
     </div>
   );
 }
 
-export default ViewBudget;
+export default CreatedRequests;
 
 const styles = `
   .body {

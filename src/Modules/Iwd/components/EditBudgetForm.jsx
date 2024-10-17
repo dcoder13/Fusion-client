@@ -19,10 +19,16 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
   const [isSuccess, setIsSuccess] = useState(false);
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: checkOperation === "edit" && {
-      name: selectedBudget.name,
-      "budget-issued": selectedBudget["budget-issued"],
-    },
+    initialValues:
+      checkOperation === "edit"
+        ? {
+            name: selectedBudget.name,
+            "budget-issued": selectedBudget["budget-issued"],
+          }
+        : {
+            name: "",
+            "budget-issued": null,
+          },
   });
   console.log(form.getInputProps("description"));
   const handleEditBudget = () => {

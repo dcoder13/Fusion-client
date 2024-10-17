@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import EditBudget from "./EditBudget";
+import EditBudget from "./EditBudgetForm";
 
 function ManageBudget() {
   const [selectedBudget, setSelectedBudget] = useState(null);

@@ -1,24 +1,34 @@
 import React from "react";
 
-function DeanProcessRequest() {
+export default function ViewBudget() {
+  // const [selectedBudget, setSelectedBudget] = useState(null);
+  // const handleViewBudget = (request) => {
+  //   // TODO:
+  //   setSelectedBudget(request);
+  // };
+
+  // const handleBackToList = () => {
+  //   setSelectedBudget(null);
+  // };
+  const ViewBudgetList = [
+    {
+      id: "1",
+      name: "divyansh",
+      "budget-issued": 2000,
+    },
+    {
+      id: "2",
+      name: "user2",
+      "budget-issued": 2200,
+    },
+    {
+      id: "3",
+      name: "user3",
+      "budget-issued": 2100,
+    },
+  ];
   return (
     <div className="container">
-      {/* Breadcrumb */}
-      <nav className="breadcrumb">
-        Home &gt; Other &gt; IWD &gt; Dean Process Request
-      </nav>
-
-      {/* Tabs */}
-      <div className="tabs">
-        <div className="buttons-container">
-          <span className="arrow left-arrow">&#9664;</span>
-          <button className="bold-button">Process Request</button>
-          <button>View Budget</button>
-          <button>Request Status</button>
-          <span className="arrow right-arrow">&#9654;</span>
-        </div>
-      </div>
-
       {/* Work Orders Table */}
       <div className="work-orders-table">
         <div className="table-header">
@@ -29,31 +39,32 @@ function DeanProcessRequest() {
             <tr>
               <th>ID</th>
               <th>Name</th>
-              <th>Description</th>
-              <th>Area</th>
-              <th>Created By</th>
-              <th>Actions</th>
+              <th>Budget Issued</th>
+              {/* <th>Actions</th> */}
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Request 1</td>
-              <td>Description</td>
-              <td>Area</td>
-              <td>Ajay</td>
-              <td>
-                <button className="issue-work-order-button">View Files</button>
-              </td>
-            </tr>
+            {ViewBudgetList.map((request, index) => (
+              <tr key={index} id={request.id}>
+                <td>{request.id}</td>
+                <td>{request.name}</td>
+                <td>{request["budget-issued"]}</td>
+                {/* <td>
+                  <button
+                    className="issue-work-order-button"
+                    onClick={() => handleViewBudget(request)}
+                  >
+                    View File
+                  </button>
+                </td> */}
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
     </div>
   );
 }
-
-export default DeanProcessRequest;
 
 const styles = `
   .body {
@@ -124,9 +135,9 @@ const styles = `
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 20px;
-   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
-   border-radius: 25px;
-   border-left: 10px solid #1E90FF;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 25px;
+    border-left: 10px solid #1E90FF;
   }
 
   .table-header {

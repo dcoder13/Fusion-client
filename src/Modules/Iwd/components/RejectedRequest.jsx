@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import UpdateRequestForm from "./RejectedRequestUpdateForm";
+import UpdateRequestForm from "./UpdateRequestForm";
 
 function RejectedRequest() {
   const [selectedRequest, setSelectedRequest] = useState(null);

@@ -4,24 +4,31 @@ import { Tabs, Button, Flex, Text } from "@mantine/core";
 import CustomBreadcrumbs from "../../components/Breadcrumbs";
 import classes from "../Dashboard/Dashboard.module.css";
 import ModuleNotifications from "./components/ModuleNotifications";
-import CreateRequest from "./components/createRequest";
+import CreateRequest from "./components/CreateRequestForm";
 import IssueWorkOrder from "./components/IssueWorkOrder";
 import RejectedRequests from "./components/RejectedRequest";
 import RequestsInProgress from "./components/RequestsInProgress";
 import FinalBillRequest from "./components/FinalBillRequest";
 import ManageBudget from "./components/ManageBudget";
+import CreatedRequests from "./components/CreatedRequests";
+import ViewBudget from "./components/ViewBudget";
 
 function IwdPage() {
   const [activeTab, setActiveTab] = useState("0");
   const tabsListRef = useRef(null);
   const tabItems = [
     { title: "Notifications", component: <ModuleNotifications /> },
-    { title: "Create Request", component: <CreateRequest /> },
+    {
+      title: "Create Request",
+      component: <CreateRequest setActiveTab={setActiveTab} />,
+    },
     { title: "Issue Work Order", component: <IssueWorkOrder /> },
-    { title: "Generate Final Request", component: <FinalBillRequest /> },
+    { title: "Generate Final Bill", component: <FinalBillRequest /> },
     { title: "Rejected Requests", component: <RejectedRequests /> },
     { title: "Requests in Progress", component: <RequestsInProgress /> },
     { title: "Manage Budget", component: <ManageBudget /> },
+    { title: "Created Requests", component: <CreatedRequests /> },
+    { title: "View Budget", component: <ViewBudget /> },
   ];
   const handleTabChange = (direction) => {
     const newIndex =

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useForm } from "@mantine/form";
 import {
   Button,
   Flex,
@@ -13,44 +12,50 @@ import {
   CheckIcon,
   TextInput,
 } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import PropTypes from "prop-types";
 import classes from "../iwd.module.css";
 
-function UpdateRequestForm({ selectedRequest, onBack }) {
+function CreateRequest({ setActiveTab }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
-      name: selectedRequest.name,
-      description: selectedRequest.description,
-      area: selectedRequest.area,
+      name: null,
+      description: null,
+      area: null,
+      sendto: null,
+    },
+    validate: {
+      name: (value) => (value ? null : "Field is required"),
+      description: (value) => (value ? null : "Field is required"),
+      area: (value) => (value ? null : "Field is required"),
+      sendto: (value) => (value ? null : "Field is required"),
     },
   });
-  console.log(form.getInputProps("description"));
   const handleSubmitButtonClick = () => {
     setIsLoading(true);
     setIsSuccess(false);
-    // TODO:
 
     setTimeout(() => {
       setIsLoading(false);
       setIsSuccess(true);
-
       setTimeout(() => {
-        onBack();
-      }, 1000);
+        setActiveTab("0");
+      }, 500);
     }, 1000);
   };
 
   return (
     /* eslint-disable react/jsx-props-no-spreading */
+
     <Grid mt="xl">
       <div className="container">
         <form
           onSubmit={form.onSubmit((values) => {
-            handleSubmitButtonClick();
-            console.log(values);
+            if (form.validate(values)) handleSubmitButtonClick();
           })}
         >
           <Paper
@@ -82,22 +87,22 @@ function UpdateRequestForm({ selectedRequest, onBack }) {
               <Flex direction="column" gap="xs" justify="flex-start">
                 <TextInput
                   label="Name"
+                  required
                   placeholder=""
-                  classNames={classes}
                   key={form.key("name")}
                   {...form.getInputProps("name")}
-                  readOnly
+                  classNames={classes}
                 />
               </Flex>
 
               <Flex direction="column" gap="xs">
                 <Textarea
                   placeholder="Description"
+                  required
                   variant="filled"
+                  style={{ width: "100%" }}
                   key={form.key("description")}
                   {...form.getInputProps("description")}
-                  style={{ width: "100%" }}
-                  required
                   backgroundColor="#efefef"
                   cols={50}
                   rows={3}
@@ -107,11 +112,11 @@ function UpdateRequestForm({ selectedRequest, onBack }) {
               <Flex direction="column" gap="xs" justify="flex-start">
                 <TextInput
                   label="Area"
-                  placeholder="area"
-                  classNames={classes}
                   required
+                  placeholder=""
                   key={form.key("area")}
                   {...form.getInputProps("area")}
+                  classNames={classes}
                 />
               </Flex>
 
@@ -119,22 +124,22 @@ function UpdateRequestForm({ selectedRequest, onBack }) {
                 <Select
                   mt="md"
                   comboboxProps={{ withinPortal: true }}
-                  data={["Director", "Dean", "Executive Engineer(dvijay)"]}
-                  placeholder="select"
+                  data={["Director", "Dean"]}
+                  placeholder="Director(Dir)"
                   label="Send To"
+                  classNames={classes}
                   key={form.key("sendto")}
                   {...form.getInputProps("sendto")}
                   required
-                  classNames={classes}
                 />
               </Flex>
 
               <Flex gap="xs">
                 <Button
                   size="sm"
-                  type="submit"
                   variant="filled"
                   color="black"
+                  type="submit"
                   style={{
                     width: "100px",
                     backgroundColor: "#1E90FF",
@@ -142,7 +147,6 @@ function UpdateRequestForm({ selectedRequest, onBack }) {
                     border: "none",
                     borderRadius: "20px",
                   }}
-                  // onClick={handleSubmitButtonClick}
                   disabled={isLoading || isSuccess}
                 >
                   {isLoading ? (
@@ -179,16 +183,7 @@ function UpdateRequestForm({ selectedRequest, onBack }) {
     /* eslint-enable react/jsx-props-no-spreading */
   );
 }
-
-UpdateRequestForm.propTypes = {
-  selectedRequest: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    description: PropTypes.string,
-    area: PropTypes.string,
-    "created-by": PropTypes.string,
-  }).isRequired,
-  onBack: PropTypes.func.isRequired,
+CreateRequest.propTypes = {
+  setActiveTab: PropTypes.func.isRequired,
 };
-
-export default UpdateRequestForm;
+export default CreateRequest;
