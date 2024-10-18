@@ -1,4 +1,5 @@
-import React, { useState, useContext, useSelector } from "react";
+import React, { useState, useContext } from "react";
+import { useSelector } from "react-redux";
 import {
   Button,
   Flex,
