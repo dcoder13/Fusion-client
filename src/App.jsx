@@ -11,6 +11,7 @@ import LoginPage from "./pages/login";
 import ForgotPassword from "./pages/forgotPassword";
 import AcademicPage from "./Modules/Academic/index";
 import ValidateAuth from "./helper/validateauth";
+import { DesignationsProvider } from "./Modules/Iwd/helper/designationContext";
 
 export default function App() {
   const location = useLocation();
@@ -53,9 +54,11 @@ export default function App() {
         <Route
           path="/iwd"
           element={
-            <Layout>
-              <IwdModule />
-            </Layout>
+            <DesignationsProvider>
+              <Layout>
+                <IwdModule />
+              </Layout>
+            </DesignationsProvider>
           }
         />
         <Route path="/accounts/login" element={<LoginPage />} />

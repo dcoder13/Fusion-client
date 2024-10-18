@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useSelector } from "react";
 import {
   Button,
   Flex,
@@ -14,38 +14,65 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import PropTypes from "prop-types";
+import axios from "axios";
 import classes from "../iwd.module.css";
+import { host } from "../../../routes/globalRoutes";
+import { DesignationsContext } from "../helper/designationContext";
 
 function CreateRequest({ setActiveTab }) {
+  const role = useSelector((state) => state.user.role);
+
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-
+  const designations = useContext(DesignationsContext);
+  const designationsList = designations.map(
+    (designation) => `${designation.designation.name}|${designation.username}`,
+  );
+  console.log(designationsList);
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
       name: null,
       description: null,
       area: null,
-      sendto: null,
+      designation: null,
     },
     validate: {
       name: (value) => (value ? null : "Field is required"),
       description: (value) => (value ? null : "Field is required"),
       area: (value) => (value ? null : "Field is required"),
-      sendto: (value) => (value ? null : "Field is required"),
+      designation: (value) => (value ? null : "Field is required"),
     },
   });
-  const handleSubmitButtonClick = () => {
+  const handleSubmitButtonClick = async () => {
     setIsLoading(true);
     setIsSuccess(false);
-    // TODO:
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsSuccess(true);
+    const token = localStorage.getItem("authToken");
+    const data = form.getValues();
+    data.role = role;
+    console.log(data);
+    try {
+      const response = await axios.post(
+        `${host}/iwdModuleV2/api/requests-view/`,
+        data,
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        },
+      );
+      console.log(response);
       setTimeout(() => {
-        setActiveTab("0");
-      }, 500);
-    }, 1000);
+        setIsLoading(false);
+        setIsSuccess(true);
+        setTimeout(() => {
+          setActiveTab("0");
+        }, 500);
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -124,12 +151,12 @@ function CreateRequest({ setActiveTab }) {
                 <Select
                   mt="md"
                   comboboxProps={{ withinPortal: true }}
-                  data={["Director", "Dean"]}
+                  data={designationsList}
                   placeholder="Director(Dir)"
-                  label="Send To"
+                  label="designation"
                   classNames={classes}
-                  key={form.key("sendto")}
-                  {...form.getInputProps("sendto")}
+                  key={form.key("designation")}
+                  {...form.getInputProps("designation")}
                   required
                 />
               </Flex>
@@ -160,19 +187,6 @@ function CreateRequest({ setActiveTab }) {
                   ) : (
                     "Submit"
                   )}
-                </Button>
-                <Button
-                  size="sm"
-                  variant="filled"
-                  color="#1E90FF"
-                  onClick={handleSubmitButtonClick}
-                  disabled={isLoading || isSuccess}
-                  style={{
-                    border: "none",
-                    borderRadius: "20px",
-                  }}
-                >
-                  Back
                 </Button>
               </Flex>
             </Flex>

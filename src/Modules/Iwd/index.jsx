@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useSelector } from "react-redux";
 import { CaretCircleLeft, CaretCircleRight } from "@phosphor-icons/react";
 import { Tabs, Button, Flex, Text } from "@mantine/core";
 import CustomBreadcrumbs from "../../components/Breadcrumbs";
@@ -13,29 +14,62 @@ import ManageBudget from "./components/ManageBudget";
 import CreatedRequests from "./components/CreatedRequests";
 import ViewBudget from "./components/ViewBudget";
 import ProcessedBills from "./components/ProcessedBills";
+// import { DesignationsContext } from "./helper/designationContext";
 
 function IwdPage() {
+  const role = useSelector((state) => state.user.role);
   const [activeTab, setActiveTab] = useState("0");
   const tabsListRef = useRef(null);
+  // const designations = useContext(DesignationsContext);
+  // console.log(role, designations);
   const tabItems = [
-    { title: "Notifications", component: <ModuleNotifications /> },
+    {
+      title: "Notifications",
+      component: <ModuleNotifications />,
+    },
     {
       title: "Create Request",
       component: <CreateRequest setActiveTab={setActiveTab} />,
     },
+    { title: "Requests in Progress", component: <RequestsInProgress /> },
     { title: "Issue Work Order", component: <IssueWorkOrder /> },
     { title: "Generate Final Bill", component: <FinalBillRequest /> },
     { title: "Rejected Requests", component: <RejectedRequests /> },
-    { title: "Requests in Progress", component: <RequestsInProgress /> },
     { title: "Manage Budget", component: <ManageBudget /> },
     { title: "Created Requests", component: <CreatedRequests /> },
     { title: "View Budget", component: <ViewBudget /> },
     { title: "Processed Bills", component: <ProcessedBills /> },
   ];
+
+  const roleBasedTabs = {
+    Professor: tabItems.filter((tab) =>
+      ["Notifications", "Create Request", "Requests in Progress"].includes(
+        tab.title,
+      ),
+    ),
+    SectionHead_IWD: tabItems.filter((tab) =>
+      [
+        "Notifications",
+        "Create Request",
+        "Issue Work Order",
+        "Manage Budget",
+      ].includes(tab.title),
+    ),
+    "Accounts Admin": tabItems.filter((tab) =>
+      [
+        "Notifications",
+        "Create Request",
+        "Processed Bills",
+        "Manage Budget",
+      ].includes(tab.title),
+    ),
+    // TODO: add more roles
+  };
+  const filteredTabs = roleBasedTabs[role] || tabItems;
   const handleTabChange = (direction) => {
     const newIndex =
       direction === "next"
-        ? Math.min(+activeTab + 1, tabItems.length - 1)
+        ? Math.min(+activeTab + 1, filteredTabs.length - 1)
         : Math.max(+activeTab - 1, 0);
     setActiveTab(String(newIndex));
     tabsListRef.current.scrollBy({
@@ -43,6 +77,7 @@ function IwdPage() {
       behavior: "smooth",
     });
   };
+
   return (
     <>
       <CustomBreadcrumbs />
@@ -68,7 +103,7 @@ function IwdPage() {
         <div className={classes.fusionTabsContainer} ref={tabsListRef}>
           <Tabs value={activeTab} onChange={setActiveTab}>
             <Tabs.List style={{ display: "flex", flexWrap: "nowrap" }}>
-              {tabItems.map((item, index) => (
+              {filteredTabs.map((item, index) => (
                 <Tabs.Tab
                   value={`${index}`}
                   key={index}
@@ -97,7 +132,7 @@ function IwdPage() {
           />
         </Button>
       </Flex>
-      {tabItems[parseInt(activeTab, 10)].component}
+      {filteredTabs[parseInt(activeTab, 10)].component}
     </>
   );
 }
