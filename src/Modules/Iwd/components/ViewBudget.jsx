@@ -1,4 +1,12 @@
 import React from "react";
+import {
+  Breadcrumbs,
+  Text,
+  Table,
+  Container,
+  Paper,
+  Title,
+} from "@mantine/core";
 
 export default function ViewBudget() {
   // const [selectedBudget, setSelectedBudget] = useState(null);
@@ -10,6 +18,7 @@ export default function ViewBudget() {
   // const handleBackToList = () => {
   //   setSelectedBudget(null);
   // };
+
   const ViewBudgetList = [
     {
       id: "1",
@@ -27,14 +36,31 @@ export default function ViewBudget() {
       "budget-issued": 2100,
     },
   ];
+
+  const breadcrumbItems = [
+    { title: "Home", href: "/dashboard" },
+    { title: "IWD", href: "/iwd" },
+    { title: "View Budget", href: "#" },
+  ].map((item, index) => (
+    <Text key={index} component="a" href={item.href} size="sm">
+      {item.title}
+    </Text>
+  ));
+
   return (
-    <div className="container">
+    <Container className="container">
+      <Breadcrumbs style={{ backgroundColor: "#f5f5f5" }}>
+        {breadcrumbItems}
+      </Breadcrumbs>
+      <br />
       {/* Work Orders Table */}
-      <div className="work-orders-table">
+      <Paper className="work-orders-table" shadow="xs" padding="md">
         <div className="table-header">
-          <span className="issue-work-order-button">Details</span>
+          <Title className="issue-work-order-button" size="h4">
+            Details
+          </Title>
         </div>
-        <table>
+        <Table>
           <thead>
             <tr>
               <th>ID</th>
@@ -49,20 +75,20 @@ export default function ViewBudget() {
                 <td>{request.id}</td>
                 <td>{request.name}</td>
                 <td>{request["budget-issued"]}</td>
-                {/* <td>
-                  <button
+                {/* <td> */}
+                {/* <Button
                     className="issue-work-order-button"
                     onClick={() => handleViewBudget(request)}
                   >
                     View File
-                  </button>
-                </td> */}
+                  </Button> */}
+                {/* </td> */}
               </tr>
             ))}
           </tbody>
-        </table>
-      </div>
-    </div>
+        </Table>
+      </Paper>
+    </Container>
   );
 }
 
@@ -73,29 +99,23 @@ const styles = `
     padding: 0; 
     font-family: Arial, sans-serif; 
   }
-  /* Basic container styling */
   .container {
     padding: 20px;
     font-family: Arial, sans-serif;
+    max-width: 800px;
   }
-
-  /* Breadcrumb styling */
   .breadcrumb {
     font-size: 20px;
     margin-bottom: 20px;
   }
-
-  /* Tabs styling */
   .tabs {
     margin-bottom: 20px;
   }
-
   .buttons-container {
     display: flex;
     align-items: center;
     gap: 10px;
   }
-
   .buttons-container button {
     padding: 10px 15px;
     border: none;
@@ -113,7 +133,7 @@ const styles = `
   .buttons-container button:hover {
     font-weight: bold;
   }
-    .arrow {
+  .arrow {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -125,12 +145,6 @@ const styles = `
     cursor: pointer;
     font-size: 18px;
   }
-
-  .arrow:hover {
-    background-color: #e0e0e0; 
-  }
-
-  /* Work Orders Table */
   .work-orders-table {
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -139,38 +153,30 @@ const styles = `
     border-radius: 25px;
     border-left: 10px solid #1E90FF;
   }
-
   .table-header {
     font-weight: bold;
-    background-color: #f5f5f5;
     padding: 10px;
     border-bottom: 1px solid #ccc;
     margin-bottom: 10px;
   }
-
   table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
   }
-
   table th, table td {
     padding: 10px;
     text-align: left;
     border: 1px solid #ccc;
   }
-
   .issue-work-order-button {
-    padding: 10px 20px;
-    background-color: #1E90FF;
-    color: white;
+    color: black;
     border: none;
     cursor: pointer;
-    border-radius:20px;
-  }
-
-  .issue-work-order-button:hover {
-    background-color: #0056b3;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
   }
 `;
 
