@@ -13,7 +13,7 @@ import ManageBudget from "./components/ManageBudget";
 import CreatedRequests from "./components/CreatedRequests";
 import ViewBudget from "./components/ViewBudget";
 import ProcessedBills from "./components/ProcessedBills";
-import ViewRequestFile from "./components/ViewRequestFile";
+// import ViewRequestFile from "./components/ViewRequestFile";
 // import { DesignationsContext } from "./helper/designationContext";
 
 function IwdPage() {
@@ -36,7 +36,7 @@ function IwdPage() {
     { title: "Created Requests", component: <CreatedRequests /> },
     { title: "View Budget", component: <ViewBudget /> },
     { title: "Processed Bills", component: <ProcessedBills /> },
-    { title: "View Request File", component: <ViewRequestFile /> },
+    // { title: "View Request File", component: <ViewRequestFile /> },
   ];
 
   const roleBasedTabs = {
