@@ -8,7 +8,7 @@ import {
   Text,
   Breadcrumbs,
 } from "@mantine/core";
-import { IconChevronLeft } from "@tabler/icons-react";
+import { CaretLeft } from "@phosphor-icons/react";
 import IssueWorkOrderForm from "./IssueWorkOrderForm";
 
 function IssueWorkOrder() {
@@ -113,12 +113,12 @@ function IssueWorkOrder() {
           </Table>
         </div>
       ) : (
-        <Paper shadow="sm" radius="md" p="md">
+        <Paper shadow="sm" radius="md" p="md" style={{ width: "71vw" }}>
           <Button
             variant="subtle"
-            leftIcon={<IconChevronLeft size={14} />}
+            leftIcon={<CaretLeft size={12} />}
             onClick={handleBackToList}
-            style={{ marginBottom: "20px" }}
+            style={{ marginBottom: "10px" }}
           >
             Back to List
           </Button>

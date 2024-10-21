@@ -35,7 +35,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
   };
   return (
     <Grid mt="xl">
-      <div className="container">
+      <div className="contain">
         <Paper
           radius="md"
           px="lg"
@@ -46,6 +46,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
             width: "70vw",
             minHeight: "45vh",
             maxHeight: "70vh",
+            marginBottom: "10px",
           }}
           withBorder
           maw="1240px"

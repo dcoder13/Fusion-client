@@ -8,7 +8,7 @@ export default function ViewRequestFile() {
       sentDate: "Oct. 16, 2024, 8:53 p.m.",
       receivedBy: "bhartenduks-Director",
       remarks: "File with id:617 created by dvijay and sent to bhartenduks",
-      attachments: [],
+      attachments: ["creation_file.docx"],
     },
     {
       sentBy: "bhartenduks - Director",
