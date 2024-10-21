@@ -1,5 +1,5 @@
 import { Card, Text, Group, Stack, Badge } from "@mantine/core";
-import { IconPaperclip } from "@tabler/icons-react";
+import { Paperclip } from "@phosphor-icons/react";
 
 export default function ViewRequestFile() {
   const messages = [
@@ -75,7 +75,7 @@ export default function ViewRequestFile() {
             <Text mb="xs">Remarks: {message.remarks}</Text>
             {message.attachments.length > 0 && (
               <Group spacing="xs">
-                <IconPaperclip size="1rem" />
+                <Paperclip size="1rem" />
                 <Text size="sm">Attachment:</Text>
                 {message.attachments.map((attachment, idx) => (
                   <Badge
