@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
   Container,
   Table,
@@ -7,9 +8,13 @@ import {
   Breadcrumbs,
   Text,
 } from "@mantine/core";
+import axios from "axios";
 import ViewRequestFile from "./ViewRequestFile";
+import { host } from "../../../routes/globalRoutes";
+// import { DesignationsContext } from "../helper/designationContext";
 
 function CreatedRequests() {
+  const role = useSelector((state) => state.user.role);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const handleViewRequest = (request) => {
     setSelectedRequest(request);
@@ -19,39 +24,39 @@ function CreatedRequests() {
     setSelectedRequest(null);
   };
 
-  const CreatedRequestsList = [
-    {
-      id: "1",
-      name: "divyansh",
-      description: "ahgo",
-      area: "lhtc",
-      "created-by": "me",
-    },
-    {
-      id: "3",
-      name: "dvijay",
-      description: "ahgo",
-      area: "lhtc",
-      "created-by": "me",
-    },
-    {
-      id: "4",
-      name: "suniljatt",
-      description: "ahgo",
-      area: "lhtc",
-      "created-by": "me",
-    },
-  ];
-
-  // const breadcrumbItems = [
-  //   { title: "Home", href: "/dashboard" },
-  //   { title: "IWD", href: "/iwd" },
-  //   { title: "Created Request", href: "#" },
-  // ].map((item, index) => (
-  //   <Text key={index} component="a" href={item.href} size="sm">
-  //     {item.title}
-  //   </Text>
-  // ));
+  const CreatedRequestsList = [];
+  useEffect(() => {
+    const getCreatedRequests = async () => {
+      const token = localStorage.getItem("authToken");
+      try {
+        const response = await axios.get(
+          `${host}/iwdModuleV2/api/created-requests-view/`,
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+              role,
+            },
+            params: {
+              role,
+            },
+          },
+        );
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getCreatedRequests();
+  }, [role]);
+  const breadcrumbItems = [
+    { title: "Home", href: "/dashboard" },
+    { title: "IWD", href: "/iwd" },
+    { title: "Created Request", href: "#" },
+  ].map((item, index) => (
+    <Text key={index} component="a" href={item.href} size="sm">
+      {item.title}
+    </Text>
+  ));
 
   return (
     <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>

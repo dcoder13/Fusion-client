@@ -22,6 +22,7 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
     initialValues:
       checkOperation === "edit"
         ? {
+            id: selectedBudget.id,
             name: selectedBudget.name,
             "budget-issued": selectedBudget["budget-issued"],
           }
