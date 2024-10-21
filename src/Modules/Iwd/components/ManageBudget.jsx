@@ -42,7 +42,7 @@ function ManageBudget() {
   // ].map((item, index) => (
   //   <Text key={index} component="a" href={item.href} size="sm">
   //     {item.title}
-  //   </Text>  
+  //   </Text>
   // ));
 
   return (

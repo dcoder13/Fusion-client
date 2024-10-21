@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useMemo } from "react";
 import { useSelector } from "react-redux";
 import {
   Button,
@@ -26,12 +26,17 @@ function CreateRequest({ setActiveTab }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const designations = useContext(DesignationsContext);
-  const designationsList = designations.map(
-    (designation) => `${designation.designation.name}|${designation.username}`,
+  const designationsList = useMemo(
+    () =>
+      designations.map(
+        (designation) =>
+          `${designation.designation.name}|${designation.username}`,
+      ),
+    [designations],
   );
-  console.log(designationsList);
+  // console.log(designationsList);
   const form = useForm({
-    mode: "uncontrolled",
+    mode: "controlled",
     initialValues: {
       name: null,
       description: null,
