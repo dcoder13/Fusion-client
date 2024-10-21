@@ -35,19 +35,19 @@ function ManageBudget() {
     },
   ];
 
-  const breadcrumbItems = [
-    { title: "Home", href: "/dashboard" },
-    { title: "IWD", href: "/iwd" },
-    { title: "Manage Budget", href: "#" },
-  ].map((item, index) => (
-    <Text key={index} component="a" href={item.href} size="sm">
-      {item.title}
-    </Text>
-  ));
+  // const breadcrumbItems = [
+  //   { title: "Home", href: "/dashboard" },
+  //   { title: "IWD", href: "/iwd" },
+  //   { title: "Manage Budget", href: "#" },
+  // ].map((item, index) => (
+  //   <Text key={index} component="a" href={item.href} size="sm">
+  //     {item.title}
+  //   </Text>  
+  // ));
 
   return (
     <Container style={{ padding: "20px" }}>
-      <Breadcrumbs>{breadcrumbItems}</Breadcrumbs>
+      {/* <Breadcrumbs>{breadcrumbItems}</Breadcrumbs> */}
       <br />
       {!operation ? (
         <div

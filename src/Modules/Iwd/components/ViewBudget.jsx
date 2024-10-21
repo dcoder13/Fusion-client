@@ -38,21 +38,21 @@ export default function ViewBudget() {
     },
   ];
 
-  const breadcrumbItems = [
-    { title: "Home", href: "/dashboard" },
-    { title: "IWD", href: "/iwd" },
-    { title: "View Budget", href: "#" },
-  ].map((item, index) => (
-    <Text key={index} component="a" href={item.href} size="sm">
-      {item.title}
-    </Text>
-  ));
+  // const breadcrumbItems = [
+  //   { title: "Home", href: "/dashboard" },
+  //   { title: "IWD", href: "/iwd" },
+  //   { title: "View Budget", href: "#" },
+  // ].map((item, index) => (
+  //   <Text key={index} component="a" href={item.href} size="sm">
+  //     {item.title}
+  //   </Text>
+  // ));
 
   return (
     <Container className="container">
-      <Breadcrumbs style={{ backgroundColor: "#f5f5f5" }}>
+      {/* <Breadcrumbs style={{ backgroundColor: "#f5f5f5" }}>
         {breadcrumbItems}
-      </Breadcrumbs>
+      </Breadcrumbs> */}
       <br />
       <Paper className="work-orders-table" shadow="xs" padding="md">
         <div className="table-header">
