@@ -1,3 +1,13 @@
+import React from "react";
+import {
+  Container,
+  Table,
+  Button,
+  Title,
+  Text,
+  Breadcrumbs,
+} from "@mantine/core";
+
 function RequestsInProgress() {
   const handleMarkAsCompleted = (request) => {
     // TODO:
@@ -15,6 +25,7 @@ function RequestsInProgress() {
     // TODO:
     console.log(request);
   };
+
   const RequestsInProgressData = [
     {
       id: "1",
@@ -41,14 +52,35 @@ function RequestsInProgress() {
       "created-by": "me",
     },
   ];
+
+  const breadcrumbItems = [
+    { title: "Home", href: "/dashboard" },
+    { title: "IWD", href: "/iwd" },
+    { title: "Request in progress", href: "#" },
+  ].map((item, index) => (
+    <Text key={index} component="a" href={item.href} size="sm">
+      {item.title}
+    </Text>
+  ));
+
   return (
-    <div className="container">
-      <div className="work-orders-table">
-        <div className="table-header">
-          <span className="issue-work-order-button">Details</span>
-        </div>
-        <table>
-          <thead>
+    <Container style={{ padding: "20px" }}>
+      <Breadcrumbs>{breadcrumbItems}</Breadcrumbs>
+      <br />
+      <div
+        style={{
+          border: "1px solid #ccc",
+          borderRadius: "25px",
+          padding: "20px",
+          boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
+          borderLeft: "10px solid #1E90FF",
+        }}
+      >
+        <Title align="center" weight={700} size="lg" mb="md">
+          Requests In Progress
+        </Title>
+        <Table highlightOnHover withBorder withColumnBorders>
+          <thead style={{ backgroundColor: "#f5f5f5" }}>
             <tr>
               <th>ID</th>
               <th>Name</th>
@@ -59,8 +91,8 @@ function RequestsInProgress() {
             </tr>
           </thead>
           <tbody>
-            {RequestsInProgressData.map((request, index) => (
-              <tr key={index} id={request.id}>
+            {RequestsInProgressData.map((request) => (
+              <tr key={request.id}>
                 <td>{request.id}</td>
                 <td>{request.name}</td>
                 <td>{request.description}</td>
@@ -69,157 +101,65 @@ function RequestsInProgress() {
                 <td>
                   {request.completed ? (
                     <>
-                      <button
-                        className="issue-work-order-button"
+                      <Button
+                        size="xs"
                         onClick={() => handleGenerateBill(request)}
+                        style={{
+                          backgroundColor: "#1E90FF",
+                          color: "white",
+                          borderRadius: "20px",
+                          marginRight: "10px",
+                        }}
                       >
                         Generate Bill
-                      </button>
-                      <button
-                        className="issue-work-order-button"
+                      </Button>
+                      <Button
+                        size="xs"
                         onClick={() => handleDoneRequest(request)}
+                        style={{
+                          backgroundColor: "#1E90FF",
+                          color: "white",
+                          borderRadius: "20px",
+                        }}
                       >
                         Done
-                      </button>
+                      </Button>
                     </>
                   ) : (
                     <>
-                      <button
-                        className="issue-work-order-button"
+                      <Button
+                        size="xs"
                         onClick={() => handleMarkAsCompleted(request)}
+                        style={{
+                          backgroundColor: "#1E90FF",
+                          color: "white",
+                          borderRadius: "20px",
+                          marginRight: "10px",
+                        }}
                       >
                         Mark as Completed
-                      </button>
-                      <button
-                        className="issue-work-order-button"
+                      </Button>
+                      <Button
+                        size="xs"
                         onClick={() => handleInventory(request)}
+                        style={{
+                          backgroundColor: "#1E90FF",
+                          color: "white",
+                          borderRadius: "20px",
+                        }}
                       >
                         Inventory
-                      </button>
+                      </Button>
                     </>
                   )}
                 </td>
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       </div>
-    </div>
+    </Container>
   );
 }
 
 export default RequestsInProgress;
-
-const styles = `
-  .body {
-    background-color: #efefef; 
-    margin: 0; 
-    padding: 0; 
-    font-family: Arial, sans-serif; 
-  }
-  /* Basic container styling */
-  .container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-
-  /* Breadcrumb styling */
-  .breadcrumb {
-    font-size: 20px;
-    margin-bottom: 20px;
-  }
-
-  /* Tabs styling */
-  .tabs {
-    margin-bottom: 20px;
-  }
-
-  .buttons-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .buttons-container button {
-    padding: 10px 15px;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    font-weight: normal;
-  }
-  .bold-button {
-    font-weight: bold; 
-    padding: 10px 15px; 
-    border: 1px solid #ccc; 
-    background-color: transparent; 
-    cursor: pointer;
-  }
-  .buttons-container button:hover {
-    font-weight: bold;
-  }
-    .arrow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px; 
-    border: 1px solid #ccc; 
-    border-radius: 50%;
-    background-color: #f0f0f0; 
-    cursor: pointer;
-    font-size: 18px;
-  }
-
-  .arrow:hover {
-    background-color: #e0e0e0; 
-  }
-
-  /* Work Orders Table */
-  .work-orders-table {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
-   border-radius: 25px;
-   border-left: 10px solid #1E90FF;
-  }
-
-  .table-header {
-    font-weight: bold;
-    background-color: #f5f5f5;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 10px;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-
-  table th, table td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ccc;
-  }
-
-  .issue-work-order-button {
-    padding: 10px 20px;
-    margin-right:10px;
-    background-color: #1E90FF;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius:20px;
-  }
-
-  .issue-work-order-button:hover {
-    background-color: #0056b3;
-  }
-`;
-
-const styleSheet = document.createElement("style");
-styleSheet.type = "text/css";
-styleSheet.innerText = styles;
-document.head.appendChild(styleSheet);

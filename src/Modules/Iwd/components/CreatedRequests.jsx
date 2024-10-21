@@ -1,16 +1,24 @@
 import React, { useState } from "react";
+import {
+  Container,
+  Table,
+  Button,
+  Title,
+  Breadcrumbs,
+  Text,
+} from "@mantine/core";
 import ViewRequestFile from "./ViewRequestFile";
 
 function CreatedRequests() {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const handleViewRequest = (request) => {
-    // TODO:
     setSelectedRequest(request);
   };
 
   const handleBackToList = () => {
     setSelectedRequest(null);
   };
+
   const CreatedRequestsList = [
     {
       id: "1",
@@ -34,15 +42,37 @@ function CreatedRequests() {
       "created-by": "me",
     },
   ];
+
+  const breadcrumbItems = [
+    { title: "Home", href: "/dashboard" },
+    { title: "IWD", href: "/iwd" },
+    { title: "Created Request", href: "#" },
+  ].map((item, index) => (
+    <Text key={index} component="a" href={item.href} size="sm">
+      {item.title}
+    </Text>
+  ));
+
   return (
-    <div className="container">
+    <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+      <Breadcrumbs>{breadcrumbItems}</Breadcrumbs>
+      <br />
       {!selectedRequest ? (
-        <div className="work-orders-table">
-          <div className="table-header">
-            <span className="issue-work-order-button">Details</span>
-          </div>
-          <table>
-            <thead>
+        <div
+          style={{
+            border: "1px solid #ccc",
+            borderRadius: "25px",
+            padding: "20px",
+            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
+            borderLeft: "10px solid #1E90FF",
+          }}
+        >
+          <Title size="h3" align="center" style={{ marginBottom: "10px" }}>
+            {" "}
+            Created Requests{" "}
+          </Title>
+          <Table highlightOnHover>
+            <thead style={{ backgroundColor: "#f5f5f5" }}>
               <tr>
                 <th>ID</th>
                 <th>Name</th>
@@ -61,136 +91,24 @@ function CreatedRequests() {
                   <td>{request.area}</td>
                   <td>{request["created-by"]}</td>
                   <td>
-                    <button
-                      className="issue-work-order-button"
+                    <Button
+                      size="xs"
                       onClick={() => handleViewRequest(request)}
+                      style={{ backgroundColor: "#1E90FF", color: "white" }}
                     >
                       View File
-                    </button>
+                    </Button>
                   </td>
                 </tr>
               ))}
             </tbody>
-          </table>
+          </Table>
         </div>
       ) : (
         <ViewRequestFile request={selectedRequest} onBack={handleBackToList} />
       )}
-    </div>
+    </Container>
   );
 }
 
 export default CreatedRequests;
-
-const styles = `
-  .body {
-    background-color: #efefef; 
-    margin: 0; 
-    padding: 0; 
-    font-family: Arial, sans-serif; 
-  }
-  /* Basic container styling */
-  .container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-
-  /* Breadcrumb styling */
-  .breadcrumb {
-    font-size: 20px;
-    margin-bottom: 20px;
-  }
-
-  /* Tabs styling */
-  .tabs {
-    margin-bottom: 20px;
-  }
-
-  .buttons-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .buttons-container button {
-    padding: 10px 15px;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    font-weight: normal;
-  }
-  .bold-button {
-    font-weight: bold; 
-    padding: 10px 15px; 
-    border: 1px solid #ccc; 
-    background-color: transparent; 
-    cursor: pointer;
-  }
-  .buttons-container button:hover {
-    font-weight: bold;
-  }
-    .arrow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px; 
-    border: 1px solid #ccc; 
-    border-radius: 50%;
-    background-color: #f0f0f0; 
-    cursor: pointer;
-    font-size: 18px;
-  }
-
-  .arrow:hover {
-    background-color: #e0e0e0; 
-  }
-
-  /* Work Orders Table */
-  .work-orders-table {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
-   border-radius: 25px;
-   border-left: 10px solid #1E90FF;
-  }
-
-  .table-header {
-    font-weight: bold;
-    background-color: #f5f5f5;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 10px;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-
-  table th, table td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ccc;
-  }
-
-  .issue-work-order-button {
-    padding: 10px 20px;
-    background-color: #1E90FF;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius:20px;
-  }
-
-  .issue-work-order-button:hover {
-    background-color: #0056b3;
-  }
-`;
-
-const styleSheet = document.createElement("style");
-styleSheet.type = "text/css";
-styleSheet.innerText = styles;
-document.head.appendChild(styleSheet);
