@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -6,8 +5,7 @@ import { Card, Text, Group, Stack, Badge, Loader } from "@mantine/core";
 import { Paperclip } from "@phosphor-icons/react";
 import { host } from "../../../routes/globalRoutes";
 
-export default function ViewRequestFile({ request, onBack }) {
-  const role = useSelector((state) => state.user.role);
+export default function ViewRequestFile({ request }) {
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState({});
 
@@ -129,5 +127,4 @@ ViewRequestFile.propTypes = {
     requestCreatedBy: PropTypes.string.isRequired,
     file_id: PropTypes.number.isRequired,
   }).isRequired,
-  onBack: PropTypes.func.isRequired,
 };

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Container, Table, Button, Title, Loader, Grid } from "@mantine/core";
+import { CaretLeft } from "@phosphor-icons/react";
 import axios from "axios";
 import ViewRequestFile from "./ViewRequestFile";
 import { host } from "../../../routes/globalRoutes";
@@ -101,7 +102,17 @@ function CreatedRequests() {
           </Table>
         </div>
       ) : (
-        <ViewRequestFile request={selectedRequest} onBack={handleBackToList} />
+        <>
+          <Button
+            variant="subtle"
+            leftIcon={<CaretLeft size={12} />}
+            onClick={handleBackToList}
+            style={{ marginBottom: "10px" }}
+          >
+            Back to List
+          </Button>
+          <ViewRequestFile request={selectedRequest} />
+        </>
       )}
     </Container>
   );

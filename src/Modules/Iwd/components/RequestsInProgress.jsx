@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Container,
-  Table,
-  Button,
-  Title,
-  Text,
-  Breadcrumbs,
-} from "@mantine/core";
+import { Container, Table, Button, Title } from "@mantine/core";
 
 function RequestsInProgress() {
   const handleMarkAsCompleted = (request) => {
@@ -53,19 +46,8 @@ function RequestsInProgress() {
     },
   ];
 
-  // const breadcrumbItems = [
-  //   { title: "Home", href: "/dashboard" },
-  //   { title: "IWD", href: "/iwd" },
-  //   { title: "Request in progress", href: "#" },
-  // ].map((item, index) => (
-  //   <Text key={index} component="a" href={item.href} size="sm">
-  //     {item.title}
-  //   </Text>
-  // ));
-
   return (
     <Container style={{ padding: "20px" }}>
-      {/* <Breadcrumbs>{breadcrumbItems}</Breadcrumbs> */}
       <br />
       <div
         style={{

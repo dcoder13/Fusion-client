@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Container,
-  Table,
-  Button,
-  Title,
-  Text,
-  Breadcrumbs,
-} from "@mantine/core";
+import { Container, Table, Button, Title } from "@mantine/core";
 import UpdateRequestForm from "./UpdateRequestForm";
 
 function RejectedRequest() {
@@ -44,19 +37,8 @@ function RejectedRequest() {
     },
   ];
 
-  // const breadcrumbItems = [
-  //   { title: "Home", href: "/dashboard" },
-  //   { title: "IWD", href: "/iwd" },
-  //   { title: "Rejected Requests", href: "#" },
-  // ].map((item, index) => (
-  //   <Text key={index} component="a" href={item.href} size="sm">
-  //     {item.title}
-  //   </Text>
-  // ));
-
   return (
     <Container style={{ padding: "20px" }}>
-      {/* <Breadcrumbs>{breadcrumbItems}</Breadcrumbs> */}
       <br />
       {!selectedRequest ? (
         <div

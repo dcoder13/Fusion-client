@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  Table,
-  Button,
-  Container,
-  Group,
-  Text,
-  Title,
-  Breadcrumbs,
-} from "@mantine/core";
+import { Table, Button, Container, Group, Title } from "@mantine/core";
 import ViewRequestFile from "./ViewRequestFile";
 
 function ProcessedBills() {
@@ -29,18 +21,8 @@ function ProcessedBills() {
       bill: "bill_1.pdf",
     },
   ];
-  // const breadcrumbItems = [
-  //   { title: "Home", href: "/dashboard" },
-  //   { title: "IWD", href: "/iwd" },
-  //   { title: "Processed Bills", href: "#" },
-  // ].map((item, index) => (
-  //   <Text key={index} component="a" href={item.href} size="sm">
-  //     {item.title}
-  //   </Text>
-  // ));
   return (
     <Container style={{ padding: "20px" }}>
-      {/* <Breadcrumbs>{breadcrumbItems}</Breadcrumbs> */}
       {!selectedBill ? (
         <div style={{ padding: "20px" }}>
           <div

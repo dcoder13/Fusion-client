@@ -1,22 +1,10 @@
 import React, { useState } from "react";
-import {
-  Table,
-  Button,
-  Container,
-  Title,
-  Paper,
-  Text,
-  Breadcrumbs,
-} from "@mantine/core";
+import { Table, Button, Container, Title, Paper } from "@mantine/core";
 import { CaretLeft } from "@phosphor-icons/react";
 import IssueWorkOrderForm from "./IssueWorkOrderForm";
 
 function IssueWorkOrder() {
-  // const navigate = useNavigate();
   const [selectedWorkOrder, setSelectedWorkOrder] = useState(null);
-  // const HandleWorkOrder = (e) => {
-  //   navigate(`/issue-work-order-form/${e.id}`, { state: { e } });
-  // };
   const handleWorkOrderSelect = (workOrder) => {
     setSelectedWorkOrder(workOrder);
   };
@@ -48,19 +36,8 @@ function IssueWorkOrder() {
     },
   ];
 
-  // const breadcrumbItems = [
-  //   { title: "Home", href: "/dashboard" },
-  //   { title: "IWD", href: "/iwd" },
-  //   { title: "IssueWorkOrder", href: "#" },
-  // ].map((item, index) => (
-  //   <Text key={index} component="a" href={item.href} size="sm">
-  //     {item.title}
-  //   </Text>
-  // ));
-
   return (
     <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      {/* <Breadcrumbs>{breadcrumbItems}</Breadcrumbs> */}
       <br />
       {!selectedWorkOrder ? (
         <div
