@@ -86,7 +86,7 @@ function CreatedRequests() {
                   <td>{request.name}</td>
                   <td>{request.description}</td>
                   <td>{request.area}</td>
-                  <td>{request["created-by"]}</td>
+                  <td>{request.requestCreatedBy}</td>
                   <td>
                     <Button
                       size="xs"
