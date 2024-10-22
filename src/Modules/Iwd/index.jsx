@@ -13,7 +13,9 @@ import ManageBudget from "./components/ManageBudget";
 import CreatedRequests from "./components/CreatedRequests";
 import ViewBudget from "./components/ViewBudget";
 import ProcessedBills from "./components/ProcessedBills";
+
 import ApproveRejectRequest from "./components/ApproveRejectRequest";
+
 // import ViewRequestFile from "./components/ViewRequestFile";
 // import { DesignationsContext } from "./helper/designationContext";
 
@@ -37,8 +39,9 @@ function IwdPage() {
     { title: "Created Requests", component: <CreatedRequests /> },
     { title: "View Budget", component: <ViewBudget /> },
     { title: "Processed Bills", component: <ProcessedBills /> },
-    { title: "Approve/Reject Request", component: <ApproveRejectRequest /> },
-    // { title: "View Request File", component: <ViewRequestFile /> },
+
+    { title: "Approve/Reject Requests", component: <ApproveRejectRequest /> },
+
   ];
 
   const roleBasedTabs = {
