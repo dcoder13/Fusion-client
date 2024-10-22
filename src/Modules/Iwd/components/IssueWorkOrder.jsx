@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Button, Container, Title, Paper } from "@mantine/core";
+import { Table, Button, Container, Title } from "@mantine/core";
 import { CaretLeft } from "@phosphor-icons/react";
 import IssueWorkOrderForm from "./IssueWorkOrderForm";
 
@@ -37,60 +37,62 @@ function IssueWorkOrder() {
   ];
 
   return (
-    <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+    <>
       <br />
       {!selectedWorkOrder ? (
-        <div
-          style={{
-            border: "1px solid #ccc",
-            borderRadius: "25px",
-            padding: "20px",
-            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
-            borderLeft: "10px solid #1E90FF",
-          }}
-        >
-          <Title size="h3" align="center" style={{ marginBottom: "10px" }}>
-            Work Orders
-          </Title>
-          <Table highlightOnHover>
-            <thead style={{ backgroundColor: "#f5f5f5" }}>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Area</th>
-                <th>Created By</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {workOrderData.map((request, index) => (
-                <tr key={index} id={request.id}>
-                  <td>{request.id}</td>
-                  <td>{request.name}</td>
-                  <td>{request.description}</td>
-                  <td>{request.area}</td>
-                  <td>{request["created-by"]}</td>
-                  <td>
-                    <Button
-                      size="xs"
-                      onClick={() => handleWorkOrderSelect(request)}
-                      style={{
-                        backgroundColor: "#1E90FF",
-                        color: "white",
-                        borderRadius: "20px",
-                      }}
-                    >
-                      Issue Work Order
-                    </Button>
-                  </td>
+        <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+          <div
+            style={{
+              border: "1px solid #ccc",
+              borderRadius: "25px",
+              padding: "20px",
+              boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
+              borderLeft: "10px solid #1E90FF",
+            }}
+          >
+            <Title size="h3" align="center" style={{ marginBottom: "10px" }}>
+              Work Orders
+            </Title>
+            <Table highlightOnHover>
+              <thead style={{ backgroundColor: "#f5f5f5" }}>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Area</th>
+                  <th>Created By</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
+              </thead>
+              <tbody>
+                {workOrderData.map((request, index) => (
+                  <tr key={index} id={request.id}>
+                    <td>{request.id}</td>
+                    <td>{request.name}</td>
+                    <td>{request.description}</td>
+                    <td>{request.area}</td>
+                    <td>{request["created-by"]}</td>
+                    <td>
+                      <Button
+                        size="xs"
+                        onClick={() => handleWorkOrderSelect(request)}
+                        style={{
+                          backgroundColor: "#1E90FF",
+                          color: "white",
+                          borderRadius: "20px",
+                        }}
+                      >
+                        Issue Work Order
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+        </Container>
       ) : (
-        <Paper shadow="sm" radius="md" p="md" style={{ width: "71vw" }}>
+        <>
           <Button
             variant="subtle"
             leftIcon={<CaretLeft size={12} />}
@@ -103,9 +105,9 @@ function IssueWorkOrder() {
             workOrder={selectedWorkOrder}
             onBack={handleBackToList}
           />
-        </Paper>
+        </>
       )}
-    </Container>
+    </>
   );
 }
 
