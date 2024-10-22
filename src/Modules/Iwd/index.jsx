@@ -40,7 +40,10 @@ function IwdPage() {
     { title: "Generate Final Bill", component: <FinalBillRequest /> },
     { title: "Rejected Requests", component: <RejectedRequests /> },
     { title: "Manage Budget", component: <ManageBudget /> },
-    { title: "Created Requests", component: <CreatedRequests /> },
+    {
+      title: "Created Requests",
+      component: <CreatedRequests setActiveTab={setActiveTab} />,
+    },
     { title: "View Budget", component: <ViewBudget /> },
     { title: "Processed Bills", component: <ProcessedBills /> },
 <<<<<<< HEAD
