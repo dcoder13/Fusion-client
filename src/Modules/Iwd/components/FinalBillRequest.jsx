@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Table,
-  Button,
-  Container,
-  Text,
-  Breadcrumbs,
-  Title,
-} from "@mantine/core";
+import { Table, Button, Container, Title } from "@mantine/core";
 
 function FinalBillRequest() {
   const handleGenerateFinalBill = (request) => {
@@ -41,19 +34,8 @@ function FinalBillRequest() {
     },
   ];
 
-  // const breadcrumbItems = [
-  //   { title: "Home", href: "/dashboard" },
-  //   { title: "IWD", href: "/iwd" },
-  //   { title: "FinalBillRequest", href: "#" },
-  // ].map((item, index) => (
-  //   <Text key={index} component="a" href={item.href} size="sm">
-  //     {item.title}
-  //   </Text>
-  // ));
-
   return (
     <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      {/* <Breadcrumbs>{breadcrumbItems}</Breadcrumbs> */}
       <br />
       <div
         style={{

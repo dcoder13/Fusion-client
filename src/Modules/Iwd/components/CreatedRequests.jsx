@@ -1,15 +1,16 @@
-import React, { useState } from "react";
-import {
-  Container,
-  Table,
-  Button,
-  Title,
-  Breadcrumbs,
-  Text,
-} from "@mantine/core";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Container, Table, Button, Title, Loader, Grid } from "@mantine/core";
+import { CaretLeft } from "@phosphor-icons/react";
+import axios from "axios";
 import ViewRequestFile from "./ViewRequestFile";
+import { host } from "../../../routes/globalRoutes";
+// import { DesignationsContext } from "../helper/designationContext";
 
 function CreatedRequests() {
+  const role = useSelector((state) => state.user.role);
+  const [loading, setLoading] = useState(false);
+
   const [selectedRequest, setSelectedRequest] = useState(null);
   const handleViewRequest = (request) => {
     setSelectedRequest(request);
@@ -19,45 +20,42 @@ function CreatedRequests() {
     setSelectedRequest(null);
   };
 
-  const CreatedRequestsList = [
-    {
-      id: "1",
-      name: "divyansh",
-      description: "ahgo",
-      area: "lhtc",
-      "created-by": "me",
-    },
-    {
-      id: "3",
-      name: "dvijay",
-      description: "ahgo",
-      area: "lhtc",
-      "created-by": "me",
-    },
-    {
-      id: "4",
-      name: "suniljatt",
-      description: "ahgo",
-      area: "lhtc",
-      "created-by": "me",
-    },
-  ];
-
-  // const breadcrumbItems = [
-  //   { title: "Home", href: "/dashboard" },
-  //   { title: "IWD", href: "/iwd" },
-  //   { title: "Created Request", href: "#" },
-  // ].map((item, index) => (
-  //   <Text key={index} component="a" href={item.href} size="sm">
-  //     {item.title}
-  //   </Text>
-  // ));
-
+  const [createdRequestsList, setRequestsList] = useState([]);
+  useEffect(() => {
+    const getCreatedRequests = async () => {
+      setLoading(true);
+      const token = localStorage.getItem("authToken");
+      try {
+        const response = await axios.get(
+          `${host}/iwdModuleV2/api/created-requests-view/`,
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+            },
+            params: {
+              role,
+            },
+          },
+        );
+        setRequestsList(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getCreatedRequests();
+  }, [role]);
+  console.log(createdRequestsList);
   return (
     <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      {/* <Breadcrumbs>{breadcrumbItems}</Breadcrumbs> */}
       <br />
-      {!selectedRequest ? (
+      {loading ? (
+        <Grid mt="xl">
+          <Container py="xl">
+            <Loader size="lg" />
+          </Container>
+        </Grid>
+      ) : !selectedRequest ? (
         <div
           style={{
             border: "1px solid #ccc",
@@ -68,8 +66,7 @@ function CreatedRequests() {
           }}
         >
           <Title size="h3" align="center" style={{ marginBottom: "10px" }}>
-            {" "}
-            Created Requests{" "}
+            Created Requests
           </Title>
           <Table highlightOnHover>
             <thead style={{ backgroundColor: "#f5f5f5" }}>
@@ -83,9 +80,9 @@ function CreatedRequests() {
               </tr>
             </thead>
             <tbody>
-              {CreatedRequestsList.map((request, index) => (
+              {createdRequestsList.map((request, index) => (
                 <tr key={index} id={request.id}>
-                  <td>{request.id}</td>
+                  <td>{request.request_id}</td>
                   <td>{request.name}</td>
                   <td>{request.description}</td>
                   <td>{request.area}</td>
@@ -105,7 +102,17 @@ function CreatedRequests() {
           </Table>
         </div>
       ) : (
-        <ViewRequestFile request={selectedRequest} onBack={handleBackToList} />
+        <>
+          <Button
+            variant="subtle"
+            leftIcon={<CaretLeft size={12} />}
+            onClick={handleBackToList}
+            style={{ marginBottom: "10px" }}
+          >
+            Back to List
+          </Button>
+          <ViewRequestFile request={selectedRequest} />
+        </>
       )}
     </Container>
   );

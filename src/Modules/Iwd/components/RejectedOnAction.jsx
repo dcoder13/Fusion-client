@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Table, Button, Title } from "@mantine/core";
 
-function RequestsInProgress() {
+function RejectedOnAction() {
   const handleMarkAsCompleted = (request) => {
     // TODO:
     console.log(request);
@@ -59,7 +59,7 @@ function RequestsInProgress() {
         }}
       >
         <Title align="center" weight={700} size="lg" mb="md">
-          Requests In Progress
+          Rejection
         </Title>
         <Table highlightOnHover withBorder withColumnBorders>
           <thead style={{ backgroundColor: "#f5f5f5" }}>
@@ -132,6 +132,17 @@ function RequestsInProgress() {
                       >
                         Inventory
                       </Button>
+                      <Button
+                        size="xs"
+                        onClick={() => handleInventory(request)}
+                        style={{
+                          backgroundColor: "red",
+                          color: "white",
+                          borderRadius: "20px",
+                        }}
+                      >
+                        Verification
+                      </Button>
                     </>
                   )}
                 </td>
@@ -144,4 +155,4 @@ function RequestsInProgress() {
   );
 }
 
-export default RequestsInProgress;
+export default RejectedOnAction;

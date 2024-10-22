@@ -1,30 +1,43 @@
-import { Card, Text, Group, Stack, Badge } from "@mantine/core";
+import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Card, Text, Group, Stack, Badge, Loader } from "@mantine/core";
 import { Paperclip } from "@phosphor-icons/react";
+import { host } from "../../../routes/globalRoutes";
 
-export default function ViewRequestFile() {
-  const messages = [
-    {
-      sentBy: "dvijay - Executive Engineer (Civil)",
-      sentDate: "Oct. 16, 2024, 8:53 p.m.",
-      receivedBy: "bhartenduks-Director",
-      remarks: "File with id:617 created by dvijay and sent to bhartenduks",
-      attachments: ["creation_file.docx"],
-    },
-    {
-      sentBy: "bhartenduks - Director",
-      sentDate: "Oct. 16, 2024, 8:54 p.m.",
-      receivedBy: "dvijay-Executive Engineer (Civil)",
-      remarks: "No Remarks",
-      attachments: ["requst_ID10110.jpg"],
-    },
-    {
-      sentBy: "dvijay - Executive Engineer (Civil)",
-      sentDate: "Oct. 16, 2024, 8:59 p.m.",
-      receivedBy: "richard-Accounts Admin",
-      remarks: "No Remarks",
-      attachments: ["Request_id_2_final_bill.pdf"],
-    },
-  ];
+export default function ViewRequestFile({ request }) {
+  const [loading, setLoading] = useState(true);
+  const [messages, setMessages] = useState({});
+
+  useEffect(() => {
+    const getRequestData = async () => {
+      setLoading(true);
+      const token = localStorage.getItem("authToken");
+      try {
+        const response = await axios.get(`${host}/iwdModuleV2/api/view-file/`, {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+          params: {
+            request_id: request.request_id,
+            name: request.name,
+            area: request.area,
+            description: request.description,
+            requestCreatedBy: request.requestCreatedBy,
+            file_id: request.file_id,
+          },
+        });
+        setMessages(response.data);
+        console.log("re", response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      }
+    };
+    getRequestData();
+  }, []);
+  console.log(messages);
 
   return (
     <div
@@ -49,53 +62,69 @@ export default function ViewRequestFile() {
           backgroundColor: "#f0f0f0",
         }}
       >
-        <Text fw={700}>Created By: - Executive Engineer (Civil)</Text>
+        {loading ? (
+          <Loader size="lg" />
+        ) : (
+          <>
+            <Text fw={700}>Created By: - {messages.file.uploader}</Text>
+            <Stack spacing="md">
+              {messages.tracks.map((message, index) => (
+                <Card
+                  key={index}
+                  shadow="sm"
+                  padding="lg"
+                  radius="md"
+                  withBorder
+                  sx={{
+                    marginBottom: "15px",
+                  }}
+                >
+                  <Group position="apart" mb="xs">
+                    <Text fw={500}>Sent by: {message.current_id}</Text>
+                    <Text size="sm" color="dimmed">
+                      {message.forward_date}
+                    </Text>
+                  </Group>
+                  <Text fw={500} mb="xs">
+                    Received by: {message.receiver_id}
+                  </Text>
+                  <Text mb="xs">Remarks: {message.remarks}</Text>
+                  {message.upload_file && (
+                    <Group spacing="xs">
+                      <Paperclip size="1rem" />
+                      <Text size="sm">Attachment:</Text>
+                      {/* {message.attachments.map((attachment, idx) => ( */}
+                      <Badge
+                        variant="light"
+                        sx={{
+                          textOverflow: "ellipsis",
+                          maxWidth: "200px",
+                          overflow: "hidden",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {message.upload_file}
+                      </Badge>
+                      {/* ))} */}
+                    </Group>
+                  )}
+                </Card>
+              ))}
+            </Stack>
+          </>
+        )}
       </Card>
-      <Stack spacing="md">
-        {messages.map((message, index) => (
-          <Card
-            key={index}
-            shadow="sm"
-            padding="lg"
-            radius="md"
-            withBorder
-            sx={{
-              marginBottom: "15px",
-            }}
-          >
-            <Group position="apart" mb="xs">
-              <Text fw={500}>Sent by: {message.sentBy}</Text>
-              <Text size="sm" color="dimmed">
-                {message.sentDate}
-              </Text>
-            </Group>
-            <Text fw={500} mb="xs">
-              Received by: {message.receivedBy}
-            </Text>
-            <Text mb="xs">Remarks: {message.remarks}</Text>
-            {message.attachments.length > 0 && (
-              <Group spacing="xs">
-                <Paperclip size="1rem" />
-                <Text size="sm">Attachment:</Text>
-                {message.attachments.map((attachment, idx) => (
-                  <Badge
-                    key={idx}
-                    variant="light"
-                    sx={{
-                      textOverflow: "ellipsis",
-                      maxWidth: "200px",
-                      overflow: "hidden",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {attachment}
-                  </Badge>
-                ))}
-              </Group>
-            )}
-          </Card>
-        ))}
-      </Stack>
     </div>
   );
 }
+
+ViewRequestFile.propTypes = {
+  request: PropTypes.shape({
+    request_id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    area: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    requestCreatedBy: PropTypes.string.isRequired,
+    file_id: PropTypes.number.isRequired,
+  }).isRequired,
+};
