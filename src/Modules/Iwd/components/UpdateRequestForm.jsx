@@ -1,4 +1,5 @@
 import React, { useState, useContext, useMemo } from "react";
+import { useSelector } from "react-redux";
 import { useForm } from "@mantine/form";
 import {
   Button,
@@ -19,7 +20,8 @@ import { host } from "../../../routes/globalRoutes";
 import { DesignationsContext } from "../helper/designationContext";
 import classes from "../iwd.module.css";
 
-function UpdateRequestForm({ selectedRequest, onBack }) {
+function UpdateRequestForm({ selectedRequest, onBack, setActiveTab }) {
+  const role = useSelector((state) => state.user.role);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const designations = useContext(DesignationsContext);
@@ -34,7 +36,7 @@ function UpdateRequestForm({ selectedRequest, onBack }) {
   );
 
   const form = useForm({
-    mode: "controlled",
+    mode: "uncontrolled",
     initialValues: {
       name: selectedRequest.name,
       description: selectedRequest.description,
@@ -54,12 +56,12 @@ function UpdateRequestForm({ selectedRequest, onBack }) {
     setIsSuccess(false);
     const token = localStorage.getItem("authToken");
     const data = form.getValues();
+    data.role = role;
     data.id = selectedRequest.id;
 
     try {
-      const response = await axios.put(
-        // change the url to the correct one
-        `${host}/iwdModuleV2/api/requests-view/${selectedRequest.id}/`,
+      const response = await axios.patch(
+        `${host}/iwdModuleV2/api/handle-update-requests/`,
         data,
         {
           headers: {
@@ -72,7 +74,7 @@ function UpdateRequestForm({ selectedRequest, onBack }) {
         setIsLoading(false);
         setIsSuccess(true);
         setTimeout(() => {
-          onBack();
+          setActiveTab("0");
         }, 1000);
       }, 1000);
     } catch (error) {
@@ -226,6 +228,7 @@ UpdateRequestForm.propTypes = {
     description: PropTypes.string,
     area: PropTypes.string,
   }).isRequired,
+  setActiveTab: PropTypes.func.isRequired,
   onBack: PropTypes.func.isRequired,
 };
 
