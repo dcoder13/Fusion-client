@@ -56,9 +56,12 @@ function IwdPage() {
 
   const roleBasedTabs = {
     Professor: tabItems.filter((tab) =>
-      ["Notifications", "Create Request", "Requests in Progress"].includes(
-        tab.title,
-      ),
+      [
+        "Notifications",
+        "Create Request",
+        "Requests in Progress",
+        "Created Requests",
+      ].includes(tab.title),
     ),
     SectionHead_IWD: tabItems.filter((tab) =>
       [
@@ -66,6 +69,26 @@ function IwdPage() {
         "Create Request",
         "Issue Work Order",
         "Manage Budget",
+        "View Budget",
+        "Created Requests",
+      ].includes(tab.title),
+    ),
+    EE: tabItems.filter((tab) =>
+      [
+        "Notifications",
+        "Create Request",
+        "Issue Work Order",
+        "Created Requests",
+        "View Budget",
+      ].includes(tab.title),
+    ),
+    "Executive Engineer (Civil)": tabItems.filter((tab) =>
+      [
+        "Notifications",
+        "Create Request",
+        "Issue Work Order",
+        "Created Requests",
+        "View Budget",
       ].includes(tab.title),
     ),
     "Accounts Admin": tabItems.filter((tab) =>
@@ -74,6 +97,26 @@ function IwdPage() {
         "Create Request",
         "Processed Bills",
         "Manage Budget",
+        "Created Requests",
+        "View Budget",
+      ].includes(tab.title),
+    ),
+    Auditor: tabItems.filter((tab) =>
+      [
+        "Notifications",
+        "Create Request",
+        "Issue Work Order",
+        "Created Requests",
+      ].includes(tab.title),
+    ),
+    "Dean (P&D)": tabItems.filter((tab) =>
+      [
+        "Notifications",
+        "Create Request",
+        "Issue Work Order",
+        "Created Requests",
+        "View Budget",
+        "Rejected Requests",
       ].includes(tab.title),
     ),
   };
