@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { Container, Table, Button, Title } from "@mantine/core";
+import React, { useState, useEffect } from "react";
+import { Container, Table, Button, Title, Grid, Loader } from "@mantine/core";
 import EditBudget from "./EditBudgetForm";
+import axios from "axios";
+import { host } from "../../../routes/globalRoutes";
 
 function ManageBudget() {
   const [selectedBudget, setSelectedBudget] = useState(null);
@@ -15,23 +17,55 @@ function ManageBudget() {
     setOperation(null);
   };
 
-  const budgetList = [
-    {
-      id: "1",
-      name: "divyansh",
-      "budget-issued": 1000,
-    },
-    {
-      id: "2",
-      name: "dhruv",
-      "budget-issued": 2000,
-    },
-  ];
+  // const budgetList = [
+  //   {
+  //     id: "1",
+  //     name: "divyansh",
+  //     "budget-issued": 1000,
+  //   },
+  //   {
+  //     id: "2",
+  //     name: "dhruv",
+  //     "budget-issued": 2000,
+  //   },
+  // ];
+
+  const [loading, setLoading] = useState(false);
+
+  const [budgetList, setbudgetList] = useState([]);
+  useEffect(() => {
+    const getBudgets = async () => {
+      setLoading(true);
+      const token = localStorage.getItem("authToken");
+      try {
+        const response = await axios.get(
+          `${host}/iwdModuleV2/api/view-budget/`,
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+            },
+          },
+        );
+        // console.log(response.data.obj);
+        setbudgetList(response.data.obj);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getBudgets();
+  }, [operation]);
 
   return (
     <Container style={{ padding: "20px" }}>
       <br />
-      {!operation ? (
+      {loading ? (
+        <Grid mt="xl">
+          <Container py="xl">
+            <Loader size="lg" />
+          </Container>
+        </Grid>
+      ) : !operation ? (
         <div
           style={{
             border: "1px solid #ccc",
@@ -58,7 +92,7 @@ function ManageBudget() {
                 <tr key={budget.id}>
                   <td>{budget.id}</td>
                   <td>{budget.name}</td>
-                  <td>{budget["budget-issued"]}</td>
+                  <td>{budget["budgetIssued"]}</td>
                   <td>
                     <Button
                       size="xs"
