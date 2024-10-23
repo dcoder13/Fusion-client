@@ -38,6 +38,7 @@ function ApproveRejectRequest({ setActiveTab }) {
           },
         );
         setRequestsList(response.data);
+        console.log(response.data);
         setLoading(false);
       } catch (error) {
         console.error(error);
