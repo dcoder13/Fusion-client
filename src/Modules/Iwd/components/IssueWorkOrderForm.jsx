@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   Button,
   Flex,
@@ -11,206 +12,274 @@ import {
   TextInput,
   NumberInput,
 } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import { DateInput } from "@mantine/dates";
 import PropTypes from "prop-types";
 import classes from "./EngineerIssueWorkOrder.module.css";
+import { host } from "../../../routes/globalRoutes";
 
 function IssueWorkOrderForm({ workOrder, onBack }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [dateValue, setDateValue] = useState(null);
-
-  const handleSubmitButtonClick = () => {
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      request_id: workOrder.id,
+      name: workOrder.name,
+      amount: null,
+      deposit: null,
+      start_date: null,
+      completion_date: null,
+      alloted_time: null,
+    },
+    validate: {
+      amount: (value) => (value ? null : "Field is required"),
+      start_date: (value) => (value ? null : "Field is required"),
+      completion_date: (value) => (value ? null : "Field is required"),
+      alloted_time: (value) => (value ? null : "Field is required"),
+    },
+  });
+  const handleSubmitButtonClick = async () => {
     setIsLoading(true);
     setIsSuccess(false);
-    // TODO:
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsSuccess(true);
+    const token = localStorage.getItem("authToken");
+    const data = form.getValues();
+    const formatDate = (date) => {
+      const d = new Date(date);
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
+    if (data.date) {
+      data.date = formatDate(data.date);
+    }
+    data.start_date = formatDate(data.start_date);
+    data.completion_date = formatDate(data.completion_date);
 
+    console.log(data);
+    try {
+      const response = await axios.post(
+        `${host}/iwdModuleV2/api/work-order/`,
+        data,
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        },
+      );
+      console.log(response);
       setTimeout(() => {
-        onBack();
+        setIsLoading(false);
+        setIsSuccess(true);
+        setTimeout(() => {
+          onBack();
+        }, 1000);
       }, 1000);
-    }, 1000);
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
   };
   return (
+    /* eslint-disable react/jsx-props-no-spreading */
     <Grid mt="xl">
       <div className="contain">
-        <Paper
-          radius="md"
-          px="lg"
-          pt="sm"
-          pb="xl"
-          style={{
-            borderLeft: "0.6rem solid #15ABFF",
-            width: "70vw",
-            minHeight: "45vh",
-            maxHeight: "70vh",
-            marginBottom: "10px",
-          }}
-          withBorder
-          maw="1240px"
-          backgroundColor="white"
-        >
-          <Flex
-            direction="column"
-            gap="lg"
-            style={{ textAlign: "left", width: "100%", fontFamily: "Arial" }}
+        <form>
+          <Paper
+            radius="md"
+            px="lg"
+            pt="sm"
+            pb="xl"
+            style={{
+              borderLeft: "0.6rem solid #15ABFF",
+              width: "70vw",
+              minHeight: "45vh",
+              maxHeight: "70vh",
+              marginBottom: "10px",
+            }}
+            withBorder
+            maw="1240px"
+            backgroundColor="white"
           >
-            <Flex direction="column">
-              <Text size="22px" style={{ fontWeight: "bold" }}>
-                Issue Work Order
-              </Text>
+            <Flex
+              direction="column"
+              gap="lg"
+              style={{ textAlign: "left", width: "100%", fontFamily: "Arial" }}
+            >
+              <Flex direction="column">
+                <Text size="22px" style={{ fontWeight: "bold" }}>
+                  Issue Work Order
+                </Text>
+              </Flex>
+
+              <Grid columns="2" style={{ width: "100%" }}>
+                <Grid.Col span={1}>
+                  <Flex direction="column" gap="xs">
+                    <TextInput
+                      label="Request ID"
+                      readOnly
+                      classNames={classes}
+                      key={form.key("request_id")}
+                      {...form.getInputProps("request_id")}
+                    />
+                  </Flex>
+                </Grid.Col>
+                <Grid.Col span={1}>
+                  <Flex direction="column" gap="xs">
+                    <TextInput
+                      label="Request Name"
+                      readOnly
+                      classNames={classes}
+                      key={form.key("name")}
+                      {...form.getInputProps("name")}
+                    />
+                  </Flex>
+                </Grid.Col>
+              </Grid>
+
+              <Grid columns="2" style={{ width: "100%" }}>
+                <Grid.Col span={1}>
+                  <Flex direction="column" gap="xs">
+                    <DateInput
+                      label="Date"
+                      placeholder="yyyy/mm/dd"
+                      classNames={classes}
+                      key={form.key("date")}
+                      {...form.getInputProps("date")}
+                      valueFormat="YYYY-MM-DD"
+                    />
+                  </Flex>
+                </Grid.Col>
+                <Grid.Col span={1}>
+                  <Flex direction="column" gap="xs">
+                    <TextInput
+                      label="Agency"
+                      placeholder="Agency Name"
+                      classNames={classes}
+                      key={form.key("agency")}
+                      {...form.getInputProps("agency")}
+                      required
+                    />
+                  </Flex>
+                </Grid.Col>
+              </Grid>
+
+              <Grid columns="2" style={{ width: "100%" }}>
+                <Grid.Col span={1}>
+                  <Flex direction="column" gap="xs">
+                    <NumberInput
+                      label="Amount"
+                      description=""
+                      placeholder="Enter amount"
+                      classNames={classes}
+                      key={form.key("amount")}
+                      {...form.getInputProps("amount")}
+                      required
+                    />
+                  </Flex>
+                </Grid.Col>
+                <Grid.Col span={1}>
+                  <Flex direction="column" gap="xs">
+                    <NumberInput
+                      label="Deposit"
+                      placeholder="Enter deposit"
+                      classNames={classes}
+                      key={form.key("deposit")}
+                      {...form.getInputProps("deposit")}
+                    />
+                  </Flex>
+                </Grid.Col>
+              </Grid>
+
+              <Flex direction="column" gap="xs" justify="flex-start">
+                <TextInput
+                  label="Alloted Time"
+                  placeholder="Enter allotted time"
+                  classNames={classes}
+                  key={form.key("alloted_time")}
+                  {...form.getInputProps("alloted_time")}
+                  style={{ width: "50%" }}
+                />
+              </Flex>
+
+              <Grid columns="2" style={{ width: "100%" }}>
+                <Grid.Col span={1}>
+                  <Flex direction="column" gap="xs">
+                    <DateInput
+                      label="Start Date"
+                      placeholder="yyyy/mm/dd"
+                      classNames={classes}
+                      key={form.key("start_date")}
+                      {...form.getInputProps("start_date")}
+                      valueFormat="YYYY-MM-DD"
+                      required
+                    />
+                  </Flex>
+                </Grid.Col>
+                <Grid.Col span={1}>
+                  <Flex direction="column" gap="xs">
+                    <DateInput
+                      label="Completion Date"
+                      placeholder="yyyy/mm/dd"
+                      classNames={classes}
+                      key={form.key("completion_date")}
+                      {...form.getInputProps("completion_date")}
+                      valueFormat="YYYY-MM-DD"
+                      required
+                    />
+                  </Flex>
+                </Grid.Col>
+              </Grid>
+
+              <Flex direction="row-reverse" gap="xs">
+                <Button
+                  size="sm"
+                  variant="filled"
+                  color="black"
+                  type="submit"
+                  style={{
+                    width: "100px",
+                    backgroundColor: "#1E90FF",
+                    color: isSuccess ? "black" : "white",
+                    border: "none",
+                    borderRadius: "20px",
+                  }}
+                  onClick={handleSubmitButtonClick}
+                  disabled={isLoading || isSuccess}
+                >
+                  {isLoading ? (
+                    <Center>
+                      <Loader color="black" size="xs" />
+                    </Center>
+                  ) : isSuccess ? (
+                    <Center>
+                      <CheckIcon size="16px" color="black" />
+                    </Center>
+                  ) : (
+                    "Submit"
+                  )}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="filled"
+                  color="#1E90FF"
+                  onClick={onBack}
+                  disabled={isLoading || isSuccess}
+                  style={{
+                    border: "none",
+                    borderRadius: "20px",
+                  }}
+                >
+                  Back
+                </Button>
+              </Flex>
             </Flex>
-
-            <Grid columns="2" style={{ width: "100%" }}>
-              <Grid.Col span={1}>
-                <Flex direction="column" gap="xs">
-                  <TextInput
-                    label="Request ID"
-                    value={workOrder.id}
-                    readOnly
-                    classNames={classes}
-                  />
-                </Flex>
-              </Grid.Col>
-              <Grid.Col span={1}>
-                <Flex direction="column" gap="xs">
-                  <TextInput
-                    label="Request Name"
-                    value={workOrder.name}
-                    readOnly
-                    classNames={classes}
-                  />
-                </Flex>
-              </Grid.Col>
-            </Grid>
-
-            <Grid columns="2" style={{ width: "100%" }}>
-              <Grid.Col span={1}>
-                <Flex direction="column" gap="xs">
-                  <DateInput
-                    value={dateValue}
-                    onChange={setDateValue}
-                    label="Date"
-                    placeholder="dd/mm/yyyy"
-                    classNames={classes}
-                  />
-                </Flex>
-              </Grid.Col>
-              <Grid.Col span={1}>
-                <Flex direction="column" gap="xs">
-                  <TextInput
-                    label="Agency"
-                    placeholder="Agency Name"
-                    classNames={classes}
-                  />
-                </Flex>
-              </Grid.Col>
-            </Grid>
-
-            <Grid columns="2" style={{ width: "100%" }}>
-              <Grid.Col span={1}>
-                <Flex direction="column" gap="xs">
-                  <NumberInput
-                    label="Amount"
-                    description=""
-                    placeholder="Enter amount"
-                    classNames={classes}
-                  />
-                </Flex>
-              </Grid.Col>
-              <Grid.Col span={1}>
-                <Flex direction="column" gap="xs">
-                  <NumberInput
-                    label="Deposit"
-                    description=""
-                    placeholder="Enter deposit"
-                    classNames={classes}
-                  />
-                </Flex>
-              </Grid.Col>
-            </Grid>
-
-            <Flex direction="column" gap="xs" justify="flex-start">
-              <TextInput
-                label="Alloted Time"
-                placeholder="Enter allotted time"
-                classNames={classes}
-                style={{ width: "50%" }}
-              />
-            </Flex>
-
-            <Grid columns="2" style={{ width: "100%" }}>
-              <Grid.Col span={1}>
-                <Flex direction="column" gap="xs">
-                  <DateInput
-                    value={dateValue}
-                    onChange={setDateValue}
-                    label="Start Date"
-                    placeholder="dd/mm/yyyy"
-                    classNames={classes}
-                  />
-                </Flex>
-              </Grid.Col>
-              <Grid.Col span={1}>
-                <Flex direction="column" gap="xs">
-                  <DateInput
-                    value={dateValue}
-                    onChange={setDateValue}
-                    label="End Date"
-                    placeholder="dd/mm/yyyy"
-                    classNames={classes}
-                  />
-                </Flex>
-              </Grid.Col>
-            </Grid>
-
-            <Flex direction="row-reverse" gap="xs">
-              <Button
-                size="sm"
-                variant="filled"
-                color="black"
-                style={{
-                  width: "100px",
-                  backgroundColor: "#1E90FF",
-                  color: isSuccess ? "black" : "white",
-                  border: "none",
-                  borderRadius: "20px",
-                }}
-                onClick={handleSubmitButtonClick}
-                disabled={isLoading || isSuccess}
-              >
-                {isLoading ? (
-                  <Center>
-                    <Loader color="black" size="xs" />
-                  </Center>
-                ) : isSuccess ? (
-                  <Center>
-                    <CheckIcon size="16px" color="black" />
-                  </Center>
-                ) : (
-                  "Submit"
-                )}
-              </Button>
-              <Button
-                size="sm"
-                variant="filled"
-                color="#1E90FF"
-                onClick={onBack}
-                disabled={isLoading || isSuccess}
-                style={{
-                  border: "none",
-                  borderRadius: "20px",
-                }}
-              >
-                Back
-              </Button>
-            </Flex>
-          </Flex>
-        </Paper>
+          </Paper>
+        </form>
       </div>
     </Grid>
+    /* eslint-enable react/jsx-props-no-spreading */
   );
 }
 

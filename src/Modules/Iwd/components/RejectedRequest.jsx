@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { Container, Table, Button, Title, Loader, Grid } from "@mantine/core";
 import axios from "axios";
 import UpdateRequestForm from "./UpdateRequestForm";
 import { host } from "../../../routes/globalRoutes";
 
-function RejectedRequest() {
+function RejectedRequest({ setActiveTab }) {
   const role = useSelector((state) => state.user.role);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [rejectedRequests, setRejectedRequests] = useState([]);
@@ -23,7 +24,6 @@ function RejectedRequest() {
     const fetchRejectedRequests = async () => {
       setLoading(true);
       const token = localStorage.getItem("authToken");
-      console.log(token);
       try {
         const { data } = await axios.get(
           `${host}/iwdModuleV2/api/rejected-requests-view/`,
@@ -109,11 +109,15 @@ function RejectedRequest() {
       ) : (
         <UpdateRequestForm
           selectedRequest={selectedRequest}
+          setActiveTab={setActiveTab}
           onBack={handleBackToList}
         />
       )}
     </Container>
   );
 }
+RejectedRequest.propTypes = {
+  setActiveTab: PropTypes.func.isRequired,
+};
 
 export default RejectedRequest;

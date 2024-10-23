@@ -32,9 +32,15 @@ function IwdPage() {
       component: <CreateRequest setActiveTab={setActiveTab} />,
     },
     { title: "Requests in Progress", component: <RequestsInProgress /> },
-    { title: "Issue Work Order", component: <IssueWorkOrder /> },
+    {
+      title: "Issue Work Order",
+      component: <IssueWorkOrder setActiveTab={setActiveTab} />,
+    },
     { title: "Generate Final Bill", component: <FinalBillRequest /> },
-    { title: "Rejected Requests", component: <RejectedRequests /> },
+    {
+      title: "Rejected Requests",
+      component: <RejectedRequests setActiveTab={setActiveTab} />,
+    },
     { title: "Manage Budget", component: <ManageBudget /> },
     {
       title: "Created Requests",

@@ -28,7 +28,6 @@ export default function ViewRequestFile({ request, setActiveTab }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const role = useSelector((state) => state.user.role);
-  const [action, setAction] = useState("");
   const designations = useContext(DesignationsContext);
   const designationsList = useMemo(
     () =>
@@ -41,7 +40,7 @@ export default function ViewRequestFile({ request, setActiveTab }) {
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
-      remarks: null,
+      remarks: "",
       file: null,
       designation: null,
     },
@@ -78,7 +77,7 @@ export default function ViewRequestFile({ request, setActiveTab }) {
     getRequestData();
   }, []);
   console.log(messages);
-  const handleDirectorApproval = async () => {
+  const handleDirectorApproval = async (action) => {
     setIsLoading(true);
     setIsSuccess(false);
     const token = localStorage.getItem("authToken");
@@ -86,7 +85,7 @@ export default function ViewRequestFile({ request, setActiveTab }) {
     formData.fileid = request.file_id;
     formData.role = role;
     formData.action = action;
-    console.log(formData);
+    console.log("formdata: ", formData, action);
     try {
       const response = await axios.post(
         `${host}/iwdModuleV2/api/handle-director-approval-requests/`,
@@ -206,7 +205,7 @@ export default function ViewRequestFile({ request, setActiveTab }) {
                     mt="sm"
                     style={{ width: "100%" }}
                     key={form.key("remarks")}
-                    {...form.getInputProps("description")}
+                    {...form.getInputProps("remarks")}
                     backgroundColor="#efefef"
                     cols={50}
                     rows={3}
@@ -240,8 +239,7 @@ export default function ViewRequestFile({ request, setActiveTab }) {
                     }}
                     disabled={isLoading || isSuccess}
                     onClick={() => {
-                      setAction("approve");
-                      handleDirectorApproval();
+                      handleDirectorApproval("approve");
                     }}
                   >
                     {isLoading ? (
@@ -270,8 +268,7 @@ export default function ViewRequestFile({ request, setActiveTab }) {
                     }}
                     disabled={isLoading || isSuccess}
                     onClick={() => {
-                      setAction("reject");
-                      handleDirectorApproval();
+                      handleDirectorApproval("reject");
                     }}
                   >
                     {isLoading ? (
