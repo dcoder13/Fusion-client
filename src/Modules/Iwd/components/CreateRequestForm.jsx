@@ -159,7 +159,7 @@ function CreateRequest({ setActiveTab }) {
                   comboboxProps={{ withinPortal: true }}
                   data={designationsList}
                   placeholder="Director(Dir)"
-                  label="designation"
+                  label="Designation"
                   classNames={classes}
                   key={form.key("designation")}
                   {...form.getInputProps("designation")}

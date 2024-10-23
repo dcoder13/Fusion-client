@@ -1,5 +1,7 @@
-import React from "react";
-import { Table, Container, Paper, Title } from "@mantine/core";
+import React, { useState, useEffect } from "react";
+import { Table, Container, Paper, Title, Grid, Loader } from "@mantine/core";
+import axios from "axios";
+import { host } from "../../../routes/globalRoutes";
 import "./GlobTable.css";
 
 export default function ViewBudget() {
@@ -9,56 +11,87 @@ export default function ViewBudget() {
   //   setSelectedBudget(request);
   // };
 
-  // const handleBackToList = () => {
-  //   setSelectedBudget(null);
-  // };
+  const [loading, setLoading] = useState(false);
 
-  const ViewBudgetList = [
-    {
-      id: "1",
-      name: "divyansh",
-      "budget-issued": 2000,
-    },
-    {
-      id: "2",
-      name: "user2",
-      "budget-issued": 2200,
-    },
-    {
-      id: "3",
-      name: "user3",
-      "budget-issued": 2100,
-    },
-  ];
+  const [ViewBudgetList, setViewBudgetList] = useState([]);
+  useEffect(() => {
+    const getBudgets = async () => {
+      setLoading(true);
+      const token = localStorage.getItem("authToken");
+      try {
+        const response = await axios.get(
+          `${host}/iwdModuleV2/api/view-budget/`,
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+            },
+          },
+        );
+        // console.log(response.data);
+        setViewBudgetList(response.data.obj);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getBudgets();
+  }, []);
+  // console.log('ViewBudgetList:', ViewBudgetList, 'Type:', typeof ViewBudgetList);
+
+  // const ViewBudgetList = [
+  //   {
+  //     id: "1",
+  //     name: "divyansh",
+  //     "budget-issued": 2000,
+  //   },
+  //   {
+  //     id: "2",
+  //     name: "user2",
+  //     "budget-issued": 2200,
+  //   },
+  //   {
+  //     id: "3",
+  //     name: "user3",
+  //     "budget-issued": 2100,
+  //   },
+  // ];
 
   return (
     <Container className="container">
       <br />
-      <Paper className="work-orders-table" shadow="xs" padding="md">
-        <div className="table-header">
-          <Title className="issue-work-order-button" size="h4">
-            Details
-          </Title>
-        </div>
-        <Table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Budget Issued</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ViewBudgetList.map((request, index) => (
-              <tr key={index} id={request.id}>
-                <td>{request.id}</td>
-                <td>{request.name}</td>
-                <td>{request["budget-issued"]}</td>
+      {loading ? (
+        <Grid mt="xl">
+          <Container py="xl">
+            <Loader size="lg" />
+          </Container>
+        </Grid>
+      ) : (
+        <Paper className="work-orders-table" shadow="xs" padding="md">
+          <div className="table-header">
+            <Title className="issue-work-order-button" size="h4">
+              Details
+            </Title>
+          </div>
+          <Table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Budget Issued</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Paper>
+            </thead>
+            <tbody>
+              {ViewBudgetList.map((request, index) => (
+                <tr key={index} id={request.id}>
+                  <td>{request.id}</td>
+                  <td>{request.name}</td>
+                  <td>{request["budgetIssued"]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Paper>
+      )}
     </Container>
   );
 }

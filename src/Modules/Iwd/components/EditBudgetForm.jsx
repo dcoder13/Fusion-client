@@ -11,6 +11,8 @@ import {
   CheckIcon,
   TextInput,
 } from "@mantine/core";
+import axios from "axios";
+import { host } from "../../../routes/globalRoutes";
 import PropTypes from "prop-types";
 import classes from "../iwd.module.css";
 
@@ -22,41 +24,108 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
     initialValues:
       checkOperation === "edit"
         ? {
-            id: selectedBudget.id,
-            name: selectedBudget.name,
-            "budget-issued": selectedBudget["budget-issued"],
-          }
+          id: selectedBudget.id,
+          name: selectedBudget.name,
+          "budget-issued": selectedBudget["budgetIssued"],
+        }
         : {
-            name: "",
-            "budget-issued": null,
-          },
+          name: "",
+          "budget-issued": null,
+        },
   });
   console.log(form.getInputProps("description"));
-  const handleEditBudget = () => {
+
+  const token = localStorage.getItem("authToken");
+
+  const handleEditBudget = async (formValues) => {
     setIsLoading(true);
     setIsSuccess(false);
     // TODO:
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsSuccess(true);
 
-      setTimeout(() => {
-        onBack();
-      }, 1000);
-    }, 1000);
+    // console.log("Form Values: ", form.values);
+
+    try {
+      const response = await axios.post(
+        `${host}/iwdModuleV2/api/edit-budget/`,
+        {
+          id: formValues.id,
+          name: formValues.name,
+          budget: formValues["budget-issued"],
+        }, {
+        headers: {
+          Authorization: `Token ${token}`, // Add token if required
+        },
+      });
+
+      if (response.status === 200) {
+        setTimeout(() => {
+          setIsLoading(false);
+          setIsSuccess(true);
+
+          setTimeout(() => {
+            onBack();
+          }, 1000);
+        }, 1000);
+      }
+    } catch (error) {
+      console.error("Error editing budget:", error);
+    } finally {
+      setIsLoading(false);
+    }
+
+    // setTimeout(() => {
+    //   setIsLoading(false);
+    //   setIsSuccess(true);
+
+    //   setTimeout(() => {
+    //     onBack();
+    //   }, 1000);
+    // }, 1000);
   };
-  const handleAddBudget = () => {
+  const handleAddBudget = async (formValues) => {
     setIsLoading(true);
     setIsSuccess(false);
     // TODO:
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsSuccess(true);
 
-      setTimeout(() => {
-        onBack();
-      }, 1000);
-    }, 1000);
+    // console.log("Form Values: ", formValues)
+
+    try {
+      const response = await axios.post(
+        `${host}/iwdModuleV2/api/add-budget/`,
+        {
+          name: formValues.name,
+          budget: formValues["budget-issued"],
+        }, {
+        headers: {
+          Authorization: `Token ${token}`, // Add token if required
+        },
+      });
+
+      if (response.status === 201) {
+        // setIsSuccess(true);
+        setTimeout(() => {
+          setIsLoading(false);
+          setIsSuccess(true);
+          // onBack();
+          setTimeout(() => {
+            onBack();
+          }, 1000);
+        }, 1000);
+      }
+    } catch (error) {
+      console.error("Error adding budget:", error);
+    } finally {
+      setIsLoading(false);
+    }
+
+    // setTimeout(() => {
+    //   setIsLoading(false);
+    //   setIsSuccess(true);
+
+    //   setTimeout(() => {
+    //     onBack();
+    //   }, 1000);
+    // }, 1000);
   };
 
   return (
@@ -65,10 +134,11 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
       <div className="container">
         <form
           onSubmit={form.onSubmit((values) => {
+            // console.log("Form values:", values);
             if (checkOperation === "edit") {
-              handleEditBudget();
+              handleEditBudget(values);
             } else {
-              handleAddBudget();
+              handleAddBudget(values);
             }
             console.log(values);
           })}
