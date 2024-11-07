@@ -12,8 +12,8 @@ import {
   TextInput,
 } from "@mantine/core";
 import axios from "axios";
-import { host } from "../../../routes/globalRoutes";
 import PropTypes from "prop-types";
+import { host } from "../../../routes/globalRoutes";
 import classes from "../iwd.module.css";
 
 function EditBudget({ selectedBudget, onBack, checkOperation }) {
@@ -24,14 +24,14 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
     initialValues:
       checkOperation === "edit"
         ? {
-          id: selectedBudget.id,
-          name: selectedBudget.name,
-          "budget-issued": selectedBudget["budgetIssued"],
-        }
+            id: selectedBudget.id,
+            name: selectedBudget.name,
+            "budget-issued": selectedBudget.budgetIssued,
+          }
         : {
-          name: "",
-          "budget-issued": null,
-        },
+            name: "",
+            "budget-issued": null,
+          },
   });
   console.log(form.getInputProps("description"));
 
@@ -40,10 +40,6 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
   const handleEditBudget = async (formValues) => {
     setIsLoading(true);
     setIsSuccess(false);
-    // TODO:
-
-    // console.log("Form Values: ", form.values);
-
     try {
       const response = await axios.post(
         `${host}/iwdModuleV2/api/edit-budget/`,
@@ -51,11 +47,13 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
           id: formValues.id,
           name: formValues.name,
           budget: formValues["budget-issued"],
-        }, {
-        headers: {
-          Authorization: `Token ${token}`, // Add token if required
         },
-      });
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        },
+      );
 
       if (response.status === 200) {
         setTimeout(() => {
@@ -67,27 +65,21 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
           }, 1000);
         }, 1000);
       }
+      setTimeout(() => {
+        setIsLoading(false);
+        setIsSuccess(true);
+
+        setTimeout(() => {
+          onBack();
+        }, 1000);
+      }, 1000);
     } catch (error) {
       console.error("Error editing budget:", error);
-    } finally {
-      setIsLoading(false);
     }
-
-    // setTimeout(() => {
-    //   setIsLoading(false);
-    //   setIsSuccess(true);
-
-    //   setTimeout(() => {
-    //     onBack();
-    //   }, 1000);
-    // }, 1000);
   };
   const handleAddBudget = async (formValues) => {
     setIsLoading(true);
     setIsSuccess(false);
-    // TODO:
-
-    // console.log("Form Values: ", formValues)
 
     try {
       const response = await axios.post(
@@ -95,18 +87,18 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
         {
           name: formValues.name,
           budget: formValues["budget-issued"],
-        }, {
-        headers: {
-          Authorization: `Token ${token}`, // Add token if required
         },
-      });
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        },
+      );
 
       if (response.status === 201) {
-        // setIsSuccess(true);
         setTimeout(() => {
           setIsLoading(false);
           setIsSuccess(true);
-          // onBack();
           setTimeout(() => {
             onBack();
           }, 1000);
@@ -117,15 +109,6 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
     } finally {
       setIsLoading(false);
     }
-
-    // setTimeout(() => {
-    //   setIsLoading(false);
-    //   setIsSuccess(true);
-
-    //   setTimeout(() => {
-    //     onBack();
-    //   }, 1000);
-    // }, 1000);
   };
 
   return (
@@ -134,7 +117,6 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
       <div className="container">
         <form
           onSubmit={form.onSubmit((values) => {
-            // console.log("Form values:", values);
             if (checkOperation === "edit") {
               handleEditBudget(values);
             } else {
@@ -256,7 +238,7 @@ EditBudget.propTypes = {
   selectedBudget: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    "budget-issued": PropTypes.isRequired,
+    budgetIssued: PropTypes.isRequired,
   }),
   onBack: PropTypes.func.isRequired,
   checkOperation: PropTypes.oneOf(["add", "edit"]),
