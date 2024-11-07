@@ -18,7 +18,6 @@ function IssueWorkOrder({ setActiveTab }) {
   const handleBackToList = () => {
     setActiveTab("0");
   };
-  // const workOrderData = [];
 
   const [issueworkorderList, setissueworkorderList] = useState([]);
   useEffect(() => {

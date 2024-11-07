@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Table, Button, Title, Grid, Loader } from "@mantine/core";
-import EditBudget from "./EditBudgetForm";
 import axios from "axios";
+import EditBudget from "./EditBudgetForm";
 import { host } from "../../../routes/globalRoutes";
 
 function ManageBudget() {
@@ -92,7 +92,7 @@ function ManageBudget() {
                 <tr key={budget.id}>
                   <td>{budget.id}</td>
                   <td>{budget.name}</td>
-                  <td>{budget["budgetIssued"]}</td>
+                  <td>{budget.budgetIssued}</td>
                   <td>
                     <Button
                       size="xs"
