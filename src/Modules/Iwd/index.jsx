@@ -71,6 +71,7 @@ function IwdPage() {
         "Manage Budget",
         "View Budget",
         "Created Requests",
+        "Requests in Progress",
       ].includes(tab.title),
     ),
     EE: tabItems.filter((tab) =>
