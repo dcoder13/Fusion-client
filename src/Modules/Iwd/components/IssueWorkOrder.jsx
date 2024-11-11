@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import IssueWorkOrderForm from "./IssueWorkOrderForm";
 import { host } from "../../../routes/globalRoutes";
 
-function IssueWorkOrder({ setActiveTab }) {
+function IssueWorkOrder() {
   const role = useSelector((state) => state.user.role);
   const [selectedWorkOrder, setSelectedWorkOrder] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -18,6 +18,31 @@ function IssueWorkOrder({ setActiveTab }) {
   const handleBackToList = () => {
     setActiveTab("0");
   };
+
+  // const workOrderData = [
+  //   {
+  //     id: "1",
+  //     name: "divyansh",
+  //     description: "ahgo",
+  //     area: "lhtc",
+  //     requestCreatedBy: "me",
+  //   },
+  //   {
+  //     id: "3",
+  //     name: "dvijay",
+  //     description: "ahgo",
+  //     area: "lhtc",
+  //     requestCreatedBy: "me",
+  //   },
+  //   {
+  //     id: "4",
+  //     name: "suniljatt",
+  //     description: "ahgo",
+  //     area: "lhtc",
+  //     requestCreatedBy: "me",
+  //   },
+  // ];
+  // const workOrderData = [];
 
   const [issueworkorderList, setissueworkorderList] = useState([]);
   useEffect(() => {
