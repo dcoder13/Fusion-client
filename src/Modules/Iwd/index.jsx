@@ -15,6 +15,7 @@ import ViewBudget from "./components/ViewBudget";
 import ProcessedBills from "./components/ProcessedBills";
 
 import ApproveRejectRequest from "./components/ApproveRejectRequest";
+import AuditDocument from "./components/AuditDocument";
 
 // import ViewRequestFile from "./components/ViewRequestFile";
 // import { DesignationsContext } from "./helper/designationContext";
@@ -52,6 +53,7 @@ function IwdPage() {
       title: "Approve/Reject Requests",
       component: <ApproveRejectRequest setActiveTab={setActiveTab} />,
     },
+    { title: "Audit Document", component: <AuditDocument /> },
   ];
 
   const roleBasedTabs = {
@@ -107,6 +109,7 @@ function IwdPage() {
         "Create Request",
         "Issue Work Order",
         "Created Requests",
+        "Audit Document",
       ].includes(tab.title),
     ),
     "Dean (P&D)": tabItems.filter((tab) =>
