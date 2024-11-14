@@ -48,7 +48,7 @@ function RejectedRequest({ setActiveTab }) {
   }, []);
 
   return (
-    <Container style={{ padding: "20px" }}>
+    <Container style={{ padding: "10px" }}>
       <br />
       {loading ? (
         <Grid mt="xl">
@@ -66,7 +66,7 @@ function RejectedRequest({ setActiveTab }) {
             borderLeft: "10px solid #1E90FF",
           }}
         >
-          <Title align="center" weight={700} size="lg" mb="md">
+          <Title align="center" weight={700} size="26px" mb="md">
             Rejected Requests
           </Title>
           <Table highlightOnHover withBorder withColumnBorders>

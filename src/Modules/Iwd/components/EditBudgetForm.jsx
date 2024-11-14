@@ -6,7 +6,7 @@ import {
   Grid,
   Loader,
   Paper,
-  Text,
+  Title,
   Center,
   CheckIcon,
   TextInput,
@@ -132,7 +132,7 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
             pb="xl"
             style={{
               borderLeft: "0.6rem solid #15ABFF",
-              width: "30vw",
+              width: "50vw",
               minHeight: "45vh",
               maxHeight: "70vh",
             }}
@@ -146,9 +146,9 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
               style={{ textAlign: "left", width: "100%", fontFamily: "Arial" }}
             >
               <Flex direction="column">
-                <Text size="22px" style={{ fontWeight: "bold" }}>
+                <Title size="26px" weight={700} pt="sm">
                   Edit Budget
-                </Text>
+                </Title>
               </Flex>
               {checkOperation === "edit" && (
                 <Flex direction="column" gap="xs" justify="flex-start">

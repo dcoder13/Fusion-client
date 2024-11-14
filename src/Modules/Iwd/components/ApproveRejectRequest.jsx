@@ -65,7 +65,7 @@ function ApproveRejectRequest({ setActiveTab }) {
             borderLeft: "10px solid #1E90FF",
           }}
         >
-          <Title size="h3" align="center" style={{ marginBottom: "10px" }}>
+          <Title align="center" style={{ marginBottom: "10px" }}>
             Approve/Reject Request
           </Title>
           <Table highlightOnHover>

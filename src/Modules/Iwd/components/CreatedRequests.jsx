@@ -7,7 +7,6 @@ import axios from "axios";
 import ViewRequestFile from "./ViewRequestFile";
 import { host } from "../../../routes/globalRoutes";
 // import { DesignationsContext } from "../helper/designationContext";
-
 function CreatedRequests({ setActiveTab }) {
   const role = useSelector((state) => state.user.role);
   const [loading, setLoading] = useState(false);
@@ -47,8 +46,32 @@ function CreatedRequests({ setActiveTab }) {
     getCreatedRequests();
   }, [role]);
   console.log(createdRequestsList);
+
+  // const hardcoded = [
+  //   {
+  //     request_id: "req1",
+  //     name: "test1",
+  //     description: "This is a description req1",
+  //     area: "lhtc",
+  //     requestCreatedBy: "Dhruv",
+  //   },
+  //   {
+  //     request_id: "req2",
+  //     name: "test2",
+  //     description: "This is a description for req2",
+  //     area: "lhtc",
+  //     requestCreatedBy: "Divyansh",
+  //   },
+  //   {
+  //     request_id: "req3",
+  //     name: "test3",
+  //     description: "This is a description for req3",
+  //     area: "lhtc",
+  //     requestCreatedBy: "Dvijay",
+  //   },
+  // ];
   return (
-    <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+    <Container style={{ fontFamily: "Arial, sans-serif" }}>
       <br />
       {loading ? (
         <Grid mt="xl">
@@ -66,7 +89,7 @@ function CreatedRequests({ setActiveTab }) {
             borderLeft: "10px solid #1E90FF",
           }}
         >
-          <Title size="h3" align="center" style={{ marginBottom: "10px" }}>
+          <Title size="26px" align="center" style={{ marginBottom: "10px" }}>
             Created Requests
           </Title>
           <Table highlightOnHover>
@@ -81,6 +104,7 @@ function CreatedRequests({ setActiveTab }) {
               </tr>
             </thead>
             <tbody>
+              {/* {hardcoded.map((request, index) => ( */}
               {createdRequestsList.map((request, index) => (
                 <tr key={index} id={request.id}>
                   <td>{request.request_id}</td>
