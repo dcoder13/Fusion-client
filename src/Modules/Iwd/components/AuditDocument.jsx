@@ -9,21 +9,21 @@ import {
   Grid,
   Modal,
 } from "@mantine/core";
-
-// import { DesignationsContext } from "../helper/designationContext";
+// import { CaretLeft } from "@phosphor-icons/react";
 import axios from "axios";
+import ViewRequestFile from "./ViewRequestFile";
 import { host } from "../../../routes/globalRoutes";
-import "./AuditDocuments.css"; // Import the CSS file
+// import { useDesignations } from "../helper/designationContext"; // Importing the useDesignations hook
 
 function AuditDocuments() {
   const role = useSelector((state) => state.user.role);
+  // const designations = useDesignations(); // Accessing designations from context
   const [loading, setLoading] = useState(false);
-  const [selectedRequest, setSelectedRequest] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
   const [modalOpened, setModalOpened] = useState(false);
-  // const designations = useContext(DesignationsContext);
+  const [auditDocumentsList, setAuditDocumentsList] = useState([]); // Initialize state for auditDocumentsList
 
-  // Dummy audit documents list with fake file URLs
-
+  // Dummy data is commented out
   // const auditDocumentsList = [
   //   {
   //     requestId: 1,
@@ -42,13 +42,20 @@ function AuditDocuments() {
   //   },
   // ];
 
-  // Fetching API call
-  const [auditDocumentsList, setAuditDocumentList] = useState([]);
+  const handleViewDocument = (document) => {
+    setSelectedDocument(document);
+    setModalOpened(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedDocument(null);
+    setModalOpened(false);
+  };
 
   useEffect(() => {
     const getAuditDocuments = async () => {
       setLoading(true);
-      const token = localStorage.getItem("authToken");
+      const token = localStorage.getItem("authToken"); // Get auth token from local storage
       try {
         const response = await axios.get(
           `${host}/iwdModuleV2/api/audit-document-view/`,
@@ -58,31 +65,25 @@ function AuditDocuments() {
             },
             params: {
               role,
+              // designation: currentDesignation, // Pass the designation from context
             },
           },
         );
-        setAuditDocumentList(response.data.data);
+        setAuditDocumentsList(response.data.data); // Set fetched audit documents to state
       } catch (error) {
         console.error(error);
       } finally {
         setLoading(false);
       }
     };
-    getAuditDocuments();
-  }, [role]);
 
-  const handleViewRequest = (request) => {
-    setSelectedRequest(request);
-    setModalOpened(true);
-  };
-
-  const handleBackToList = () => {
-    setSelectedRequest(null);
-    setModalOpened(false);
-  };
+    if (role) {
+      getAuditDocuments(); // Fetch documents only if designation is available
+    }
+  }, [role]); // Re-run the useEffect when role or designation changes
 
   return (
-    <Container className="audit-container">
+    <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
       <br />
       {loading ? (
         <Grid mt="xl">
@@ -91,38 +92,38 @@ function AuditDocuments() {
           </Container>
         </Grid>
       ) : (
-        <div className="audit-box">
-          <Title size="h3" className="audit-title">
+        <div
+          style={{
+            border: "1px solid #ccc",
+            borderRadius: "25px",
+            padding: "20px",
+            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
+            borderLeft: "10px solid #1E90FF",
+          }}
+        >
+          <Title size="h3" align="center" style={{ marginBottom: "10px" }}>
             Audit Documents
           </Title>
-
           <Table highlightOnHover>
-            <thead className="table-header">
+            <thead style={{ backgroundColor: "#f5f5f5" }}>
               <tr>
-                <th className="table-cell-center">File Name</th>
-                <th className="table-cell-center">File</th>
-                <th className="table-cell-center">Actions</th>
+                <th>ID</th>
+                <th>File</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {auditDocumentsList.map((document, index) => (
                 <tr key={index} id={document.requestId}>
-                  <td className="table-cell-center">{document.file}</td>
-                  <td className="table-cell-center">
+                  <td>{document.requestId}</td>
+                  <td>{document.file}</td>
+                  <td>
                     <Button
                       size="xs"
-                      onClick={() => handleViewRequest(document)}
-                      className="button-view-file"
+                      onClick={() => handleViewDocument(document)}
+                      style={{ backgroundColor: "#1E90FF", color: "white" }}
                     >
                       View File
-                    </Button>
-                  </td>
-                  <td className="button-group">
-                    <Button size="xs" className="button-approve">
-                      Approve
-                    </Button>
-                    <Button size="xs" className="button-reject">
-                      Reject
                     </Button>
                   </td>
                 </tr>
@@ -134,27 +135,14 @@ function AuditDocuments() {
 
       <Modal
         opened={modalOpened}
-        onClose={handleBackToList}
+        onClose={handleCloseModal}
+        size="xl"
         title="View Document"
-        size="lg"
-        className="modal-overlay"
       >
-        {selectedRequest && (
-          <iframe
-            src={selectedRequest.fileUrl}
-            title="Document Viewer"
-            width="100%"
-            height="500px"
-            style={{ border: "none" }}
-          />
-        )}
+        {selectedDocument && <ViewRequestFile request={selectedDocument} />}
       </Modal>
     </Container>
   );
 }
-
-// AuditDocuments.propTypes = {
-//   setActiveTab: PropTypes.func,
-// };
 
 export default AuditDocuments;

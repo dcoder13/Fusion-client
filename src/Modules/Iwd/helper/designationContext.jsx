@@ -1,9 +1,14 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { host } from "../../../routes/globalRoutes";
 
 export const DesignationsContext = createContext();
+
+// Custom hook to access designations context
+export const useDesignations = () => {
+  return useContext(DesignationsContext);
+};
 
 export function DesignationsProvider({ children }) {
   const [designations, setDesignations] = useState([]);
@@ -28,12 +33,14 @@ export function DesignationsProvider({ children }) {
 
     getDesignations();
   }, []);
+
   return (
     <DesignationsContext.Provider value={designations}>
       {children}
     </DesignationsContext.Provider>
   );
 }
+
 DesignationsProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
