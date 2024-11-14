@@ -86,8 +86,8 @@ function AuditDocuments() {
     <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
       <br />
       {loading ? (
-        <Grid mt="xl">
-          <Container py="xl">
+        <Grid mt="md">
+          <Container py="md">
             <Loader size="lg" />
           </Container>
         </Grid>

@@ -47,7 +47,7 @@ function RejectedOnAction() {
   ];
 
   return (
-    <Container style={{ padding: "20px" }}>
+    <Container style={{ padding: "10px" }}>
       <br />
       <div
         style={{

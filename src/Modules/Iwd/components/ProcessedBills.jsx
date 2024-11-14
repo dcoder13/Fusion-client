@@ -22,7 +22,7 @@ function ProcessedBills() {
     },
   ];
   return (
-    <Container style={{ padding: "20px" }}>
+    <Container style={{ padding: "10px" }}>
       {!selectedBill ? (
         <div style={{ padding: "20px" }}>
           <div
@@ -43,7 +43,7 @@ function ProcessedBills() {
                 marginBottom: "10px",
               }}
             >
-              <Title size="h4" align="center">
+              <Title align="center" size="26px">
                 Details
               </Title>
             </div>
@@ -67,12 +67,15 @@ function ProcessedBills() {
                     <td>{bill.id}</td>
                     <td>{bill.bill}</td>
                     <td>
-                      <Group>
+                      <Group
+                      // style={{ display: "flex", justifyContent: "flex-end" }}
+                      >
                         <Button
                           style={{
                             backgroundColor: "#1E90FF",
                             color: "white",
                             borderRadius: "20px",
+                            textAlign: "center",
                           }}
                           onClick={() => handleViewFile(bill)}
                         >
