@@ -7,7 +7,7 @@ import {
   Grid,
   Loader,
   Paper,
-  Text,
+  Title,
   Textarea,
   Select,
   Center,
@@ -69,6 +69,7 @@ function UpdateRequestForm({ selectedRequest, onBack, setActiveTab }) {
           },
         },
       );
+
       console.log(response);
       setTimeout(() => {
         setIsLoading(false);
@@ -97,7 +98,7 @@ function UpdateRequestForm({ selectedRequest, onBack, setActiveTab }) {
             radius="md"
             px="lg"
             pt="sm"
-            pb="xl"
+            pb="md"
             style={{
               borderLeft: "0.6rem solid #15ABFF",
               width: "30vw",
@@ -114,9 +115,9 @@ function UpdateRequestForm({ selectedRequest, onBack, setActiveTab }) {
               style={{ textAlign: "left", width: "100%", fontFamily: "Arial" }}
             >
               <Flex direction="column">
-                <Text size="22px" style={{ fontWeight: "bold" }}>
+                <Title size="26px" style={{ fontWeight: "bold" }}>
                   Update Request
-                </Text>
+                </Title>
               </Flex>
 
               <Flex direction="column" gap="xs" justify="flex-start">

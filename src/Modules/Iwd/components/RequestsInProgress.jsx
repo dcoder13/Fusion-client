@@ -17,7 +17,9 @@ function RequestsInProgress() {
   const [loading, setLoading] = useState(false);
   const [RequestsInProgressData, setRequestsInProgress] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  // const [isSuccess, setIsSuccess] = useState(false); // idk it was giving eslint error so i commented out this one :)
+  const isSuccess = useState(false);
+
   const role = useSelector((state) => state.user.role);
   const [refresh, setRefresh] = useState(false);
 
@@ -74,6 +76,7 @@ function RequestsInProgress() {
         );
         console.log(data);
         setRequestsInProgress(data.obj);
+        console.log(role);
       } catch (error) {
         console.error(error);
       } finally {
@@ -84,7 +87,7 @@ function RequestsInProgress() {
   }, [refresh]);
 
   return (
-    <Container style={{ padding: "20px" }}>
+    <Container style={{ padding: "10px" }}>
       <br />
       {loading ? (
         <Grid mt="xl">
@@ -102,7 +105,7 @@ function RequestsInProgress() {
             borderLeft: "10px solid #1E90FF",
           }}
         >
-          <Title align="center" weight={700} size="lg" mb="md">
+          <Title align="center" weight={700} size="26px" mb="md">
             Requests In Progress
           </Title>
           <Table highlightOnHover withBorder withColumnBorders>

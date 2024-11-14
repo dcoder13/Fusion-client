@@ -86,8 +86,8 @@ function AuditDocuments() {
     <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
       <br />
       {loading ? (
-        <Grid mt="xl">
-          <Container py="xl">
+        <Grid mt="md">
+          <Container py="md">
             <Loader size="lg" />
           </Container>
         </Grid>
@@ -101,7 +101,7 @@ function AuditDocuments() {
             borderLeft: "10px solid #1E90FF",
           }}
         >
-          <Title size="h3" align="center" style={{ marginBottom: "10px" }}>
+          <Title size="26px" align="center" style={{ marginBottom: "10px" }}>
             Audit Documents
           </Title>
           <Table highlightOnHover>

@@ -3,7 +3,7 @@ import { Table, Container, Paper, Title, Grid, Loader } from "@mantine/core";
 import axios from "axios";
 import { host } from "../../../routes/globalRoutes";
 import "./GlobTable.css";
-
+// view budget fxn
 export default function ViewBudget() {
   // const [selectedBudget, setSelectedBudget] = useState(null);
   // const handleViewBudget = (request) => {
@@ -85,7 +85,8 @@ export default function ViewBudget() {
                 <tr key={index} id={request.id}>
                   <td>{request.id}</td>
                   <td>{request.name}</td>
-                  <td>{request["budgetIssued"]}</td>
+                  {/* <td>{request["budgetIssued"]}</td> */}
+                  <td>{request.budgetIssued}</td>
                 </tr>
               ))}
             </tbody>

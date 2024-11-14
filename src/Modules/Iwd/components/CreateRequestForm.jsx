@@ -6,7 +6,7 @@ import {
   Grid,
   Loader,
   Paper,
-  Text,
+  Title,
   Textarea,
   Select,
   Center,
@@ -84,7 +84,7 @@ function CreateRequest({ setActiveTab }) {
   return (
     /* eslint-disable react/jsx-props-no-spreading */
 
-    <Grid mt="xl">
+    <Grid mt="md">
       <div className="container">
         <form
           onSubmit={form.onSubmit((values) => {
@@ -94,11 +94,11 @@ function CreateRequest({ setActiveTab }) {
           <Paper
             radius="md"
             px="lg"
-            pt="sm"
+            // pt="sm"
             pb="xl"
             style={{
               borderLeft: "0.6rem solid #15ABFF",
-              width: "30vw",
+              width: "50vw",
               minHeight: "45vh",
               maxHeight: "70vh",
             }}
@@ -112,9 +112,14 @@ function CreateRequest({ setActiveTab }) {
               style={{ textAlign: "left", width: "100%", fontFamily: "Arial" }}
             >
               <Flex direction="column">
-                <Text size="22px" style={{ fontWeight: "bold" }}>
+                <Title
+                  size="26px"
+                  weight={700}
+                  pt="sm"
+                  // style={{ textAlign: "center" }}
+                >
                   New Request
-                </Text>
+                </Title>
               </Flex>
 
               <Flex direction="column" gap="xs" justify="flex-start">

@@ -115,7 +115,7 @@ export default function ViewRequestFile({ request, setActiveTab }) {
     /* eslint-disable react/jsx-props-no-spreading */
     <div
       style={{
-        padding: "20px",
+        padding: "10px",
         border: "1px solid #ccc",
         borderRadius: "25px",
         boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",

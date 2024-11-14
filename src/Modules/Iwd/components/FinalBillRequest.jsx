@@ -35,7 +35,7 @@ function FinalBillRequest() {
   ];
 
   return (
-    <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+    <Container style={{ padding: "10px", fontFamily: "Arial, sans-serif" }}>
       <br />
       <div
         style={{
