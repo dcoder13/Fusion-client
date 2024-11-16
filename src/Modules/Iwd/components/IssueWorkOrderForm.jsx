@@ -6,7 +6,7 @@ import {
   Grid,
   Loader,
   Paper,
-  Text,
+  Title,
   Center,
   CheckIcon,
   TextInput,
@@ -83,7 +83,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
   };
   return (
     /* eslint-disable react/jsx-props-no-spreading */
-    <Grid mt="xl">
+    <Grid mt="s">
       <div className="contain">
         <form>
           <Paper
@@ -93,7 +93,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
             pb="xl"
             style={{
               borderLeft: "0.6rem solid #15ABFF",
-              width: "70vw",
+              width: "60vw",
               minHeight: "45vh",
               maxHeight: "70vh",
               marginBottom: "10px",
@@ -108,9 +108,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
               style={{ textAlign: "left", width: "100%", fontFamily: "Arial" }}
             >
               <Flex direction="column">
-                <Text size="22px" style={{ fontWeight: "bold" }}>
-                  Issue Work Order
-                </Text>
+                <Title size="26px">Issue Work Order</Title>
               </Flex>
 
               <Grid columns="2" style={{ width: "100%" }}>
@@ -148,6 +146,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                       key={form.key("date")}
                       {...form.getInputProps("date")}
                       valueFormat="YYYY-MM-DD"
+                      size="xs"
                     />
                   </Flex>
                 </Grid.Col>
@@ -199,11 +198,11 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                   classNames={classes}
                   key={form.key("alloted_time")}
                   {...form.getInputProps("alloted_time")}
-                  style={{ width: "50%" }}
+                  style={{ width: "100%" }}
                 />
               </Flex>
 
-              <Grid columns="2" style={{ width: "100%" }}>
+              <Grid columns="1" style={{ width: "100%" }}>
                 <Grid.Col span={1}>
                   <Flex direction="column" gap="xs">
                     <DateInput
@@ -214,6 +213,17 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                       {...form.getInputProps("start_date")}
                       valueFormat="YYYY-MM-DD"
                       required
+                      styles={{
+                        dropdown: {
+                          width: "100px",
+                          maxHeight: "150px",
+                          overflow: "auto",
+                        },
+                        calendar: {
+                          fontSize: "14px",
+                          width: "100px",
+                        },
+                      }}
                     />
                   </Flex>
                 </Grid.Col>
@@ -227,7 +237,30 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                       {...form.getInputProps("completion_date")}
                       valueFormat="YYYY-MM-DD"
                       required
+                      styles={{
+                        dropdown: {
+                          width: "300px",
+                          maxHeight: "350px",
+                          overflow: "auto",
+                        },
+                        calendar: {
+                          fontSize: "14px",
+                        },
+                      }}
                     />
+                    {/* <DatePickerInput
+                      label="Select a date"
+                      placeholder="Pick a date"
+                      valueFormat="YYYY-MM-DD"
+                      styles={{
+                        root: { width: "100%" },
+                        input: {
+                          width: "100%",
+                          padding: "8px",
+                          fontSize: "1px",
+                        },
+                      }} */}
+                    {/* /> */}
                   </Flex>
                 </Grid.Col>
               </Grid>

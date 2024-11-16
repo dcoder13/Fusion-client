@@ -47,7 +47,7 @@ function ApproveRejectRequest({ setActiveTab }) {
   }, [role]);
   console.log(createdRequestsList);
   return (
-    <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+    <Container style={{ padding: "10px", fontFamily: "Arial, sans-serif" }}>
       <br />
       {loading ? (
         <Grid mt="xl">
@@ -65,7 +65,7 @@ function ApproveRejectRequest({ setActiveTab }) {
             borderLeft: "10px solid #1E90FF",
           }}
         >
-          <Title align="center" style={{ marginBottom: "10px" }}>
+          <Title align="center" size="26px" style={{ marginBottom: "10px" }}>
             Approve/Reject Request
           </Title>
           <Table highlightOnHover>
