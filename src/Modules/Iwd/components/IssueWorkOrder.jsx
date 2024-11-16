@@ -50,7 +50,7 @@ function IssueWorkOrder({ setActiveTab }) {
   console.log(issueworkorderList);
 
   return (
-    <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+    <Container style={{ padding: "-5px", fontFamily: "Arial, sans-serif" }}>
       <br />
       {loading ? (
         <Grid mt="xl">
@@ -59,17 +59,17 @@ function IssueWorkOrder({ setActiveTab }) {
           </Container>
         </Grid>
       ) : !selectedWorkOrder ? (
-        <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+        <Container style={{ padding: "10px", fontFamily: "Arial, sans-serif" }}>
           <div
             style={{
               border: "1px solid #ccc",
               borderRadius: "25px",
-              padding: "20px",
+              padding: "10px",
               boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
               borderLeft: "10px solid #1E90FF",
             }}
           >
-            <Title size="h3" align="center" style={{ marginBottom: "10px" }}>
+            <Title size="26px" align="center" style={{ marginBottom: "10px" }}>
               Work Orders
             </Title>
             <Table highlightOnHover>
@@ -116,7 +116,7 @@ function IssueWorkOrder({ setActiveTab }) {
             variant="subtle"
             leftIcon={<CaretLeft size={12} />}
             onClick={handleBackToList}
-            style={{ marginBottom: "10px" }}
+            style={{ marginBottom: "5px", marginTop: "5px" }}
           >
             Back to List
           </Button>
