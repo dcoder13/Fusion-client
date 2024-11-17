@@ -17,8 +17,7 @@ function RequestsInProgress() {
   const [loading, setLoading] = useState(false);
   const [RequestsInProgressData, setRequestsInProgress] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  // const [isSuccess, setIsSuccess] = useState(false); // idk it was giving eslint error so i commented out this one :)
-  const isSuccess = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const role = useSelector((state) => state.user.role);
   const [refresh, setRefresh] = useState(false);
@@ -39,12 +38,17 @@ function RequestsInProgress() {
         },
       );
       console.log(response);
+      console.log("asfasf");
     } catch (error) {
-      console.error(error);
+      console.log(error);
     } finally {
       setTimeout(() => {
         setIsLoading(false);
-        setRefresh((prev) => !prev);
+        setIsSuccess(true);
+        setTimeout(() => {
+          setIsSuccess(false);
+          setRefresh((prev) => !prev);
+        }, 1000);
       }, 1000);
     }
   };
