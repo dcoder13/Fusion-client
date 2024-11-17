@@ -57,7 +57,7 @@ function ManageBudget() {
   }, [operation]);
 
   return (
-    <Container style={{ padding: "20px" }}>
+    <Container style={{ padding: "10px" }}>
       <br />
       {loading ? (
         <Grid mt="xl">
@@ -75,7 +75,7 @@ function ManageBudget() {
             borderLeft: "10px solid #1E90FF",
           }}
         >
-          <Title align="center" weight={700} size="lg" mb="md">
+          <Title align="center" mb="md" style={{ fontSize: "26px !important" }}>
             Manage Budgets
           </Title>
           <Table highlightOnHover withBorder withColumnBorders>
