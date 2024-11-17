@@ -69,7 +69,11 @@ function IssueWorkOrder({ setActiveTab }) {
               borderLeft: "10px solid #1E90FF",
             }}
           >
-            <Title size="26px" align="center" style={{ marginBottom: "10px" }}>
+            <Title
+              size="26px"
+              align="center"
+              style={{ marginBottom: "10px", padding: "10px" }}
+            >
               Work Orders
             </Title>
             <Table highlightOnHover>

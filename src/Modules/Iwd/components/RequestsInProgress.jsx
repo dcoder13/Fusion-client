@@ -133,7 +133,10 @@ function RequestsInProgress() {
                   <td>{request.requestCreatedBy}</td>
                   <td>
                     {request.workCompleted ? (
-                      <>
+                      <div
+                        className="buttonContatiner"
+                        style={{ display: "flex", flexDirection: "row" }}
+                      >
                         <Button
                           size="xs"
                           onClick={() => handleGenerateBill(request)}
@@ -159,7 +162,7 @@ function RequestsInProgress() {
                         >
                           Done
                         </Button>
-                      </>
+                      </div>
                     ) : (
                       <>
                         <Button
