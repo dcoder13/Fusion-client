@@ -2,131 +2,20 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { CaretCircleLeft, CaretCircleRight } from "@phosphor-icons/react";
 import { Tabs, Button, Flex, Text, Breadcrumbs } from "@mantine/core";
+import RoleBasedFilter from "./helper/roleBasedFilter";
 import classes from "../Dashboard/Dashboard.module.css";
-import ModuleNotifications from "./components/ModuleNotifications";
-import CreateRequest from "./components/CreateRequestForm";
-import IssueWorkOrder from "./components/IssueWorkOrder";
-import RejectedRequests from "./components/RejectedRequest";
-import RequestsInProgress from "./components/RequestsInProgress";
-import FinalBillRequest from "./components/FinalBillRequest";
-import ManageBudget from "./components/ManageBudget";
-import CreatedRequests from "./components/CreatedRequests";
-import ViewBudget from "./components/ViewBudget";
-import ProcessedBills from "./components/ProcessedBills";
-
-import ApproveRejectRequest from "./components/ApproveRejectRequest";
-import AuditDocument from "./components/AuditDocument";
-
-// import ViewRequestFile from "./components/ViewRequestFile";
-// import { DesignationsContext } from "./helper/designationContext";
 
 function IwdPage() {
   const role = useSelector((state) => state.user.role);
   const [activeTab, setActiveTab] = useState("0");
   const [breadcrumbItems, setBreadcrumbItems] = useState([]);
   const tabsListRef = useRef(null);
-
-  const tabItems = [
-    { title: "Notifications", component: <ModuleNotifications /> },
-    {
-      title: "Create Request",
-      component: <CreateRequest setActiveTab={setActiveTab} />,
-    },
-    { title: "Requests in Progress", component: <RequestsInProgress /> },
-    {
-      title: "Issue Work Order",
-      component: <IssueWorkOrder setActiveTab={setActiveTab} />,
-    },
-    { title: "Generate Final Bill", component: <FinalBillRequest /> },
-    {
-      title: "Rejected Requests",
-      component: <RejectedRequests setActiveTab={setActiveTab} />,
-    },
-    { title: "Manage Budget", component: <ManageBudget /> },
-    {
-      title: "Created Requests",
-      component: <CreatedRequests setActiveTab={setActiveTab} />,
-    },
-    { title: "View Budget", component: <ViewBudget /> },
-    { title: "Processed Bills", component: <ProcessedBills /> },
-    {
-      title: "Approve/Reject Requests",
-      component: <ApproveRejectRequest setActiveTab={setActiveTab} />,
-    },
-    { title: "Audit Document", component: <AuditDocument /> },
-  ];
-
-  const roleBasedTabs = {
-    Professor: tabItems.filter((tab) =>
-      [
-        "Notifications",
-        "Create Request",
-        "Requests in Progress",
-        "Created Requests",
-      ].includes(tab.title),
-    ),
-    SectionHead_IWD: tabItems.filter((tab) =>
-      [
-        "Notifications",
-        "Create Request",
-        "Issue Work Order",
-        "Manage Budget",
-        "View Budget",
-        "Created Requests",
-      ].includes(tab.title),
-    ),
-    EE: tabItems.filter((tab) =>
-      [
-        "Notifications",
-        "Create Request",
-        "Issue Work Order",
-        "Created Requests",
-        "View Budget",
-      ].includes(tab.title),
-    ),
-    "Executive Engineer (Civil)": tabItems.filter((tab) =>
-      [
-        "Notifications",
-        "Create Request",
-        "Issue Work Order",
-        "Created Requests",
-        "View Budget",
-      ].includes(tab.title),
-    ),
-    "Accounts Admin": tabItems.filter((tab) =>
-      [
-        "Notifications",
-        "Create Request",
-        "Processed Bills",
-        "Manage Budget",
-        "Created Requests",
-        "View Budget",
-      ].includes(tab.title),
-    ),
-    Auditor: tabItems.filter((tab) =>
-      [
-        "Notifications",
-        "Create Request",
-        "Issue Work Order",
-        "Created Requests",
-        "Audit Document",
-      ].includes(tab.title),
-    ),
-    "Dean (P&D)": tabItems.filter((tab) =>
-      [
-        "Notifications",
-        "Create Request",
-        "Issue Work Order",
-        "Created Requests",
-        "View Budget",
-        "Rejected Requests",
-      ].includes(tab.title),
-    ),
-  };
+  const { roleBasedTabs, tabItems } = RoleBasedFilter({ setActiveTab });
 
   const filteredTabs = useMemo(() => {
     return roleBasedTabs[role] || tabItems;
   }, [role]);
+  console.log(role, roleBasedTabs.Professor);
 
   const handleTabChange = (direction) => {
     const newIndex =
@@ -159,7 +48,6 @@ function IwdPage() {
   return (
     <>
       <Breadcrumbs>{breadcrumbItems}</Breadcrumbs>
-      {/* <CustomBreadcrumbs /> */}
       <Flex
         justify="flex-start"
         align="center"

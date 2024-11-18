@@ -5,7 +5,7 @@ import { CaretLeft } from "@phosphor-icons/react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import IssueWorkOrderForm from "./IssueWorkOrderForm";
-import { host } from "../../../routes/globalRoutes";
+import { IWD_ROUTES } from "../routes/iwdRoutes";
 
 function IssueWorkOrder({ setActiveTab }) {
   const role = useSelector((state) => state.user.role);
@@ -26,7 +26,7 @@ function IssueWorkOrder({ setActiveTab }) {
       const token = localStorage.getItem("authToken");
       try {
         const response = await axios.get(
-          `${host}/iwdModuleV2/api/director-approved-requests/`,
+          IWD_ROUTES.DIRECTOR_APPROVED_REQUESTS,
           {
             headers: {
               Authorization: `Token ${token}`,

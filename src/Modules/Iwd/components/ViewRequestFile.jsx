@@ -20,7 +20,8 @@ import { useSelector } from "react-redux";
 import { useForm } from "@mantine/form";
 import { DesignationsContext } from "../helper/designationContext";
 import classes from "../iwd.module.css";
-import { host } from "../../../routes/globalRoutes";
+import { IWD_ROUTES } from "../routes/iwdRoutes";
+import { host } from "../../../routes/globalRoutes/index";
 
 export default function ViewRequestFile({ request, setActiveTab }) {
   const [loading, setLoading] = useState(true);
@@ -53,7 +54,7 @@ export default function ViewRequestFile({ request, setActiveTab }) {
       setLoading(true);
       const token = localStorage.getItem("authToken");
       try {
-        const response = await axios.get(`${host}/iwdModuleV2/api/view-file/`, {
+        const response = await axios.get(IWD_ROUTES.VIEW_FILE, {
           headers: {
             Authorization: `Token ${token}`,
           },
@@ -88,7 +89,7 @@ export default function ViewRequestFile({ request, setActiveTab }) {
     console.log("formdata: ", formData, action);
     try {
       const response = await axios.post(
-        `${host}/iwdModuleV2/api/handle-director-approval-requests/`,
+        IWD_ROUTES.HANDLE_DIRECTOR_APPROVAL,
         formData,
         {
           headers: {

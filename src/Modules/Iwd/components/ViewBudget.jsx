@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Container, Paper, Title, Grid, Loader } from "@mantine/core";
 import axios from "axios";
-import { host } from "../../../routes/globalRoutes";
+import { IWD_ROUTES } from "../routes/iwdRoutes";
 import "./GlobTable.css";
 // view budget fxn
 export default function ViewBudget() {
@@ -19,14 +19,11 @@ export default function ViewBudget() {
       setLoading(true);
       const token = localStorage.getItem("authToken");
       try {
-        const response = await axios.get(
-          `${host}/iwdModuleV2/api/view-budget/`,
-          {
-            headers: {
-              Authorization: `Token ${token}`,
-            },
+        const response = await axios.get(IWD_ROUTES.VIEW_BUDGET, {
+          headers: {
+            Authorization: `Token ${token}`,
           },
-        );
+        });
         // console.log(response.data);
         setViewBudgetList(response.data.obj);
         setLoading(false);

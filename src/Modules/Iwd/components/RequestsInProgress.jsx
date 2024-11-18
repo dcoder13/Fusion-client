@@ -11,7 +11,7 @@ import {
   CheckIcon,
 } from "@mantine/core";
 import axios from "axios";
-import { host } from "../../../routes/globalRoutes";
+import { IWD_ROUTES } from "../routes/iwdRoutes";
 
 function RequestsInProgress() {
   const [loading, setLoading] = useState(false);
@@ -27,7 +27,7 @@ function RequestsInProgress() {
     const token = localStorage.getItem("authToken");
     try {
       const response = await axios.patch(
-        `${host}/iwdModuleV2/api/work-completed/`,
+        IWD_ROUTES.MARK_COMPLETED,
         {
           id: request.id,
         },
@@ -67,14 +67,11 @@ function RequestsInProgress() {
       setLoading(true);
       const token = localStorage.getItem("authToken");
       try {
-        const { data } = await axios.get(
-          `${host}/iwdModuleV2/api/requests-in-progress/`,
-          {
-            headers: {
-              Authorization: `Token ${token}`,
-            },
+        const { data } = await axios.get(IWD_ROUTES.REQUESTS_IN_PROGRESS, {
+          headers: {
+            Authorization: `Token ${token}`,
           },
-        );
+        });
         console.log(data);
         setRequestsInProgress(data.obj);
         console.log(role);

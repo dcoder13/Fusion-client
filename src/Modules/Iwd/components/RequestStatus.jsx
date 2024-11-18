@@ -5,7 +5,7 @@ import { Container, Table, Button, Title, Loader, Grid } from "@mantine/core";
 import { CaretLeft } from "@phosphor-icons/react";
 import axios from "axios";
 import ViewRequestFile from "./ViewRequestFile";
-import { host } from "../../../routes/globalRoutes";
+import { IWD_ROUTES } from "../routes/iwdRoutes";
 // import { DesignationsContext } from "../helper/designationContext";
 
 function CreatedRequests({ setActiveTab }) {
@@ -27,17 +27,14 @@ function CreatedRequests({ setActiveTab }) {
       setLoading(true);
       const token = localStorage.getItem("authToken");
       try {
-        const response = await axios.get(
-          `${host}/iwdModuleV2/api/created-requests-view/`,
-          {
-            headers: {
-              Authorization: `Token ${token}`,
-            },
-            params: {
-              role,
-            },
+        const response = await axios.get(IWD_ROUTES.CREATED_REQUESTS, {
+          headers: {
+            Authorization: `Token ${token}`,
           },
-        );
+          params: {
+            role,
+          },
+        });
         setRequestsList(response.data);
         setLoading(false);
       } catch (error) {

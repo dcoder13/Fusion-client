@@ -12,12 +12,10 @@ import {
 // import { CaretLeft } from "@phosphor-icons/react";
 import axios from "axios";
 import ViewRequestFile from "./ViewRequestFile";
-import { host } from "../../../routes/globalRoutes";
-// import { useDesignations } from "../helper/designationContext"; // Importing the useDesignations hook
+import IWD_ROUTES from "../routes/iwdRoutes";
 
 function AuditDocuments() {
   const role = useSelector((state) => state.user.role);
-  // const designations = useDesignations(); // Accessing designations from context
   const [loading, setLoading] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [modalOpened, setModalOpened] = useState(false);
@@ -51,25 +49,21 @@ function AuditDocuments() {
     setSelectedDocument(null);
     setModalOpened(false);
   };
-
+  // TODO:FIXME:
   useEffect(() => {
     const getAuditDocuments = async () => {
       setLoading(true);
-      const token = localStorage.getItem("authToken"); // Get auth token from local storage
+      const token = localStorage.getItem("authToken");
       try {
-        const response = await axios.get(
-          `${host}/iwdModuleV2/api/audit-document-view/`,
-          {
-            headers: {
-              Authorization: `Token ${token}`,
-            },
-            params: {
-              role,
-              // designation: currentDesignation, // Pass the designation from context
-            },
+        const response = await axios.get(IWD_ROUTES.AUDIT_DOCUMENTS, {
+          headers: {
+            Authorization: `Token ${token}`,
           },
-        );
-        setAuditDocumentsList(response.data.data); // Set fetched audit documents to state
+          params: {
+            role,
+          },
+        });
+        setAuditDocumentsList(response.data.data);
       } catch (error) {
         console.error(error);
       } finally {
@@ -78,9 +72,9 @@ function AuditDocuments() {
     };
 
     if (role) {
-      getAuditDocuments(); // Fetch documents only if designation is available
+      getAuditDocuments();
     }
-  }, [role]); // Re-run the useEffect when role or designation changes
+  }, [role]);
 
   return (
     <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>

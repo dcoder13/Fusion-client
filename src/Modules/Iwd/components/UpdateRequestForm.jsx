@@ -16,9 +16,9 @@ import {
 } from "@mantine/core";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { host } from "../../../routes/globalRoutes";
 import { DesignationsContext } from "../helper/designationContext";
 import classes from "../iwd.module.css";
+import { IWD_ROUTES } from "../routes/iwdRoutes";
 
 function UpdateRequestForm({ selectedRequest, onBack, setActiveTab }) {
   const role = useSelector((state) => state.user.role);
@@ -60,15 +60,11 @@ function UpdateRequestForm({ selectedRequest, onBack, setActiveTab }) {
     data.id = selectedRequest.id;
 
     try {
-      const response = await axios.patch(
-        `${host}/iwdModuleV2/api/handle-update-requests/`,
-        data,
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
+      const response = await axios.patch(IWD_ROUTES.UPDATE_REQUESTS, data, {
+        headers: {
+          Authorization: `Token ${token}`,
         },
-      );
+      });
 
       console.log(response);
       setTimeout(() => {

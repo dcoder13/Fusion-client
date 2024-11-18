@@ -5,8 +5,8 @@ import { Container, Table, Button, Title, Loader, Grid } from "@mantine/core";
 import { CaretLeft } from "@phosphor-icons/react";
 import axios from "axios";
 import ViewRequestFile from "./ViewRequestFile";
-import { host } from "../../../routes/globalRoutes";
-// import { DesignationsContext } from "../helper/designationContext";
+import { IWD_ROUTES } from "../routes/iwdRoutes";
+
 function CreatedRequests({ setActiveTab }) {
   const role = useSelector((state) => state.user.role);
   const [loading, setLoading] = useState(false);
@@ -26,17 +26,14 @@ function CreatedRequests({ setActiveTab }) {
       setLoading(true);
       const token = localStorage.getItem("authToken");
       try {
-        const response = await axios.get(
-          `${host}/iwdModuleV2/api/created-requests/`,
-          {
-            headers: {
-              Authorization: `Token ${token}`,
-            },
-            params: {
-              role,
-            },
+        const response = await axios.get(IWD_ROUTES.CREATED_REQUESTS, {
+          headers: {
+            Authorization: `Token ${token}`,
           },
-        );
+          params: {
+            role,
+          },
+        });
         setRequestsList(response.data);
         setLoading(false);
       } catch (error) {
@@ -47,29 +44,6 @@ function CreatedRequests({ setActiveTab }) {
   }, [role]);
   console.log(createdRequestsList);
 
-  // const hardcoded = [
-  //   {
-  //     request_id: "req1",
-  //     name: "test1",
-  //     description: "This is a description req1",
-  //     area: "lhtc",
-  //     requestCreatedBy: "Dhruv",
-  //   },
-  //   {
-  //     request_id: "req2",
-  //     name: "test2",
-  //     description: "This is a description for req2",
-  //     area: "lhtc",
-  //     requestCreatedBy: "Divyansh",
-  //   },
-  //   {
-  //     request_id: "req3",
-  //     name: "test3",
-  //     description: "This is a description for req3",
-  //     area: "lhtc",
-  //     requestCreatedBy: "Dvijay",
-  //   },
-  // ];
   return (
     <Container style={{ fontFamily: "Arial, sans-serif" }}>
       <br />

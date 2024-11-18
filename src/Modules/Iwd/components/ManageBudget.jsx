@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Table, Button, Title, Grid, Loader } from "@mantine/core";
 import axios from "axios";
 import EditBudget from "./EditBudgetForm";
-import { host } from "../../../routes/globalRoutes";
+import { IWD_ROUTES } from "../routes/iwdRoutes";
 
 function ManageBudget() {
   const [selectedBudget, setSelectedBudget] = useState(null);
@@ -17,19 +17,6 @@ function ManageBudget() {
     setOperation(null);
   };
 
-  // const budgetList = [
-  //   {
-  //     id: "1",
-  //     name: "divyansh",
-  //     "budget-issued": 1000,
-  //   },
-  //   {
-  //     id: "2",
-  //     name: "dhruv",
-  //     "budget-issued": 2000,
-  //   },
-  // ];
-
   const [loading, setLoading] = useState(false);
 
   const [budgetList, setbudgetList] = useState([]);
@@ -38,15 +25,11 @@ function ManageBudget() {
       setLoading(true);
       const token = localStorage.getItem("authToken");
       try {
-        const response = await axios.get(
-          `${host}/iwdModuleV2/api/view-budget/`,
-          {
-            headers: {
-              Authorization: `Token ${token}`,
-            },
+        const response = await axios.get(IWD_ROUTES.VIEW_BUDGET, {
+          headers: {
+            Authorization: `Token ${token}`,
           },
-        );
-        // console.log(response.data.obj);
+        });
         setbudgetList(response.data.obj);
         setLoading(false);
       } catch (error) {

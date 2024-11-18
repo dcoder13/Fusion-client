@@ -5,7 +5,7 @@ import { Container, Table, Button, Title, Loader, Grid } from "@mantine/core";
 import { CaretLeft } from "@phosphor-icons/react";
 import axios from "axios";
 import ViewRequestFile from "./ViewRequestFile";
-import { host } from "../../../routes/globalRoutes";
+import { IWD_ROUTES } from "../routes/iwdRoutes";
 
 function ApproveRejectRequest({ setActiveTab }) {
   const role = useSelector((state) => state.user.role);
@@ -26,17 +26,14 @@ function ApproveRejectRequest({ setActiveTab }) {
       setLoading(true);
       const token = localStorage.getItem("authToken");
       try {
-        const response = await axios.get(
-          `${host}/iwdModuleV2/api/dean-processed-requests/`,
-          {
-            headers: {
-              Authorization: `Token ${token}`,
-            },
-            params: {
-              role,
-            },
+        const response = await axios.get(IWD_ROUTES.DEAN_PROCESSED_REQUESTS, {
+          headers: {
+            Authorization: `Token ${token}`,
           },
-        );
+          params: {
+            role,
+          },
+        });
         setRequestsList(response.data);
         setLoading(false);
       } catch (error) {

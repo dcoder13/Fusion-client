@@ -17,12 +17,11 @@ import { useForm } from "@mantine/form";
 import PropTypes from "prop-types";
 import axios from "axios";
 import classes from "../iwd.module.css";
-import { host } from "../../../routes/globalRoutes";
 import { DesignationsContext } from "../helper/designationContext";
+import { IWD_ROUTES } from "../routes/iwdRoutes";
 
 function CreateRequest({ setActiveTab }) {
   const role = useSelector((state) => state.user.role);
-
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const designations = useContext(DesignationsContext);
@@ -34,7 +33,7 @@ function CreateRequest({ setActiveTab }) {
       ),
     [designations],
   );
-  // console.log(designationsList);
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -50,6 +49,7 @@ function CreateRequest({ setActiveTab }) {
       designation: (value) => (value ? null : "Field is required"),
     },
   });
+
   const handleSubmitButtonClick = async () => {
     setIsLoading(true);
     setIsSuccess(false);
@@ -58,15 +58,11 @@ function CreateRequest({ setActiveTab }) {
     data.role = role;
     console.log(data);
     try {
-      const response = await axios.post(
-        `${host}/iwdModuleV2/api/create-request/`,
-        data,
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
+      const response = await axios.post(IWD_ROUTES.CREATE_REQUESTS, data, {
+        headers: {
+          Authorization: `Token ${token}`,
         },
-      );
+      });
       console.log(response);
       setTimeout(() => {
         setIsLoading(false);

@@ -13,8 +13,8 @@ import {
 } from "@mantine/core";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { host } from "../../../routes/globalRoutes";
 import classes from "../iwd.module.css";
+import { IWD_ROUTES } from "../routes/iwdRoutes";
 
 function EditBudget({ selectedBudget, onBack, checkOperation }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +42,7 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
     setIsSuccess(false);
     try {
       const response = await axios.post(
-        `${host}/iwdModuleV2/api/edit-budget/`,
+        IWD_ROUTES.EDIT_BUDGET,
         {
           id: formValues.id,
           name: formValues.name,
@@ -83,7 +83,7 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
 
     try {
       const response = await axios.post(
-        `${host}/iwdModuleV2/api/add-budget/`,
+        IWD_ROUTES.ADD_BUDGET,
         {
           name: formValues.name,
           budget: formValues["budget-issued"],

@@ -16,7 +16,7 @@ import { useForm } from "@mantine/form";
 import { DateInput } from "@mantine/dates";
 import PropTypes from "prop-types";
 import classes from "./EngineerIssueWorkOrder.module.css";
-import { host } from "../../../routes/globalRoutes";
+import { IWD_ROUTES } from "../routes/iwdRoutes";
 
 function IssueWorkOrderForm({ workOrder, onBack }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -59,15 +59,11 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
 
     console.log(data);
     try {
-      const response = await axios.post(
-        `${host}/iwdModuleV2/api/issue-work-order/`,
-        data,
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
+      const response = await axios.post(IWD_ROUTES.ISSUE_WORK_ORDER, data, {
+        headers: {
+          Authorization: `Token ${token}`,
         },
-      );
+      });
       console.log(response);
       setTimeout(() => {
         setIsLoading(false);
