@@ -27,7 +27,7 @@ function CreatedRequests({ setActiveTab }) {
       const token = localStorage.getItem("authToken");
       try {
         const response = await axios.get(
-          `${host}/iwdModuleV2/api/created-requests-view/`,
+          `${host}/iwdModuleV2/api/created-requests/`,
           {
             headers: {
               Authorization: `Token ${token}`,

@@ -59,7 +59,7 @@ function CreateRequest({ setActiveTab }) {
     console.log(data);
     try {
       const response = await axios.post(
-        `${host}/iwdModuleV2/api/requests-view/`,
+        `${host}/iwdModuleV2/api/create-request/`,
         data,
         {
           headers: {

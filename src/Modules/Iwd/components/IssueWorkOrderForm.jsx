@@ -60,7 +60,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
     console.log(data);
     try {
       const response = await axios.post(
-        `${host}/iwdModuleV2/api/work-order/`,
+        `${host}/iwdModuleV2/api/issue-work-order/`,
         data,
         {
           headers: {

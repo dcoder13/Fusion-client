@@ -26,7 +26,7 @@ function IssueWorkOrder({ setActiveTab }) {
       const token = localStorage.getItem("authToken");
       try {
         const response = await axios.get(
-          `${host}/iwdModuleV2/api/issue-work-order/`,
+          `${host}/iwdModuleV2/api/director-approved-requests/`,
           {
             headers: {
               Authorization: `Token ${token}`,

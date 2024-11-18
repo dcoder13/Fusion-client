@@ -56,10 +56,7 @@ function RequestsInProgress() {
     // TODO:
     console.log(request);
   };
-  // const handleInventory = (request) => {
-  //   // TODO:
-  //   console.log(request);
-  // };
+
   const handleGenerateBill = (request) => {
     // TODO:
     console.log(request);

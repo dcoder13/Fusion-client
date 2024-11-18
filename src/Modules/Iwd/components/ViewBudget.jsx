@@ -66,7 +66,7 @@ export default function ViewBudget() {
           </Container>
         </Grid>
       ) : (
-        <Paper className="work-orders-table" shadow="xs" padding="md">
+        <Paper className="s-table" shadow="xs" padding="md">
           <div className="table-header">
             <Title className="issue-work-order-button" size="h4">
               Details
