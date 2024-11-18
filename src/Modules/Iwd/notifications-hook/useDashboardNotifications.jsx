@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useDispatch } from "react-redux";
 import {
@@ -12,14 +12,10 @@ import {
 
 export function UseDashboardNotifications() {
   const [notificationsList, setNotificationsList] = useState([]);
-  const [announcementsList, setAnnouncementsList] = useState([]);
-  const [activeTab, setActiveTab] = useState("0");
   const [sortedBy, setSortedBy] = useState("Most Recent");
   const [loading, setLoading] = useState(false);
   const [read_Loading, setRead_Loading] = useState(-1);
   const dispatch = useDispatch();
-  const tabsListRef = useRef(null);
-  const tabItems = [{ title: "Notifications" }, { title: "Announcements" }];
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -42,11 +38,6 @@ export function UseDashboardNotifications() {
             (item) => item.data?.flag !== "announcement",
           ),
         );
-        setAnnouncementsList(
-          notificationsData.filter(
-            (item) => item.data?.flag === "announcement",
-          ),
-        );
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       } finally {
@@ -57,28 +48,6 @@ export function UseDashboardNotifications() {
     fetchDashboardData();
   }, [dispatch]);
 
-  const handleTabChange = (direction) => {
-    const newIndex =
-      direction === "next"
-        ? Math.min(+activeTab + 1, tabItems.length - 1)
-        : Math.max(+activeTab - 1, 0);
-    setActiveTab(String(newIndex));
-    tabsListRef.current.scrollBy({
-      left: direction === "next" ? 50 : -50,
-      behavior: "smooth",
-    });
-  };
-
-  const notificationsToDisplay =
-    activeTab === "1" ? announcementsList : notificationsList;
-
-  const notification_for_badge_count =
-    activeTab === "0" ? announcementsList : notificationsList;
-
-  const notification_count = notification_for_badge_count.filter(
-    (n) => !n.deleted && n.unread,
-  ).length;
-
   // sortMap is an object that maps sorting categories to sorting functions.
   const sortedNotifications = useMemo(() => {
     const sortMap = {
@@ -86,8 +55,8 @@ export function UseDashboardNotifications() {
       Tags: (a, b) => a.data.module.localeCompare(b.data.module),
       Title: (a, b) => a.verb.localeCompare(b.verb),
     };
-    return [...notificationsToDisplay].sort(sortMap[sortedBy]);
-  }, [sortedBy, notificationsToDisplay]);
+    return [...notificationsList].sort(sortMap[sortedBy]);
+  }, [sortedBy, notificationsList]);
 
   const markAsRead = async (notifId) => {
     const token = localStorage.getItem("authToken");
@@ -100,11 +69,6 @@ export function UseDashboardNotifications() {
       );
       if (response.status === 200) {
         setNotificationsList((prev) =>
-          prev.map((notif) =>
-            notif.id === notifId ? { ...notif, unread: false } : notif,
-          ),
-        );
-        setAnnouncementsList((prev) =>
           prev.map((notif) =>
             notif.id === notifId ? { ...notif, unread: false } : notif,
           ),
@@ -128,11 +92,6 @@ export function UseDashboardNotifications() {
       );
       if (response.status === 200) {
         setNotificationsList((prev) =>
-          prev.map((notif) =>
-            notif.id === notifId ? { ...notif, unread: true } : notif,
-          ),
-        );
-        setAnnouncementsList((prev) =>
           prev.map((notif) =>
             notif.id === notifId ? { ...notif, unread: true } : notif,
           ),
@@ -163,10 +122,6 @@ export function UseDashboardNotifications() {
         setNotificationsList((prev) =>
           prev.filter((notif) => notif.id !== notifId),
         );
-        setAnnouncementsList((prev) =>
-          prev.filter((notif) => notif.id !== notifId),
-        );
-
         console.log("Notification deleted successfully");
       }
     } catch (err) {

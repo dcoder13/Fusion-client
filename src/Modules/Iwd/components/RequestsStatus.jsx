@@ -34,6 +34,7 @@ function CreatedRequests({ setActiveTab }) {
             role,
           },
         });
+        console.log(response);
         setRequestsList(response.data);
         setLoading(false);
       } catch (error) {
@@ -42,7 +43,7 @@ function CreatedRequests({ setActiveTab }) {
     };
     getCreatedRequests();
   }, [role]);
-  console.log(createdRequestsList);
+
   return (
     <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
       <br />
@@ -63,7 +64,7 @@ function CreatedRequests({ setActiveTab }) {
           }}
         >
           <Title size="h3" align="center" style={{ marginBottom: "10px" }}>
-            Created Requests
+            Requests Status
           </Title>
           <Table highlightOnHover>
             <thead style={{ backgroundColor: "#f5f5f5" }}>
@@ -73,6 +74,7 @@ function CreatedRequests({ setActiveTab }) {
                 <th>Description</th>
                 <th>Area</th>
                 <th>Created By</th>
+                <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -84,6 +86,7 @@ function CreatedRequests({ setActiveTab }) {
                   <td>{request.description}</td>
                   <td>{request.area}</td>
                   <td>{request.requestCreatedBy}</td>
+                  <td>{request.status}</td>
                   <td>
                     <Button
                       size="xs"

@@ -15,7 +15,6 @@ function IwdPage() {
   const filteredTabs = useMemo(() => {
     return roleBasedTabs[role] || tabItems;
   }, [role]);
-  console.log(role, roleBasedTabs.Professor);
 
   const handleTabChange = (direction) => {
     const newIndex =
