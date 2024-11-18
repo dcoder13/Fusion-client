@@ -12,6 +12,7 @@ export default function ModuleNotifications() {
     deleteNotification,
     read_Loading,
   } = UseDashboardNotifications();
+  console.log(sortedNotifications);
   const moduleNotifications = sortedNotifications.filter(
     (notification) => notification.data.module === "iwdModuleV2",
   );
