@@ -100,4 +100,8 @@ body {
     align-items: center;
   }
 
+  Title {
+    font-size: 26px;
+    font-weight: bold;
+  }
   

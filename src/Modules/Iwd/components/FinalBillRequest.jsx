@@ -41,25 +41,15 @@ function FinalBillRequest() {
         style={{
           border: "1px solid #ccc",
           borderRadius: "25px",
-          padding: "10px",
+          padding: "20px",
           boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
           borderLeft: "10px solid #1E90FF",
         }}
       >
-        <div
-          style={{
-            fontWeight: "bold",
-            backgroundColor: "#f5f5f5",
-            padding: "10px",
-            borderBottom: "1px solid #ccc",
-            marginBottom: "10px",
-          }}
-        >
-          <Title size="h3" align="center">
-            Details
-          </Title>
-        </div>
-        <Table highlightOnHover>
+        <Title align="center" weight={700} style={{ fontSize: "26px" }} mb="md">
+          Details
+        </Title>
+        <Table highlightOnHover withBorder withColumnBorders>
           <thead style={{ backgroundColor: "#f5f5f5" }}>
             <tr>
               <th>ID</th>

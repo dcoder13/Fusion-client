@@ -66,7 +66,12 @@ function RejectedRequest({ setActiveTab }) {
             borderLeft: "10px solid #1E90FF",
           }}
         >
-          <Title align="center" weight={700} size="26px" mb="md">
+          <Title
+            align="center"
+            weight={700}
+            style={{ fontSize: "26px" }}
+            mb="md"
+          >
             Rejected Requests
           </Title>
           <Table highlightOnHover withBorder withColumnBorders>

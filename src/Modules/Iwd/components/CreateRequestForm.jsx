@@ -85,7 +85,16 @@ function CreateRequest({ setActiveTab }) {
     /* eslint-disable react/jsx-props-no-spreading */
 
     <Grid mt="md">
-      <div className="container">
+      <div
+        className="container"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          position: "absolute",
+          left: "25%",
+        }}
+      >
         <form
           onSubmit={form.onSubmit((values) => {
             if (form.validate(values)) handleSubmitButtonClick();
@@ -98,7 +107,7 @@ function CreateRequest({ setActiveTab }) {
             pb="xl"
             style={{
               borderLeft: "0.6rem solid #15ABFF",
-              width: "50vw",
+              width: "60vw",
               minHeight: "45vh",
               maxHeight: "70vh",
             }}
