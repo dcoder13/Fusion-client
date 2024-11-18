@@ -10,6 +10,7 @@ export const IWD_ROUTES = {
   REJECTED_REQUESTS: `${host}/iwdModuleV2/api/rejected-requests-view/`,
   REQUESTS_IN_PROGRESS: `${host}/iwdModuleV2/api/requests-in-progress/`,
   VIEW_FILE: `${host}/iwdModuleV2/api/view-file/`,
+  REQUESTS_STATUS: `${host}/iwdModuleV2/api/requests-status/`,
   // POST
   CREATE_REQUESTS: `${host}/iwdModuleV2/api/create-request/`,
   ADD_BUDGET: `${host}/iwdModuleV2/api/add-budget/`,

@@ -12,7 +12,7 @@ import {
 // import { CaretLeft } from "@phosphor-icons/react";
 import axios from "axios";
 import ViewRequestFile from "./ViewRequestFile";
-import IWD_ROUTES from "../routes/iwdRoutes";
+import { IWD_ROUTES } from "../routes/iwdRoutes";
 
 function AuditDocuments() {
   const role = useSelector((state) => state.user.role);

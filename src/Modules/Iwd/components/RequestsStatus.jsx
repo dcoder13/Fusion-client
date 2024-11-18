@@ -6,7 +6,6 @@ import { CaretLeft } from "@phosphor-icons/react";
 import axios from "axios";
 import ViewRequestFile from "./ViewRequestFile";
 import { IWD_ROUTES } from "../routes/iwdRoutes";
-// import { DesignationsContext } from "../helper/designationContext";
 
 function CreatedRequests({ setActiveTab }) {
   const role = useSelector((state) => state.user.role);
@@ -27,7 +26,7 @@ function CreatedRequests({ setActiveTab }) {
       setLoading(true);
       const token = localStorage.getItem("authToken");
       try {
-        const response = await axios.get(IWD_ROUTES.CREATED_REQUESTS, {
+        const response = await axios.get(IWD_ROUTES.REQUESTS_STATUS, {
           headers: {
             Authorization: `Token ${token}`,
           },
