@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IWD_ROUTES } from "../routes/iwdRoutes";
 
-const GetRequests = async ({ setLoading, setRequestsList, role, URL }) => {
+const GetRequestsOrBills = async ({ setLoading, setList, role, URL }) => {
   /* 
     This function is for fetching requests
     Used in 
@@ -11,6 +11,7 @@ const GetRequests = async ({ setLoading, setRequestsList, role, URL }) => {
     - RejectedRequests
     - RequestsInProgress
     - RequestsStatus
+    - AuditDocuments
   */
   setLoading(true);
   const token = localStorage.getItem("authToken");
@@ -23,7 +24,7 @@ const GetRequests = async ({ setLoading, setRequestsList, role, URL }) => {
         role,
       },
     });
-    setRequestsList(response.data);
+    setList(response.data);
   } catch (error) {
     console.error(error);
   } finally {
@@ -38,23 +39,23 @@ const GetFileData = async ({ setLoading, request, setMessages }) => {
     - ViewRequestFile
   */
   setLoading(true);
+  const params = {
+    request_id: request.request_id,
+    name: request.name,
+    area: request.area,
+    description: request.description,
+    requestCreatedBy: request.requestCreatedBy,
+    file_id: request.file_id,
+  };
   const token = localStorage.getItem("authToken");
   try {
     const response = await axios.get(IWD_ROUTES.VIEW_FILE, {
       headers: {
         Authorization: `Token ${token}`,
       },
-      params: {
-        request_id: request.request_id,
-        name: request.name,
-        area: request.area,
-        description: request.description,
-        requestCreatedBy: request.requestCreatedBy,
-        file_id: request.file_id,
-      },
+      params,
     });
     setMessages(response.data);
-    console.log("re", response.data);
     setLoading(false);
   } catch (error) {
     console.error(error);
@@ -186,37 +187,6 @@ const HandleIssueWorkOrder = async ({
   } catch (error) {
     console.error(error);
     setIsLoading(false);
-  }
-};
-
-const GetAuditDocuments = async ({
-  setLoading,
-  setAuditDocumentsList,
-  role,
-}) => {
-  /* 
-    TODO:FIXME:
-    This function is for fetching inbox of auditor to audit documents
-    Used in :
-    - AuditDocument
-  */
-  setLoading(true);
-  const token = localStorage.getItem("authToken");
-
-  try {
-    const response = await axios.get(IWD_ROUTES.AUDIT_DOCUMENTS, {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-      params: {
-        role,
-      },
-    });
-    setAuditDocumentsList(response.data.data);
-  } catch (error) {
-    console.error(error);
-  } finally {
-    setLoading(false);
   }
 };
 
@@ -419,8 +389,7 @@ const HandleDirectorApproval = async ({
 };
 
 export {
-  GetAuditDocuments,
-  GetRequests,
+  GetRequestsOrBills,
   GetBudgets,
   GetFileData,
   HandleRequest,
