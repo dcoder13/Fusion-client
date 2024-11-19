@@ -32,7 +32,7 @@ function CreatedRequests() {
   console.log(createdRequestsList);
 
   return (
-    <Container style={{ fontFamily: "Arial, sans-serif" }}>
+    <Container style={{ padding: "10px", fontFamily: "Arial, sans-serif" }}>
       <br />
       {loading ? (
         <Grid mt="xl">
@@ -50,10 +50,10 @@ function CreatedRequests() {
             borderLeft: "10px solid #1E90FF",
           }}
         >
-          <Title size="26px" align="center" style={{ marginBottom: "10px" }}>
+          <Title size="26px" align="center" mb="md">
             Created Requests
           </Title>
-          <Table highlightOnHover>
+          <Table highlightOnHover withBorder withColumnBorders>
             <thead style={{ backgroundColor: "#f5f5f5" }}>
               <tr>
                 <th>ID</th>
