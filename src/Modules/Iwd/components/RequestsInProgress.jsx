@@ -167,7 +167,6 @@ function RequestsInProgress() {
           </Table>
         </div>
       )}
-      ;
     </Container>
   );
 }
