@@ -85,6 +85,7 @@ function CreateRequest({ setActiveTab }) {
               width: "60vw",
               minHeight: "45vh",
               maxHeight: "70vh",
+              boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
             }}
             withBorder
             maw="1240px"

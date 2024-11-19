@@ -77,7 +77,6 @@ body {
   }
   
   table {
-    /* width: 100%; */
     border-collapse: collapse;
     margin-bottom: 20px;
   }
@@ -103,5 +102,13 @@ body {
   Title {
     font-size: 26px;
     font-weight: bold;
+  }
+  
+  .details-wrapper {
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+    border-left: 10px solid #1e90ff;
   }
   

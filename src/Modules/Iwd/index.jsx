@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { CaretCircleLeft, CaretCircleRight } from "@phosphor-icons/react";
-import { Tabs, Button, Flex, Text, Breadcrumbs } from "@mantine/core";
+import { Tabs, Button, Flex, Text } from "@mantine/core";
 import RoleBasedFilter from "./helper/roleBasedFilter";
 import classes from "../Dashboard/Dashboard.module.css";
+import CustomBread from "./components/BreadCrumbs";
 
 function IwdPage() {
   const role = useSelector((state) => state.user.role);
@@ -15,6 +16,7 @@ function IwdPage() {
   const filteredTabs = useMemo(() => {
     return roleBasedTabs[role] || tabItems;
   }, [role]);
+  // console.log(filteredTabs);
 
   const handleTabChange = (direction) => {
     const newIndex =
@@ -30,6 +32,7 @@ function IwdPage() {
 
   useEffect(() => {
     const currentTab = filteredTabs[parseInt(activeTab, 10)];
+    // console.log(currentTab);
 
     const breadcrumbs = [
       { title: "Home", href: "/dashboard" },
@@ -40,13 +43,17 @@ function IwdPage() {
         {item.title}
       </Text>
     ));
+    // console.log("bread" ,breadcrumbs);
 
     setBreadcrumbItems(breadcrumbs);
+    // console.log(breadcrumbItems);
+    // console.log(activeTab);
   }, [activeTab, filteredTabs]);
 
   return (
     <>
-      <Breadcrumbs>{breadcrumbItems}</Breadcrumbs>
+      {/* <Breadcrumbs>{breadcrumbItems}</Breadcrumbs> */}
+      <CustomBread breadCrumbs={breadcrumbItems} />
       <Flex
         justify="flex-start"
         align="center"
@@ -73,9 +80,11 @@ function IwdPage() {
                 <Tabs.Tab
                   value={`${index}`}
                   key={index}
+                  onClick={() => setActiveTab(String(index))}
                   className={
                     activeTab === `${index}`
-                      ? classes.fusionActiveRecentTab
+                      ? // activeTab === String(index)
+                        classes.fusionActiveRecentTab
                       : ""
                   }
                 >
