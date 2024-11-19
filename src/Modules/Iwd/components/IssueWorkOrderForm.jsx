@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   Button,
   Flex,
@@ -10,16 +11,18 @@ import {
   CheckIcon,
   TextInput,
   NumberInput,
+  Notification,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { DateInput } from "@mantine/dates";
 import PropTypes from "prop-types";
 import classes from "./EngineerIssueWorkOrder.module.css";
-import { HandleIssueWorkOrder } from "../handlers/handlers";
+import { IWD_ROUTES } from "../routes/iwdRoutes";
 
 function IssueWorkOrderForm({ workOrder, onBack }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [dateError, setDateError] = useState("");
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -39,20 +42,93 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
     },
   });
 
+  const handleSubmitButtonClick = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+    setIsLoading(true);
+    setIsSuccess(false);
+    setDateError(""); // Reset error
+    const token = localStorage.getItem("authToken");
+    const data = form.getValues();
+
+    const formatDate = (date) => {
+      const d = new Date(date);
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
+
+    const isValidDate = (dateStr) => {
+      const date = new Date(dateStr);
+      return !Number.isNaN(date.getTime());
+    };
+
+    const isPastDate = (dateStr) => {
+      const today = new Date();
+      const inputDate = new Date(dateStr);
+      return inputDate < today;
+    };
+
+    if (data.start_date) {
+      if (!isValidDate(data.start_date)) {
+        setDateError("Invalid start date format");
+        setIsLoading(false);
+        return;
+      }
+      if (isPastDate(data.start_date)) {
+        setDateError("Start date cannot be a past date");
+        setIsLoading(false);
+        return;
+      }
+      data.start_date = formatDate(data.start_date);
+    }
+
+    if (data.completion_date) {
+      if (!isValidDate(data.completion_date)) {
+        setDateError("Invalid completion date format");
+        setIsLoading(false);
+        return;
+      }
+      if (isPastDate(data.completion_date)) {
+        setDateError("Completion date cannot be a past date");
+        setIsLoading(false);
+        return;
+      }
+      data.completion_date = formatDate(data.completion_date);
+    }
+
+    // Validate that start_date <= completion_date
+    if (data.start_date && data.completion_date) {
+      const startDate = new Date(data.start_date);
+      const completionDate = new Date(data.completion_date);
+      if (startDate > completionDate) {
+        setDateError("Start date cannot be later than completion date");
+        setIsLoading(false);
+        return;
+      }
+    }
+
+    try {
+      const response = await axios.post(IWD_ROUTES.ISSUE_WORK_ORDER, data, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      });
+      console.log(response);
+      setTimeout(() => {
+        setIsLoading(false);
+        setIsSuccess(true);
+      }, 1000);
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
+  };
+
   return (
-    /* eslint-disable react/jsx-props-no-spreading */
     <Grid mt="s">
       <div className="contain">
-        <form
-          onSubmit={form.onSubmit((data) => {
-            HandleIssueWorkOrder({
-              data,
-              setIsLoading,
-              setIsSuccess,
-              onBack,
-            });
-          })}
-        >
+        <form onSubmit={handleSubmitButtonClick}>
           <Paper
             radius="md"
             px="lg"
@@ -86,6 +162,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                       readOnly
                       classNames={classes}
                       key={form.key("request_id")}
+                      // eslint-disable-next-line react/jsx-props-no-spreading
                       {...form.getInputProps("request_id")}
                     />
                   </Flex>
@@ -97,6 +174,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                       readOnly
                       classNames={classes}
                       key={form.key("name")}
+                      // eslint-disable-next-line react/jsx-props-no-spreading
                       {...form.getInputProps("name")}
                     />
                   </Flex>
@@ -106,14 +184,14 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
               <Grid columns="2" style={{ width: "100%" }}>
                 <Grid.Col span={1}>
                   <Flex direction="column" gap="xs">
-                    <DateInput
+                    <TextInput
                       label="Date"
                       placeholder="yyyy/mm/dd"
                       classNames={classes}
                       key={form.key("date")}
+                      // eslint-disable-next-line react/jsx-props-no-spreading
                       {...form.getInputProps("date")}
-                      valueFormat="YYYY-MM-DD"
-                      size="xs"
+                      required
                     />
                   </Flex>
                 </Grid.Col>
@@ -124,6 +202,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                       placeholder="Agency Name"
                       classNames={classes}
                       key={form.key("agency")}
+                      // eslint-disable-next-line react/jsx-props-no-spreading
                       {...form.getInputProps("agency")}
                       required
                     />
@@ -140,6 +219,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                       placeholder="Enter amount"
                       classNames={classes}
                       key={form.key("amount")}
+                      // eslint-disable-next-line react/jsx-props-no-spreading
                       {...form.getInputProps("amount")}
                       required
                     />
@@ -152,6 +232,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                       placeholder="Enter deposit"
                       classNames={classes}
                       key={form.key("deposit")}
+                      // eslint-disable-next-line react/jsx-props-no-spreading
                       {...form.getInputProps("deposit")}
                     />
                   </Flex>
@@ -164,6 +245,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                   placeholder="Enter allotted time"
                   classNames={classes}
                   key={form.key("alloted_time")}
+                  // eslint-disable-next-line react/jsx-props-no-spreading
                   {...form.getInputProps("alloted_time")}
                   style={{ width: "100%" }}
                 />
@@ -172,65 +254,41 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
               <Grid columns="1" style={{ width: "100%" }}>
                 <Grid.Col span={1}>
                   <Flex direction="column" gap="xs">
-                    <DateInput
+                    <TextInput
                       label="Start Date"
                       placeholder="yyyy/mm/dd"
                       classNames={classes}
                       key={form.key("start_date")}
+                      // eslint-disable-next-line react/jsx-props-no-spreading
                       {...form.getInputProps("start_date")}
-                      valueFormat="YYYY-MM-DD"
                       required
-                      styles={{
-                        dropdown: {
-                          width: "100px",
-                          maxHeight: "150px",
-                          overflow: "auto",
-                        },
-                        calendar: {
-                          fontSize: "14px",
-                          width: "100px",
-                        },
-                      }}
                     />
                   </Flex>
                 </Grid.Col>
                 <Grid.Col span={1}>
                   <Flex direction="column" gap="xs">
-                    <DateInput
+                    <TextInput
                       label="Completion Date"
                       placeholder="yyyy/mm/dd"
                       classNames={classes}
                       key={form.key("completion_date")}
+                      // eslint-disable-next-line react/jsx-props-no-spreading
                       {...form.getInputProps("completion_date")}
-                      valueFormat="YYYY-MM-DD"
                       required
-                      styles={{
-                        dropdown: {
-                          width: "300px",
-                          maxHeight: "350px",
-                          overflow: "auto",
-                        },
-                        calendar: {
-                          fontSize: "14px",
-                        },
-                      }}
                     />
-                    {/* <DatePickerInput
-                      label="Select a date"
-                      placeholder="Pick a date"
-                      valueFormat="YYYY-MM-DD"
-                      styles={{
-                        root: { width: "100%" },
-                        input: {
-                          width: "100%",
-                          padding: "8px",
-                          fontSize: "1px",
-                        },
-                      }} */}
-                    {/* /> */}
                   </Flex>
                 </Grid.Col>
               </Grid>
+
+              {dateError && (
+                <Notification
+                  color="red"
+                  title="Error"
+                  onClose={() => setDateError("")}
+                >
+                  {dateError}
+                </Notification>
+              )}
 
               <Flex direction="row-reverse" gap="xs">
                 <Button
@@ -262,13 +320,9 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                 <Button
                   size="sm"
                   variant="filled"
-                  color="#1E90FF"
+                  color="gray"
                   onClick={onBack}
-                  disabled={isLoading || isSuccess}
-                  style={{
-                    border: "none",
-                    borderRadius: "20px",
-                  }}
+                  style={{ width: "100px", backgroundColor: "#B0B0B0" }}
                 >
                   Back
                 </Button>
@@ -278,13 +332,12 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
         </form>
       </div>
     </Grid>
-    /* eslint-enable react/jsx-props-no-spreading */
   );
 }
 
 IssueWorkOrderForm.propTypes = {
   workOrder: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     description: PropTypes.string,
     area: PropTypes.string,
