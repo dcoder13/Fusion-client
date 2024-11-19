@@ -4,7 +4,7 @@ import { Table, Button, Container, Title, Loader, Grid } from "@mantine/core";
 import { CaretLeft } from "@phosphor-icons/react";
 import IssueWorkOrderForm from "./IssueWorkOrderForm";
 import { IWD_ROUTES } from "../routes/iwdRoutes";
-import { GetRequests } from "../handlers/handlers";
+import { GetRequestsOrBills } from "../handlers/handlers";
 
 function IssueWorkOrder() {
   const role = useSelector((state) => state.user.role);
@@ -23,9 +23,9 @@ function IssueWorkOrder() {
 
   const [issueworkorderList, setissueworkorderList] = useState([]);
   useEffect(() => {
-    GetRequests({
+    GetRequestsOrBills({
       setLoading,
-      setRequestsList: setissueworkorderList,
+      setList: setissueworkorderList,
       role,
       URL: IWD_ROUTES.DIRECTOR_APPROVED_REQUESTS,
     });

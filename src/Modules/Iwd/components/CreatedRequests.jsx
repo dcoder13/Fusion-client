@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Container, Table, Button, Title, Loader, Grid } from "@mantine/core";
 import { CaretLeft } from "@phosphor-icons/react";
 import ViewRequestFile from "./ViewRequestFile";
-import { GetRequests } from "../handlers/handlers";
+import { GetRequestsOrBills } from "../handlers/handlers";
 import { IWD_ROUTES } from "../routes/iwdRoutes";
 
 function CreatedRequests() {
@@ -22,7 +22,7 @@ function CreatedRequests() {
 
   const [createdRequestsList, setRequestsList] = useState([]);
   useEffect(() => {
-    GetRequests({
+    GetRequestsOrBills({
       setLoading,
       setRequestsList,
       role,

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Container, Table, Button, Title, Loader, Grid } from "@mantine/core";
 import UpdateRequestForm from "./UpdateRequestForm";
 import { IWD_ROUTES } from "../routes/iwdRoutes";
-import { GetRequests } from "../handlers/handlers";
+import { GetRequestsOrBills } from "../handlers/handlers";
 
 function RejectedRequest() {
   const role = useSelector((state) => state.user.role);
@@ -22,9 +22,9 @@ function RejectedRequest() {
   };
 
   useEffect(() => {
-    GetRequests({
+    GetRequestsOrBills({
       setLoading,
-      setRequestsList: setRejectedRequests,
+      setList: setRejectedRequests,
       role,
       URL: IWD_ROUTES.REJECTED_REQUESTS,
     });
