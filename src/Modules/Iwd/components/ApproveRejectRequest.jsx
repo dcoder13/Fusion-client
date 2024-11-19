@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { Container, Table, Button, Title, Loader, Grid } from "@mantine/core";
 import { CaretLeft } from "@phosphor-icons/react";
-import axios from "axios";
 import ViewRequestFile from "./ViewRequestFile";
 import { IWD_ROUTES } from "../routes/iwdRoutes";
+import { GetRequests } from "../handlers/handlers";
 
-function ApproveRejectRequest({ setActiveTab }) {
+function ApproveRejectRequest() {
   const role = useSelector((state) => state.user.role);
   const [loading, setLoading] = useState(false);
-
+  const [refresh, setRefresh] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const handleViewRequest = (request) => {
     setSelectedRequest(request);
@@ -18,31 +17,18 @@ function ApproveRejectRequest({ setActiveTab }) {
 
   const handleBackToList = () => {
     setSelectedRequest(null);
+    setRefresh((prev) => !prev);
   };
 
   const [createdRequestsList, setRequestsList] = useState([]);
   useEffect(() => {
-    const getCreatedRequests = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("authToken");
-      try {
-        const response = await axios.get(IWD_ROUTES.DEAN_PROCESSED_REQUESTS, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-          params: {
-            role,
-          },
-        });
-        setRequestsList(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getCreatedRequests();
-  }, [role]);
-  console.log(createdRequestsList);
+    GetRequests({
+      setLoading,
+      setRequestsList,
+      role,
+      URL: IWD_ROUTES.DEAN_PROCESSED_REQUESTS,
+    });
+  }, [role, refresh]);
   return (
     <Container style={{ padding: "10px", fontFamily: "Arial, sans-serif" }}>
       <br />
@@ -110,15 +96,12 @@ function ApproveRejectRequest({ setActiveTab }) {
           </Button>
           <ViewRequestFile
             request={selectedRequest}
-            setActiveTab={setActiveTab}
+            handleBackToList={handleBackToList}
           />
         </>
       )}
     </Container>
   );
 }
-ApproveRejectRequest.propTypes = {
-  setActiveTab: PropTypes.func.isRequired,
-};
 
 export default ApproveRejectRequest;

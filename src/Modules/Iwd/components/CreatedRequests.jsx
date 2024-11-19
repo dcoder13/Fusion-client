@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
 import { Container, Table, Button, Title, Loader, Grid } from "@mantine/core";
 import { CaretLeft } from "@phosphor-icons/react";
-import axios from "axios";
 import ViewRequestFile from "./ViewRequestFile";
+import { GetRequests } from "../handlers/handlers";
 import { IWD_ROUTES } from "../routes/iwdRoutes";
 
-function CreatedRequests({ setActiveTab }) {
+function CreatedRequests() {
   const role = useSelector((state) => state.user.role);
   const [loading, setLoading] = useState(false);
-
+  const [refresh, setRefresh] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const handleViewRequest = (request) => {
     setSelectedRequest(request);
@@ -18,30 +17,18 @@ function CreatedRequests({ setActiveTab }) {
 
   const handleBackToList = () => {
     setSelectedRequest(null);
+    setRefresh((prev) => !prev);
   };
 
   const [createdRequestsList, setRequestsList] = useState([]);
   useEffect(() => {
-    const getCreatedRequests = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("authToken");
-      try {
-        const response = await axios.get(IWD_ROUTES.CREATED_REQUESTS, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-          params: {
-            role,
-          },
-        });
-        setRequestsList(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getCreatedRequests();
-  }, [role]);
+    GetRequests({
+      setLoading,
+      setRequestsList,
+      role,
+      URL: IWD_ROUTES.CREATED_REQUESTS,
+    });
+  }, [role, refresh]);
   console.log(createdRequestsList);
 
   return (
@@ -112,15 +99,12 @@ function CreatedRequests({ setActiveTab }) {
           </Button>
           <ViewRequestFile
             request={selectedRequest}
-            setActiveTab={setActiveTab}
+            handleBackToList={handleBackToList}
           />
         </>
       )}
     </Container>
   );
 }
-CreatedRequests.propTypes = {
-  setActiveTab: PropTypes.func,
-};
 
 export default CreatedRequests;

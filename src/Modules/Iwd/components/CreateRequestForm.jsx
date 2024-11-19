@@ -15,10 +15,9 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import PropTypes from "prop-types";
-import axios from "axios";
 import classes from "../iwd.module.css";
 import { DesignationsContext } from "../helper/designationContext";
-import { IWD_ROUTES } from "../routes/iwdRoutes";
+import { HandleRequest } from "../handlers/handlers";
 
 function CreateRequest({ setActiveTab }) {
   const role = useSelector((state) => state.user.role);
@@ -50,33 +49,6 @@ function CreateRequest({ setActiveTab }) {
     },
   });
 
-  const handleSubmitButtonClick = async () => {
-    setIsLoading(true);
-    setIsSuccess(false);
-    const token = localStorage.getItem("authToken");
-    const data = form.getValues();
-    data.role = role;
-    console.log(data);
-    try {
-      const response = await axios.post(IWD_ROUTES.CREATE_REQUESTS, data, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      });
-      console.log(response);
-      setTimeout(() => {
-        setIsLoading(false);
-        setIsSuccess(true);
-        setTimeout(() => {
-          setActiveTab("0");
-        }, 500);
-      }, 1000);
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
-  };
-
   return (
     /* eslint-disable react/jsx-props-no-spreading */
 
@@ -93,7 +65,14 @@ function CreateRequest({ setActiveTab }) {
       >
         <form
           onSubmit={form.onSubmit((values) => {
-            if (form.validate(values)) handleSubmitButtonClick();
+            if (form.validate(values))
+              HandleRequest({
+                setIsLoading,
+                setIsSuccess,
+                setActiveTab,
+                role,
+                form,
+              });
           })}
         >
           <Paper

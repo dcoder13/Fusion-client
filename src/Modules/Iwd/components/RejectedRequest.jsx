@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { Container, Table, Button, Title, Loader, Grid } from "@mantine/core";
-import axios from "axios";
 import UpdateRequestForm from "./UpdateRequestForm";
 import { IWD_ROUTES } from "../routes/iwdRoutes";
+import { GetRequests } from "../handlers/handlers";
 
 function RejectedRequest({ setActiveTab }) {
   const role = useSelector((state) => state.user.role);
@@ -21,27 +21,12 @@ function RejectedRequest({ setActiveTab }) {
   };
 
   useEffect(() => {
-    const fetchRejectedRequests = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("authToken");
-      try {
-        const { data } = await axios.get(IWD_ROUTES.REJECTED_REQUESTS, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-          params: {
-            role,
-          },
-        });
-        setRejectedRequests(data.rejected_requests);
-        console.log(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchRejectedRequests();
+    GetRequests({
+      setLoading,
+      setRequestsList: setRejectedRequests,
+      role,
+      URL: IWD_ROUTES.REJECTED_REQUESTS,
+    });
   }, []);
 
   return (

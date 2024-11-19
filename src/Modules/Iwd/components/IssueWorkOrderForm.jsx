@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import {
   Button,
   Flex,
@@ -16,7 +15,7 @@ import { useForm } from "@mantine/form";
 import { DateInput } from "@mantine/dates";
 import PropTypes from "prop-types";
 import classes from "./EngineerIssueWorkOrder.module.css";
-import { IWD_ROUTES } from "../routes/iwdRoutes";
+import { HandleIssueWorkOrder } from "../handlers/handlers";
 
 function IssueWorkOrderForm({ workOrder, onBack }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -39,49 +38,21 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
       alloted_time: (value) => (value ? null : "Field is required"),
     },
   });
-  const handleSubmitButtonClick = async () => {
-    setIsLoading(true);
-    setIsSuccess(false);
-    const token = localStorage.getItem("authToken");
-    const data = form.getValues();
-    const formatDate = (date) => {
-      const d = new Date(date);
-      const year = d.getFullYear();
-      const month = String(d.getMonth() + 1).padStart(2, "0");
-      const day = String(d.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
-    };
-    if (data.date) {
-      data.date = formatDate(data.date);
-    }
-    data.start_date = formatDate(data.start_date);
-    data.completion_date = formatDate(data.completion_date);
 
-    console.log(data);
-    try {
-      const response = await axios.post(IWD_ROUTES.ISSUE_WORK_ORDER, data, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      });
-      console.log(response);
-      setTimeout(() => {
-        setIsLoading(false);
-        setIsSuccess(true);
-        setTimeout(() => {
-          onBack();
-        }, 1000);
-      }, 1000);
-    } catch (error) {
-      console.error(error);
-      setIsLoading(false);
-    }
-  };
   return (
     /* eslint-disable react/jsx-props-no-spreading */
     <Grid mt="s">
       <div className="contain">
-        <form>
+        <form
+          onSubmit={form.onSubmit((data) => {
+            HandleIssueWorkOrder({
+              data,
+              setIsLoading,
+              setIsSuccess,
+              onBack,
+            });
+          })}
+        >
           <Paper
             radius="md"
             px="lg"
@@ -274,7 +245,6 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                     border: "none",
                     borderRadius: "20px",
                   }}
-                  onClick={handleSubmitButtonClick}
                   disabled={isLoading || isSuccess}
                 >
                   {isLoading ? (

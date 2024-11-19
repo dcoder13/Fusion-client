@@ -10,8 +10,8 @@ import {
   Center,
   CheckIcon,
 } from "@mantine/core";
-import axios from "axios";
 import { IWD_ROUTES } from "../routes/iwdRoutes";
+import { GetRequests, HandleMarkAsCompleted } from "../handlers/handlers";
 
 function RequestsInProgress() {
   const [loading, setLoading] = useState(false);
@@ -22,36 +22,6 @@ function RequestsInProgress() {
   const role = useSelector((state) => state.user.role);
   const [refresh, setRefresh] = useState(false);
 
-  const handleMarkAsCompleted = async (request) => {
-    setIsLoading(true);
-    const token = localStorage.getItem("authToken");
-    try {
-      const response = await axios.patch(
-        IWD_ROUTES.MARK_COMPLETED,
-        {
-          id: request.id,
-        },
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        },
-      );
-      console.log(response);
-      console.log("asfasf");
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-        setIsSuccess(true);
-        setTimeout(() => {
-          setIsSuccess(false);
-          setRefresh((prev) => !prev);
-        }, 1000);
-      }, 1000);
-    }
-  };
   const handleDoneRequest = (request) => {
     // TODO:
     console.log(request);
@@ -63,25 +33,12 @@ function RequestsInProgress() {
   };
 
   useEffect(() => {
-    const getRequestsInProgress = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("authToken");
-      try {
-        const { data } = await axios.get(IWD_ROUTES.REQUESTS_IN_PROGRESS, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        });
-        console.log(data);
-        setRequestsInProgress(data.obj);
-        console.log(role);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    getRequestsInProgress();
+    GetRequests({
+      setLoading,
+      setRequestsList: setRequestsInProgress,
+      role,
+      URL: IWD_ROUTES.REQUESTS_IN_PROGRESS,
+    });
   }, [refresh]);
 
   return (
@@ -161,7 +118,14 @@ function RequestsInProgress() {
                       <>
                         <Button
                           size="xs"
-                          onClick={() => handleMarkAsCompleted(request)}
+                          onClick={() =>
+                            HandleMarkAsCompleted({
+                              setIsLoading,
+                              setIsSuccess,
+                              setRefresh,
+                              request,
+                            })
+                          }
                           key={request.id}
                           style={{
                             backgroundColor: "#1E90FF",

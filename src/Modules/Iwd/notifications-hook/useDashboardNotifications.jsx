@@ -48,7 +48,6 @@ export function UseDashboardNotifications() {
     fetchDashboardData();
   }, [dispatch]);
 
-  // sortMap is an object that maps sorting categories to sorting functions.
   const sortedNotifications = useMemo(() => {
     const sortMap = {
       "Most Recent": (a, b) => new Date(b.timestamp) - new Date(a.timestamp),

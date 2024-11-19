@@ -10,9 +10,8 @@ import {
   Modal,
 } from "@mantine/core";
 // import { CaretLeft } from "@phosphor-icons/react";
-import axios from "axios";
 import ViewRequestFile from "./ViewRequestFile";
-import { IWD_ROUTES } from "../routes/iwdRoutes";
+import { GetAuditDocuments } from "../handlers/handlers";
 
 function AuditDocuments() {
   const role = useSelector((state) => state.user.role);
@@ -51,28 +50,8 @@ function AuditDocuments() {
   };
   // TODO:FIXME:
   useEffect(() => {
-    const getAuditDocuments = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("authToken");
-      try {
-        const response = await axios.get(IWD_ROUTES.AUDIT_DOCUMENTS, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-          params: {
-            role,
-          },
-        });
-        setAuditDocumentsList(response.data.data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     if (role) {
-      getAuditDocuments();
+      GetAuditDocuments({ setLoading, setAuditDocumentsList, role });
     }
   }, [role]);
 

@@ -11,10 +11,9 @@ import {
   CheckIcon,
   TextInput,
 } from "@mantine/core";
-import axios from "axios";
 import PropTypes from "prop-types";
 import classes from "../iwd.module.css";
-import { IWD_ROUTES } from "../routes/iwdRoutes";
+import { HandleAddBudget, HandleEditBudget } from "../handlers/handlers";
 
 function EditBudget({ selectedBudget, onBack, checkOperation }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -35,82 +34,6 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
   });
   console.log(form.getInputProps("description"));
 
-  const token = localStorage.getItem("authToken");
-
-  const handleEditBudget = async (formValues) => {
-    setIsLoading(true);
-    setIsSuccess(false);
-    try {
-      const response = await axios.post(
-        IWD_ROUTES.EDIT_BUDGET,
-        {
-          id: formValues.id,
-          name: formValues.name,
-          budget: formValues["budget-issued"],
-        },
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        },
-      );
-
-      if (response.status === 200) {
-        setTimeout(() => {
-          setIsLoading(false);
-          setIsSuccess(true);
-
-          setTimeout(() => {
-            onBack();
-          }, 1000);
-        }, 1000);
-      }
-      setTimeout(() => {
-        setIsLoading(false);
-        setIsSuccess(true);
-
-        setTimeout(() => {
-          onBack();
-        }, 1000);
-      }, 1000);
-    } catch (error) {
-      console.error("Error editing budget:", error);
-    }
-  };
-  const handleAddBudget = async (formValues) => {
-    setIsLoading(true);
-    setIsSuccess(false);
-
-    try {
-      const response = await axios.post(
-        IWD_ROUTES.ADD_BUDGET,
-        {
-          name: formValues.name,
-          budget: formValues["budget-issued"],
-        },
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        },
-      );
-
-      if (response.status === 201) {
-        setTimeout(() => {
-          setIsLoading(false);
-          setIsSuccess(true);
-          setTimeout(() => {
-            onBack();
-          }, 1000);
-        }, 1000);
-      }
-    } catch (error) {
-      console.error("Error adding budget:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     /* eslint-disable react/jsx-props-no-spreading */
     <Grid mt="xl">
@@ -118,9 +41,19 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
         <form
           onSubmit={form.onSubmit((values) => {
             if (checkOperation === "edit") {
-              handleEditBudget(values);
+              HandleEditBudget({
+                formValues: values,
+                setIsLoading,
+                setIsSuccess,
+                onBack,
+              });
             } else {
-              handleAddBudget(values);
+              HandleAddBudget({
+                formValues: values,
+                setIsLoading,
+                setIsSuccess,
+                onBack,
+              });
             }
             console.log(values);
           })}
@@ -147,7 +80,7 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
             >
               <Flex direction="column">
                 <Title size="26px" weight={700} pt="sm">
-                  Edit Budget
+                  {checkOperation === "edit" ? "Edit Budget" : "Add Budget"}
                 </Title>
               </Flex>
               {checkOperation === "edit" && (

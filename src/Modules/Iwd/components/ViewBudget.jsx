@@ -1,57 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Table, Container, Paper, Title, Grid, Loader } from "@mantine/core";
-import axios from "axios";
-import { IWD_ROUTES } from "../routes/iwdRoutes";
+import { GetBudgets } from "../handlers/handlers";
 import "./GlobTable.css";
-// view budget fxn
+
 export default function ViewBudget() {
-  // const [selectedBudget, setSelectedBudget] = useState(null);
-  // const handleViewBudget = (request) => {
-  //   // TODO:
-  //   setSelectedBudget(request);
-  // };
-
   const [loading, setLoading] = useState(false);
-
-  const [ViewBudgetList, setViewBudgetList] = useState([]);
+  const [ViewBudgetList, setBudgetList] = useState([]);
   useEffect(() => {
-    const getBudgets = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("authToken");
-      try {
-        const response = await axios.get(IWD_ROUTES.VIEW_BUDGET, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        });
-        // console.log(response.data);
-        setViewBudgetList(response.data.obj);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getBudgets();
+    GetBudgets({ setLoading, setBudgetList });
   }, []);
-  // console.log('ViewBudgetList:', ViewBudgetList, 'Type:', typeof ViewBudgetList);
-
-  // const ViewBudgetList = [
-  //   {
-  //     id: "1",
-  //     name: "divyansh",
-  //     "budget-issued": 2000,
-  //   },
-  //   {
-  //     id: "2",
-  //     name: "user2",
-  //     "budget-issued": 2200,
-  //   },
-  //   {
-  //     id: "3",
-  //     name: "user3",
-  //     "budget-issued": 2100,
-  //   },
-  // ];
 
   return (
     <Container className="container">

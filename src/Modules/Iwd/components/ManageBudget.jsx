@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Table, Button, Title, Grid, Loader } from "@mantine/core";
-import axios from "axios";
 import EditBudget from "./EditBudgetForm";
-import { IWD_ROUTES } from "../routes/iwdRoutes";
+import { GetBudgets } from "../handlers/handlers";
 
 function ManageBudget() {
   const [selectedBudget, setSelectedBudget] = useState(null);
@@ -19,24 +18,9 @@ function ManageBudget() {
 
   const [loading, setLoading] = useState(false);
 
-  const [budgetList, setbudgetList] = useState([]);
+  const [budgetList, setBudgetList] = useState([]);
   useEffect(() => {
-    const getBudgets = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("authToken");
-      try {
-        const response = await axios.get(IWD_ROUTES.VIEW_BUDGET, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        });
-        setbudgetList(response.data.obj);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getBudgets();
+    GetBudgets({ setLoading, setBudgetList });
   }, [operation]);
 
   return (

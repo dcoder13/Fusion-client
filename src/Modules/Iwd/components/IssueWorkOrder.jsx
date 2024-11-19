@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Table, Button, Container, Title, Loader, Grid } from "@mantine/core";
 import { CaretLeft } from "@phosphor-icons/react";
-import axios from "axios";
 import PropTypes from "prop-types";
 import IssueWorkOrderForm from "./IssueWorkOrderForm";
 import { IWD_ROUTES } from "../routes/iwdRoutes";
+import { GetRequests } from "../handlers/handlers";
 
 function IssueWorkOrder({ setActiveTab }) {
   const role = useSelector((state) => state.user.role);
@@ -21,31 +21,36 @@ function IssueWorkOrder({ setActiveTab }) {
 
   const [issueworkorderList, setissueworkorderList] = useState([]);
   useEffect(() => {
-    const getCreatedRequests = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("authToken");
-      try {
-        const response = await axios.get(
-          IWD_ROUTES.DIRECTOR_APPROVED_REQUESTS,
-          {
-            headers: {
-              Authorization: `Token ${token}`,
-            },
-            params: {
-              role,
-            },
-          },
-        );
-        setissueworkorderList(response.data.requests);
-        console.log(response);
-        console.log(response.data.requests);
+    // const getCreatedRequests = async () => {
+    //   setLoading(true);
+    //   const token = localStorage.getItem("authToken");
+    //   try {
+    //     const response = await axios.get(
+    //       IWD_ROUTES.DIRECTOR_APPROVED_REQUESTS,
+    //       {
+    //         headers: {
+    //           Authorization: `Token ${token}`,
+    //         },
+    //         params: {
+    //           role,
+    //         },
+    //       },
+    //     );
+    //     setissueworkorderList(response.data.requests);
+    //     console.log(response);
+    //     console.log(response.data.requests);
 
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getCreatedRequests();
+    //     setLoading(false);
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // };
+    GetRequests({
+      setLoading,
+      setRequestsList: setissueworkorderList,
+      role,
+      URL: IWD_ROUTES.DIRECTOR_APPROVED_REQUESTS,
+    });
   }, [role]);
   console.log(issueworkorderList);
 
