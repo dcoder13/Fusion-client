@@ -104,7 +104,7 @@ const HandleRequest = async ({
 const HandleUpdateRequest = async ({
   setIsLoading,
   setIsSuccess,
-  setActiveTab,
+  onBack,
   role,
   formValues,
 }) => {
@@ -129,13 +129,14 @@ const HandleUpdateRequest = async ({
       setIsLoading(false);
       setIsSuccess(true);
       setTimeout(() => {
-        setActiveTab("0");
-      }, 500);
+        onBack();
+      }, 1000);
     }, 1000);
   } catch (error) {
     console.log(error);
     setTimeout(() => {
       setIsLoading(false);
+      onBack();
     }, 1000);
   }
 };

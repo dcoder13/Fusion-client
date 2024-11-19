@@ -22,23 +22,23 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     { title: "Requests in Progress", component: <RequestsInProgress /> },
     {
       title: "Issue Work Order",
-      component: <IssueWorkOrder setActiveTab={setActiveTab} />,
+      component: <IssueWorkOrder />,
     },
     { title: "Generate Final Bill", component: <FinalBillRequest /> },
     {
       title: "Rejected Requests",
-      component: <RejectedRequests setActiveTab={setActiveTab} />,
+      component: <RejectedRequests />,
     },
     { title: "Manage Budget", component: <ManageBudget /> },
     {
       title: "Created Requests",
-      component: <CreatedRequests setActiveTab={setActiveTab} />,
+      component: <CreatedRequests />,
     },
     { title: "View Budget", component: <ViewBudget /> },
     { title: "Processed Bills", component: <ProcessedBills /> },
     {
       title: "Approve/Reject Requests",
-      component: <ApproveRejectRequest setActiveTab={setActiveTab} />,
+      component: <ApproveRejectRequest />,
     },
     { title: "Audit Document", component: <AuditDocument /> },
     { title: "Requests Status", component: <RequestsStatus /> },

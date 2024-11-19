@@ -18,7 +18,7 @@ import PropTypes from "prop-types";
 import classes from "./EngineerIssueWorkOrder.module.css";
 import { IWD_ROUTES } from "../routes/iwdRoutes";
 
-function IssueWorkOrderForm({ workOrder, onBack }) {
+function IssueWorkOrderForm({ workOrder }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [dateError, setDateError] = useState("");
@@ -290,7 +290,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                 </Notification>
               )}
 
-              <Flex direction="row-reverse" gap="xs">
+              <Flex direction="row" gap="xs">
                 <Button
                   size="sm"
                   variant="filled"
@@ -316,15 +316,6 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                   ) : (
                     "Submit"
                   )}
-                </Button>
-                <Button
-                  size="sm"
-                  variant="filled"
-                  color="gray"
-                  onClick={onBack}
-                  style={{ width: "100px", backgroundColor: "#B0B0B0" }}
-                >
-                  Back
                 </Button>
               </Flex>
             </Flex>

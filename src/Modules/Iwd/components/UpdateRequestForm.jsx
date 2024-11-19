@@ -19,7 +19,7 @@ import { DesignationsContext } from "../helper/designationContext";
 import classes from "../iwd.module.css";
 import { HandleUpdateRequest } from "../handlers/handlers";
 
-function UpdateRequestForm({ selectedRequest, onBack, setActiveTab }) {
+function UpdateRequestForm({ selectedRequest, onBack }) {
   const role = useSelector((state) => state.user.role);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -60,7 +60,7 @@ function UpdateRequestForm({ selectedRequest, onBack, setActiveTab }) {
               HandleUpdateRequest({
                 setIsLoading,
                 setIsSuccess,
-                setActiveTab,
+                onBack,
                 role,
                 formValues,
               });
@@ -201,7 +201,6 @@ UpdateRequestForm.propTypes = {
     description: PropTypes.string,
     area: PropTypes.string,
   }).isRequired,
-  setActiveTab: PropTypes.func.isRequired,
   onBack: PropTypes.func.isRequired,
 };
 
