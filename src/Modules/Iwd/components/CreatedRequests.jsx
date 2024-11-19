@@ -24,7 +24,7 @@ function CreatedRequests() {
   useEffect(() => {
     GetRequestsOrBills({
       setLoading,
-      setRequestsList,
+      setList: setRequestsList,
       role,
       URL: IWD_ROUTES.CREATED_REQUESTS,
     });
