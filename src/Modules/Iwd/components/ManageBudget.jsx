@@ -42,7 +42,7 @@ function ManageBudget() {
             borderLeft: "10px solid #1E90FF",
           }}
         >
-          <Title align="center" mb="md" style={{ fontSize: "26px !important" }}>
+          <Title align="center" mb="md" size="26px">
             Manage Budgets
           </Title>
           <Table highlightOnHover withBorder withColumnBorders>

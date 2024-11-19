@@ -36,37 +36,43 @@ export default function ViewBudget() {
       <br />
 
       {loading ? (
-        <Grid mt="xl">
+        <Grid my="xl">
           <Container py="xl">
             <Loader size="lg" />
           </Container>
         </Grid>
-      ) : ViewBudgetList.length > 0 ? (
-        <div className="details-wrapper">
-          <Title align="center" mb="md" weight={700} size="26px">
-            Budget Details
-          </Title>
-          <Table highlightOnHover withBorder withColumnBorders>
-            <thead style={{ backgroundColor: "#f5f5f5" }}>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Budget Issued</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ViewBudgetList.map((request, index) => (
-                <tr key={index}>
-                  <td>{request.id}</td>
-                  <td>{request.name}</td>
-                  <td>{request.budgetIssued}</td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
       ) : (
-        console.log("No Data: Empty Array")
+        // <Paper className="s-table" shadow="xs">
+        <div className="details-wrapper">
+          <Title align="center" weight={700} size="26px" mb="md">
+            Details
+          </Title>
+          {ViewBudgetList.length > 0 ? (
+            <Table>
+              <thead style={{ backgroundColor: "#f5f5f5" }}>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Budget Issued</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ViewBudgetList.map((request, index) => (
+                  <tr key={index}>
+                    <td>{request.id}</td>
+                    <td>{request.name}</td>
+                    <td>{request.budgetIssued}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          ) : (
+            <Title align="center" size="14px" mt="md">
+              Empty List: No Budgets Found
+            </Title>
+          )}
+        </div>
+        // </Paper>
       )}
     </Container>
   );

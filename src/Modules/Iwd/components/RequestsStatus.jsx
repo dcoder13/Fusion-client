@@ -31,7 +31,7 @@ function CreatedRequests() {
   }, [role, refresh]);
 
   return (
-    <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+    <Container style={{ padding: "10px", fontFamily: "Arial, sans-serif" }}>
       <br />
       {loading ? (
         <Grid mt="xl">
@@ -49,7 +49,7 @@ function CreatedRequests() {
             borderLeft: "10px solid #1E90FF",
           }}
         >
-          <Title size="h3" align="center" style={{ marginBottom: "10px" }}>
+          <Title size="26px" align="center" mb="md">
             Requests Status
           </Title>
           <Table highlightOnHover>
@@ -77,7 +77,11 @@ function CreatedRequests() {
                     <Button
                       size="xs"
                       onClick={() => handleViewRequest(request)}
-                      style={{ backgroundColor: "#1E90FF", color: "white" }}
+                      style={{
+                        backgroundColor: "#1E90FF",
+                        color: "white",
+                        borderRadius: "20px",
+                      }}
                     >
                       View File
                     </Button>
