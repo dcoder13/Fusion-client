@@ -32,6 +32,11 @@ const GetRequests = async ({ setLoading, setRequestsList, role, URL }) => {
 };
 
 const GetFileData = async ({ setLoading, request, setMessages }) => {
+  /*
+    This function GETs entire tracking history of a file
+    Used in :
+    - ViewRequestFile
+  */
   setLoading(true);
   const token = localStorage.getItem("authToken");
   try {
@@ -104,9 +109,9 @@ const HandleUpdateRequest = async ({
   formValues,
 }) => {
   /* 
-    This function is for creating new requests
-    Used in 
-    - CreateRequestForm
+    This function is for updating existing requests
+    Used in :
+    - UpdateRequestForm
   */
   setIsLoading(true);
   setIsSuccess(false);
@@ -141,6 +146,11 @@ const HandleIssueWorkOrder = async ({
   setIsSuccess,
   onBack,
 }) => {
+  /* 
+    This function is for issuing work order for requests approved by director
+    Used in :
+    - IssueWorkOrderForm
+  */
   setIsLoading(true);
   setIsSuccess(false);
   const token = localStorage.getItem("authToken");
@@ -326,6 +336,11 @@ const HandleMarkAsCompleted = async ({
   setRefresh,
   request,
 }) => {
+  /* 
+    This function is for setting the workCompleted flag as 1 (i.e., work issued was completed)
+    Used in :
+    - UpdateRequestForm
+  */
   setIsLoading(true);
   const token = localStorage.getItem("authToken");
   try {
@@ -364,6 +379,11 @@ const HandleDirectorApproval = async ({
   action,
   role,
 }) => {
+  /* 
+    This function is for approving/rejecting requests for director
+    Used in :
+    - ViewRequestFile
+  */
   setIsLoading(true);
   setIsSuccess(false);
   const token = localStorage.getItem("authToken");
