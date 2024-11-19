@@ -52,8 +52,8 @@ function UpdateRequestForm({ selectedRequest, onBack }) {
 
   return (
     /* eslint-disable react/jsx-props-no-spreading */
-    <Grid mt="xl">
-      <div className="container">
+    <Grid mt="xs">
+      <div className="container" style={{ padding: "5px" }}>
         <form
           onSubmit={form.onSubmit((formValues) => {
             if (form.validate(formValues))
@@ -73,9 +73,10 @@ function UpdateRequestForm({ selectedRequest, onBack }) {
             pb="md"
             style={{
               borderLeft: "0.6rem solid #15ABFF",
-              width: "30vw",
+              width: "60vw",
               minHeight: "45vh",
               maxHeight: "70vh",
+              boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
             }}
             withBorder
             maw="1240px"
