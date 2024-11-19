@@ -12,17 +12,21 @@ export default function ModuleNotifications() {
     deleteNotification,
     read_Loading,
   } = UseDashboardNotifications();
+  console.log(sortedNotifications);
+  const moduleNotifications = sortedNotifications.filter(
+    (notification) => notification.data.module === "iwdModuleV2",
+  );
   return (
     <Grid mt="xl">
       {loading ? (
         <Container py="xl">
           <Loader size="lg" />
         </Container>
-      ) : sortedNotifications.filter((notification) => !notification.deleted)
+      ) : moduleNotifications.filter((notification) => !notification.deleted)
           .length === 0 ? (
         <Empty />
       ) : (
-        sortedNotifications
+        moduleNotifications
           .filter((notification) => !notification.deleted)
           .map((notification) => (
             <NotificationItem

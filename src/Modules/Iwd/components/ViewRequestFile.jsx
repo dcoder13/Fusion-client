@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import { useEffect, useState, useContext, useMemo } from "react";
-import axios from "axios";
 import {
   Card,
   Text,
@@ -20,9 +19,10 @@ import { useSelector } from "react-redux";
 import { useForm } from "@mantine/form";
 import { DesignationsContext } from "../helper/designationContext";
 import classes from "../iwd.module.css";
-import { host } from "../../../routes/globalRoutes";
+import { host } from "../../../routes/globalRoutes/index";
+import { GetFileData, HandleDirectorApproval } from "../handlers/handlers";
 
-export default function ViewRequestFile({ request, setActiveTab }) {
+export default function ViewRequestFile({ request, handleBackToList }) {
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -49,68 +49,9 @@ export default function ViewRequestFile({ request, setActiveTab }) {
     },
   });
   useEffect(() => {
-    const getRequestData = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("authToken");
-      try {
-        const response = await axios.get(`${host}/iwdModuleV2/api/view-file/`, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-          params: {
-            request_id: request.request_id,
-            name: request.name,
-            area: request.area,
-            description: request.description,
-            requestCreatedBy: request.requestCreatedBy,
-            file_id: request.file_id,
-          },
-        });
-        setMessages(response.data);
-        console.log("re", response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-        setLoading(false);
-      }
-    };
-    getRequestData();
+    GetFileData({ form, setLoading, request, setMessages });
   }, []);
   console.log(messages);
-  const handleDirectorApproval = async (action) => {
-    setIsLoading(true);
-    setIsSuccess(false);
-    const token = localStorage.getItem("authToken");
-    const formData = form.getValues();
-    formData.fileid = request.file_id;
-    formData.role = role;
-    formData.action = action;
-    console.log("formdata: ", formData, action);
-    try {
-      const response = await axios.post(
-        `${host}/iwdModuleV2/api/handle-director-approval-requests/`,
-        formData,
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        },
-      );
-      console.log(response);
-      setTimeout(() => {
-        setIsLoading(false);
-        setIsSuccess(true);
-        setTimeout(() => {
-          setActiveTab("0");
-        }, 500);
-      }, 1000);
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
-  };
-
   return (
     /* eslint-disable react/jsx-props-no-spreading */
     <div
@@ -239,7 +180,15 @@ export default function ViewRequestFile({ request, setActiveTab }) {
                     }}
                     disabled={isLoading || isSuccess}
                     onClick={() => {
-                      handleDirectorApproval("approve");
+                      HandleDirectorApproval({
+                        form,
+                        request,
+                        setIsLoading,
+                        setIsSuccess,
+                        handleBackToList,
+                        action: "approve",
+                        role,
+                      });
                     }}
                   >
                     {isLoading ? (
@@ -268,7 +217,15 @@ export default function ViewRequestFile({ request, setActiveTab }) {
                     }}
                     disabled={isLoading || isSuccess}
                     onClick={() => {
-                      handleDirectorApproval("reject");
+                      HandleDirectorApproval({
+                        form,
+                        request,
+                        setIsLoading,
+                        setIsSuccess,
+                        handleBackToList,
+                        action: "reject",
+                        role,
+                      });
                     }}
                   >
                     {isLoading ? (
@@ -304,5 +261,5 @@ ViewRequestFile.propTypes = {
     file_id: PropTypes.number.isRequired,
     processed_by_director: PropTypes.number.isRequired,
   }).isRequired,
-  setActiveTab: PropTypes.func.isRequired,
+  handleBackToList: PropTypes.func.isRequired,
 };

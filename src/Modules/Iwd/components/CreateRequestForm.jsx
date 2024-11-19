@@ -15,14 +15,12 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import PropTypes from "prop-types";
-import axios from "axios";
 import classes from "../iwd.module.css";
-import { host } from "../../../routes/globalRoutes";
 import { DesignationsContext } from "../helper/designationContext";
+import { HandleRequest } from "../handlers/handlers";
 
 function CreateRequest({ setActiveTab }) {
   const role = useSelector((state) => state.user.role);
-
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const designations = useContext(DesignationsContext);
@@ -34,7 +32,7 @@ function CreateRequest({ setActiveTab }) {
       ),
     [designations],
   );
-  // console.log(designationsList);
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -50,36 +48,6 @@ function CreateRequest({ setActiveTab }) {
       designation: (value) => (value ? null : "Field is required"),
     },
   });
-  const handleSubmitButtonClick = async () => {
-    setIsLoading(true);
-    setIsSuccess(false);
-    const token = localStorage.getItem("authToken");
-    const data = form.getValues();
-    data.role = role;
-    console.log(data);
-    try {
-      const response = await axios.post(
-        `${host}/iwdModuleV2/api/requests-view/`,
-        data,
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        },
-      );
-      console.log(response);
-      setTimeout(() => {
-        setIsLoading(false);
-        setIsSuccess(true);
-        setTimeout(() => {
-          setActiveTab("0");
-        }, 500);
-      }, 1000);
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
-  };
 
   return (
     /* eslint-disable react/jsx-props-no-spreading */
@@ -97,7 +65,14 @@ function CreateRequest({ setActiveTab }) {
       >
         <form
           onSubmit={form.onSubmit((values) => {
-            if (form.validate(values)) handleSubmitButtonClick();
+            if (form.validate(values))
+              HandleRequest({
+                setIsLoading,
+                setIsSuccess,
+                setActiveTab,
+                role,
+                form,
+              });
           })}
         >
           <Paper

@@ -15,10 +15,9 @@ import {
   TextInput,
 } from "@mantine/core";
 import PropTypes from "prop-types";
-import axios from "axios";
-import { host } from "../../../routes/globalRoutes";
 import { DesignationsContext } from "../helper/designationContext";
 import classes from "../iwd.module.css";
+import { HandleUpdateRequest } from "../handlers/handlers";
 
 function UpdateRequestForm({ selectedRequest, onBack, setActiveTab }) {
   const role = useSelector((state) => state.user.role);
@@ -51,47 +50,20 @@ function UpdateRequestForm({ selectedRequest, onBack, setActiveTab }) {
     },
   });
 
-  const handleSubmitButtonClick = async () => {
-    setIsLoading(true);
-    setIsSuccess(false);
-    const token = localStorage.getItem("authToken");
-    const data = form.getValues();
-    data.role = role;
-    data.id = selectedRequest.id;
-
-    try {
-      const response = await axios.patch(
-        `${host}/iwdModuleV2/api/handle-update-requests/`,
-        data,
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        },
-      );
-
-      console.log(response);
-      setTimeout(() => {
-        setIsLoading(false);
-        setIsSuccess(true);
-        setTimeout(() => {
-          setActiveTab("0");
-        }, 1000);
-      }, 1000);
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
-  };
-
   return (
     /* eslint-disable react/jsx-props-no-spreading */
     <Grid mt="xl">
       <div className="container">
         <form
-          onSubmit={form.onSubmit((values) => {
-            if (form.validate(values)) handleSubmitButtonClick();
-            console.log(values);
+          onSubmit={form.onSubmit((formValues) => {
+            if (form.validate(formValues))
+              HandleUpdateRequest({
+                setIsLoading,
+                setIsSuccess,
+                setActiveTab,
+                role,
+                formValues,
+              });
           })}
         >
           <Paper

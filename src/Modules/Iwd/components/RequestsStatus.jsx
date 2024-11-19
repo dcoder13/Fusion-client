@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
 import { Container, Table, Button, Title, Loader, Grid } from "@mantine/core";
 import { CaretLeft } from "@phosphor-icons/react";
-import axios from "axios";
 import ViewRequestFile from "./ViewRequestFile";
-import { host } from "../../../routes/globalRoutes";
-// import { DesignationsContext } from "../helper/designationContext";
+import { IWD_ROUTES } from "../routes/iwdRoutes";
+import { GetRequests } from "../handlers/handlers";
 
-function CreatedRequests({ setActiveTab }) {
+function CreatedRequests() {
   const role = useSelector((state) => state.user.role);
   const [loading, setLoading] = useState(false);
-
+  const [refresh, setRefresh] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const handleViewRequest = (request) => {
     setSelectedRequest(request);
@@ -19,34 +17,19 @@ function CreatedRequests({ setActiveTab }) {
 
   const handleBackToList = () => {
     setSelectedRequest(null);
+    setRefresh((prev) => !prev);
   };
 
   const [createdRequestsList, setRequestsList] = useState([]);
   useEffect(() => {
-    const getCreatedRequests = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("authToken");
-      try {
-        const response = await axios.get(
-          `${host}/iwdModuleV2/api/created-requests-view/`,
-          {
-            headers: {
-              Authorization: `Token ${token}`,
-            },
-            params: {
-              role,
-            },
-          },
-        );
-        setRequestsList(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getCreatedRequests();
-  }, [role]);
-  console.log(createdRequestsList);
+    GetRequests({
+      setLoading,
+      setRequestsList,
+      role,
+      URL: IWD_ROUTES.REQUESTS_STATUS,
+    });
+  }, [role, refresh]);
+
   return (
     <Container style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
       <br />
@@ -67,7 +50,7 @@ function CreatedRequests({ setActiveTab }) {
           }}
         >
           <Title size="h3" align="center" style={{ marginBottom: "10px" }}>
-            Created Requests
+            Requests Status
           </Title>
           <Table highlightOnHover>
             <thead style={{ backgroundColor: "#f5f5f5" }}>
@@ -77,6 +60,7 @@ function CreatedRequests({ setActiveTab }) {
                 <th>Description</th>
                 <th>Area</th>
                 <th>Created By</th>
+                <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -88,6 +72,7 @@ function CreatedRequests({ setActiveTab }) {
                   <td>{request.description}</td>
                   <td>{request.area}</td>
                   <td>{request.requestCreatedBy}</td>
+                  <td>{request.status}</td>
                   <td>
                     <Button
                       size="xs"
@@ -114,15 +99,12 @@ function CreatedRequests({ setActiveTab }) {
           </Button>
           <ViewRequestFile
             request={selectedRequest}
-            setActiveTab={setActiveTab}
+            handleBackToList={handleBackToList}
           />
         </>
       )}
     </Container>
   );
 }
-CreatedRequests.propTypes = {
-  setActiveTab: PropTypes.func,
-};
 
 export default CreatedRequests;
