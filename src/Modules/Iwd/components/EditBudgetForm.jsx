@@ -36,8 +36,8 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
 
   return (
     /* eslint-disable react/jsx-props-no-spreading */
-    <Grid mt="xl">
-      <div className="container">
+    <Grid mt="xs">
+      <div className="container" style={{ padding: "5px" }}>
         <form
           onSubmit={form.onSubmit((values) => {
             if (checkOperation === "edit") {
@@ -65,9 +65,10 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
             pb="xl"
             style={{
               borderLeft: "0.6rem solid #15ABFF",
-              width: "50vw",
+              width: "60vw",
               minHeight: "45vh",
               maxHeight: "70vh",
+              boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
             }}
             withBorder
             maw="1240px"

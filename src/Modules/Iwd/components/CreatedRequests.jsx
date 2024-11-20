@@ -77,7 +77,11 @@ function CreatedRequests() {
                     <Button
                       size="xs"
                       onClick={() => handleViewRequest(request)}
-                      style={{ backgroundColor: "#1E90FF", color: "white" }}
+                      style={{
+                        backgroundColor: "#1E90FF",
+                        color: "white",
+                        borderRadius: "20px",
+                      }}
                     >
                       View File
                     </Button>
