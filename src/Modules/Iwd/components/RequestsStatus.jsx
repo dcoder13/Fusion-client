@@ -66,7 +66,7 @@ function CreatedRequests() {
             </thead>
             <tbody>
               {createdRequestsList.map((request, index) => (
-                <tr key={index} id={request.id}>
+                <tr key={index} id={request.request_id}>
                   <td>{request.request_id}</td>
                   <td>{request.name}</td>
                   <td>{request.description}</td>

@@ -84,7 +84,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                   <Flex direction="column" gap="xs">
                     <TextInput
                       label="Request ID"
-                      readOnly
+                      disabled
                       classNames={classes}
                       key={form.key("request_id")}
                       {...form.getInputProps("request_id")}
@@ -95,7 +95,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                   <Flex direction="column" gap="xs">
                     <TextInput
                       label="Request Name"
-                      readOnly
+                      disabled
                       classNames={classes}
                       key={form.key("name")}
                       {...form.getInputProps("name")}

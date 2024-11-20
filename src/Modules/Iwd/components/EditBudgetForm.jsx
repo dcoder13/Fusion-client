@@ -91,7 +91,7 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
                     classNames={classes}
                     key={form.key("id")}
                     {...form.getInputProps("id")}
-                    readOnly
+                    disabled
                   />
                 </Flex>
               )}
@@ -100,6 +100,7 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
                   label="Name"
                   placeholder=""
                   classNames={classes}
+                  required
                   key={form.key("name")}
                   {...form.getInputProps("name")}
                 />
@@ -129,7 +130,6 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
                     border: "none",
                     borderRadius: "20px",
                   }}
-                  // onClick={handleSubmitButtonClick}
                   disabled={isLoading || isSuccess}
                 >
                   {isLoading ? (

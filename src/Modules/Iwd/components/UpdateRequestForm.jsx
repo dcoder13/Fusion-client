@@ -37,6 +37,7 @@ function UpdateRequestForm({ selectedRequest, onBack }) {
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
+      id: selectedRequest.id,
       name: selectedRequest.name,
       description: selectedRequest.description,
       area: selectedRequest.area,
@@ -90,6 +91,17 @@ function UpdateRequestForm({ selectedRequest, onBack }) {
                 <Title size="26px" style={{ fontWeight: "bold" }}>
                   Update Request
                 </Title>
+              </Flex>
+
+              <Flex direction="column" gap="xs" justify="flex-start">
+                <TextInput
+                  label="ID"
+                  placeholder=""
+                  classNames={classes}
+                  key={form.key("id")}
+                  {...form.getInputProps("id")}
+                  disabled
+                />
               </Flex>
 
               <Flex direction="column" gap="xs" justify="flex-start">

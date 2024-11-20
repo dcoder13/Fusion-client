@@ -39,14 +39,8 @@ const GetFileData = async ({ setLoading, request, setMessages }) => {
     - ViewRequestFile
   */
   setLoading(true);
-  const params = {
-    request_id: request.request_id,
-    name: request.name,
-    area: request.area,
-    description: request.description,
-    requestCreatedBy: request.requestCreatedBy,
-    file_id: request.file_id,
-  };
+  const params = { file_id: request.file_id };
+  console.log("params", params);
   const token = localStorage.getItem("authToken");
   try {
     const response = await axios.get(IWD_ROUTES.VIEW_FILE, {
@@ -347,8 +341,8 @@ const HandleDirectorApproval = async ({
   setIsLoading,
   setIsSuccess,
   handleBackToList,
-  action,
   role,
+  action,
 }) => {
   /* 
     This function is for approving/rejecting requests for director
@@ -388,6 +382,51 @@ const HandleDirectorApproval = async ({
   }
 };
 
+const HandleDeanProcessRequest = async ({
+  form,
+  request,
+  setIsLoading,
+  setIsSuccess,
+  handleBackToList,
+  role,
+}) => {
+  /* 
+    This function is for approving/rejecting requests for director
+    Used in :
+    - ViewRequestFile
+  */
+  setIsLoading(true);
+  setIsSuccess(false);
+  const token = localStorage.getItem("authToken");
+  const formData = form.getValues();
+  formData.fileid = request.file_id;
+  formData.role = role;
+  try {
+    const response = await axios.post(
+      IWD_ROUTES.HANDLE_DEAN_PROCESS_REQUEST,
+      formData,
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+    console.log(response);
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+        handleBackToList();
+      }, 1000);
+    }, 1000);
+  } catch (error) {
+    console.log(error);
+    setIsLoading(false);
+  }
+};
+
 export {
   GetRequestsOrBills,
   GetBudgets,
@@ -399,4 +438,5 @@ export {
   HandleDirectorApproval,
   HandleMarkAsCompleted,
   HandleEditBudget,
+  HandleDeanProcessRequest,
 };

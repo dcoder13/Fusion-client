@@ -57,7 +57,7 @@ function IssueWorkOrder() {
               align="center"
               style={{ marginBottom: "10px", padding: "10px" }}
             >
-              Work Orders
+              Issue Work Order
             </Title>
             <Table highlightOnHover>
               <thead style={{ backgroundColor: "#f5f5f5" }}>

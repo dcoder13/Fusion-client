@@ -7,7 +7,7 @@ import FinalBillRequest from "../components/FinalBillRequest";
 import ManageBudget from "../components/ManageBudget";
 import CreatedRequests from "../components/CreatedRequests";
 import ViewBudget from "../components/ViewBudget";
-import ProcessedBills from "../components/ProcessedBills";
+import ProcessBills from "../components/ProcessBills";
 import RequestsStatus from "../components/RequestsStatus";
 import ApproveRejectRequest from "../components/ApproveRejectRequest";
 import AuditDocument from "../components/AuditDocument";
@@ -35,7 +35,7 @@ const RoleBasedFilter = ({ setActiveTab }) => {
       component: <CreatedRequests />,
     },
     { title: "View Budget", component: <ViewBudget /> },
-    { title: "Processed Bills", component: <ProcessedBills /> },
+    { title: "Process Bills", component: <ProcessBills /> },
     {
       title: "Approve/Reject Requests",
       component: <ApproveRejectRequest />,
@@ -85,6 +85,7 @@ const RoleBasedFilter = ({ setActiveTab }) => {
         "View Budget",
         "Requests Status",
         "Rejected Requests",
+        "Process Bills",
       ].includes(tab.title),
     ),
     Professor: tabItems.filter((tab) =>
@@ -95,6 +96,7 @@ const RoleBasedFilter = ({ setActiveTab }) => {
         "Created Requests",
         "Requests Status",
         "Rejected Requests",
+        "Process Bills",
       ].includes(tab.title),
     ),
     EE: tabItems.filter((tab) =>
@@ -108,6 +110,7 @@ const RoleBasedFilter = ({ setActiveTab }) => {
         "View Budget",
         "Requests Status",
         "Rejected Requests",
+        "Process Bills",
       ].includes(tab.title),
     ),
     "Executive Engineer (Civil)": tabItems.filter((tab) =>
@@ -121,6 +124,7 @@ const RoleBasedFilter = ({ setActiveTab }) => {
         "View Budget",
         "Requests Status",
         "Rejected Requests",
+        "Process Bills",
       ].includes(tab.title),
     ),
     Civil_AE: tabItems.filter((tab) =>
@@ -134,6 +138,7 @@ const RoleBasedFilter = ({ setActiveTab }) => {
         "View Budget",
         "Requests Status",
         "Rejected Requests",
+        "Process Bills",
       ].includes(tab.title),
     ),
     Civil_JE: tabItems.filter((tab) =>
@@ -147,6 +152,7 @@ const RoleBasedFilter = ({ setActiveTab }) => {
         "View Budget",
         "Requests Status",
         "Rejected Requests",
+        "Process Bills",
       ].includes(tab.title),
     ),
     Electrical_JE: tabItems.filter((tab) =>
@@ -160,6 +166,7 @@ const RoleBasedFilter = ({ setActiveTab }) => {
         "View Budget",
         "Requests Status",
         "Rejected Requests",
+        "Process Bills",
       ].includes(tab.title),
     ),
     Electrical_AE: tabItems.filter((tab) =>
@@ -173,6 +180,7 @@ const RoleBasedFilter = ({ setActiveTab }) => {
         "View Budget",
         "Requests Status",
         "Rejected Requests",
+        "Process Bills",
       ].includes(tab.title),
     ),
     "Junior Engineer": tabItems.filter((tab) =>
@@ -186,6 +194,7 @@ const RoleBasedFilter = ({ setActiveTab }) => {
         "View Budget",
         "Requests Status",
         "Rejected Requests",
+        "Process Bills",
       ].includes(tab.title),
     ),
     "Admin IWD": tabItems.filter((tab) =>
