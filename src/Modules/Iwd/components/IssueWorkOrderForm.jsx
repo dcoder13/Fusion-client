@@ -115,6 +115,30 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                       {...form.getInputProps("date")}
                       valueFormat="YYYY-MM-DD"
                       size="xs"
+                      styles={{
+                        calendarHeader: {
+                          // backgroundColor: "#e0f7fa",
+                          color: "#1E90FF",
+                          fontSize: "16px",
+                          width: "300px",
+                          display: "flex",
+                          height: "",
+                          fontWeight: "bold",
+                        },
+                        calendarHeaderIcon: {
+                          color: "#00796b",
+                          fontSize: "20px",
+                          fontWeight: "bold",
+                        },
+                        dropdown: {
+                          width: "300px",
+                          maxHeight: "350px",
+                          overflow: "auto",
+                        },
+                        calendar: {
+                          fontSize: "14px",
+                        },
+                      }}
                     />
                   </Flex>
                 </Grid.Col>
@@ -173,7 +197,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
               <Grid columns="1" style={{ width: "100%" }}>
                 <Grid.Col span={1}>
                   <Flex direction="column" gap="xs">
-                    <DateInput
+                    {/* <DateInput
                       label="Start Date"
                       placeholder="yyyy/mm/dd"
                       classNames={classes}
@@ -192,6 +216,39 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                         },
                       }}
                       required
+                    /> */}
+                    <DateInput
+                      label="Start Date"
+                      placeholder="yyyy/mm/dd"
+                      classNames={classes}
+                      key={form.key("start_date")}
+                      {...form.getInputProps("start_date")}
+                      valueFormat="YYYY-MM-DD"
+                      styles={{
+                        calendarHeader: {
+                          // backgroundColor: "#e0f7fa",
+                          color: "#1E90FF",
+                          fontSize: "16px",
+                          width: "300px",
+                          display: "flex",
+                          height: "",
+                          fontWeight: "bold",
+                        },
+                        calendarHeaderIcon: {
+                          color: "#1E90FF",
+                          fontSize: "20px",
+                          fontWeight: "bold",
+                        },
+                        dropdown: {
+                          width: "300px",
+                          maxHeight: "350px",
+                          overflow: "auto",
+                        },
+                        calendar: {
+                          fontSize: "14px",
+                        },
+                      }}
+                      required
                     />
                   </Flex>
                 </Grid.Col>
@@ -205,6 +262,20 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                       {...form.getInputProps("completion_date")}
                       valueFormat="YYYY-MM-DD"
                       styles={{
+                        calendarHeader: {
+                          // backgroundColor: "#e0f7fa",
+                          color: "#1E90FF",
+                          fontSize: "16px",
+                          width: "300px",
+                          display: "flex",
+                          height: "",
+                          fontWeight: "bold",
+                        },
+                        calendarHeaderIcon: {
+                          color: "#00796b",
+                          fontSize: "20px",
+                          fontWeight: "bold",
+                        },
                         dropdown: {
                           width: "300px",
                           maxHeight: "350px",
