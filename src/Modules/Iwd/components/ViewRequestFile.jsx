@@ -54,10 +54,9 @@ export default function ViewRequestFile({ request, handleBackToList }) {
   ];
   useEffect(() => {
     GetFileData({ form, setLoading, request, setMessages });
-    if (role === "Director") {
-      if (request.directorApproval === 0) setFileAction(3);
-      else setFileAction(0);
-    } else if (role === "Dean (P&D)") {
+    if (role === "Director" && request.directorApproval === 0) {
+      setFileAction(3);
+    } else if (role === "Dean (P&D)" && request.processed_by_dean === 0) {
       setFileAction(1);
     } else if (role === "EE" || role === "SectionHead_IWD") {
       if (request.issuedWorkOrder === 0) {
@@ -71,7 +70,6 @@ export default function ViewRequestFile({ request, handleBackToList }) {
       setFileAction(0);
     }
   }, []);
-  console.log("directoirApproval: ", request.directorApproval);
   return (
     <div
       style={{
@@ -164,6 +162,7 @@ ViewRequestFile.propTypes = {
     requestCreatedBy: PropTypes.string,
     file_id: PropTypes.number.isRequired,
     directorApproval: PropTypes.number,
+    processed_by_dean: PropTypes.number,
     issuedWorkOrder: PropTypes.number,
     workCompleted: PropTypes.number,
   }).isRequired,
