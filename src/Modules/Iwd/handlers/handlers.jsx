@@ -335,6 +335,52 @@ const HandleMarkAsCompleted = async ({
     }, 1000);
   }
 };
+
+const HandleEngineerProcess = async ({
+  form,
+  request,
+  setIsLoading,
+  setIsSuccess,
+  handleBackToList,
+  role,
+}) => {
+  /* 
+    This function is for forwarding request
+    Used in :
+    - ViewRequestFile
+  */
+  setIsLoading(true);
+  setIsSuccess(false);
+  const token = localStorage.getItem("authToken");
+  const formData = form.getValues();
+  formData.fileid = request.file_id;
+  formData.role = role;
+  try {
+    const response = await axios.post(
+      IWD_ROUTES.HANDLE_ENGINEER_PROCESS,
+      formData,
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+    console.log(response);
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+        handleBackToList();
+      }, 1000);
+    }, 1000);
+  } catch (error) {
+    console.log(error);
+    setIsLoading(false);
+  }
+};
+
 const HandleDirectorApproval = async ({
   form,
   request,
@@ -439,4 +485,5 @@ export {
   HandleMarkAsCompleted,
   HandleEditBudget,
   HandleDeanProcessRequest,
+  HandleEngineerProcess,
 };

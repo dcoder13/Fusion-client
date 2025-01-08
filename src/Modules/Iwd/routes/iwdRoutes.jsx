@@ -11,6 +11,7 @@ export const IWD_ROUTES = {
   REQUESTS_IN_PROGRESS: `${host}/iwdModuleV2/api/requests-in-progress/`,
   VIEW_FILE: `${host}/iwdModuleV2/api/view-file/`,
   REQUESTS_STATUS: `${host}/iwdModuleV2/api/requests-status/`,
+  WORK_UNDER_PROGRESS: `${host}/iwdModuleV2/api/work-under-progress/`,
   // POST
   HANDLE_PROCESS_BILLS: `${host}/iwdModuleV2/api/handle-process-bills/`,
   CREATE_REQUESTS: `${host}/iwdModuleV2/api/create-request/`,
@@ -18,10 +19,10 @@ export const IWD_ROUTES = {
   ISSUE_WORK_ORDER: `${host}/iwdModuleV2/api/issue-work-order/`,
   HANDLE_DIRECTOR_APPROVAL: `${host}/iwdModuleV2/api/handle-director-approval/`,
   HANDLE_DEAN_PROCESS_REQUEST: `${host}/iwdModuleV2/api/handle-dean-process-request/`,
+  HANDLE_ENGINEER_PROCESS: `${host}/iwdModuleV2/api/handle-engineer-process/`,
   AUDIT_DOCUMENT: `${host}/iwdModuleV2/api/audit-document/`,
   // PATCH
   EDIT_BUDGET: `${host}/iwdModuleV2/api/edit-budget/`,
   MARK_COMPLETED: `${host}/iwdModuleV2/api/work-completed/`,
   UPDATE_REQUESTS: `${host}/iwdModuleV2/api/handle-update-requests/`,
-  WORK_UNDER_PROGRESS: `${host}/iwdModuleV2/api/work-under-progress/`,
 };

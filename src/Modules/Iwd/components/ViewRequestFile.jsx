@@ -58,16 +58,8 @@ export default function ViewRequestFile({ request, handleBackToList }) {
       setFileAction(3);
     } else if (role === "Dean (P&D)" && request.processed_by_dean === 0) {
       setFileAction(1);
-    } else if (role === "EE" || role === "SectionHead_IWD") {
-      if (request.issuedWorkOrder === 0) {
-        setFileAction(2);
-      } else if (request.issuedWorkOrder === 1 && request.workCompleted === 0) {
-        setFileAction(4);
-      } else {
-        setFileAction(0);
-      }
     } else {
-      setFileAction(0);
+      setFileAction(2);
     }
   }, []);
   return (

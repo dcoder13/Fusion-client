@@ -14,7 +14,7 @@ import {
 
 import { DesignationsContext } from "../../helper/designationContext";
 import classes from "../../iwd.module.css";
-import { HandleDirectorApproval } from "../../handlers/handlers";
+import { HandleEngineerProcess } from "../../handlers/handlers";
 
 function EngineerProcess({ form, request, handleBackToList }) {
   console.log("engineer\n\n");
@@ -85,13 +85,12 @@ function EngineerProcess({ form, request, handleBackToList }) {
           }}
           disabled={isLoading || isSuccess}
           onClick={() => {
-            HandleDirectorApproval({
+            HandleEngineerProcess({
               form,
               request,
               setIsLoading,
               setIsSuccess,
               handleBackToList,
-              action: "approve",
               role,
             });
           }}
@@ -105,44 +104,7 @@ function EngineerProcess({ form, request, handleBackToList }) {
               <CheckIcon size="16px" color="black" />
             </Center>
           ) : (
-            "Approve File"
-          )}
-        </Button>
-        <Button
-          size="sm"
-          variant="filled"
-          color="black"
-          type="submit"
-          style={{
-            width: "auto",
-            backgroundColor: "#1E90FF",
-            color: isSuccess ? "black" : "white",
-            border: "none",
-            borderRadius: "20px",
-          }}
-          disabled={isLoading || isSuccess}
-          onClick={() => {
-            HandleDirectorApproval({
-              form,
-              request,
-              setIsLoading,
-              setIsSuccess,
-              handleBackToList,
-              action: "reject",
-              role,
-            });
-          }}
-        >
-          {isLoading ? (
-            <Center>
-              <Loader color="black" size="xs" />
-            </Center>
-          ) : isSuccess ? (
-            <Center>
-              <CheckIcon size="16px" color="black" />
-            </Center>
-          ) : (
-            "Reject File"
+            "Forward File"
           )}
         </Button>
       </Flex>
