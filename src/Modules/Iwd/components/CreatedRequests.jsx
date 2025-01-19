@@ -61,7 +61,7 @@ function CreatedRequests() {
                 <th>Description</th>
                 <th>Area</th>
                 <th>Created By</th>
-                <th>Proposal</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>

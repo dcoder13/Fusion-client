@@ -12,7 +12,6 @@ import {
   Center,
   CheckIcon,
   TextInput,
-  FileInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import PropTypes from "prop-types";
@@ -150,21 +149,11 @@ function CreateRequest({ setActiveTab }) {
                   comboboxProps={{ withinPortal: true }}
                   data={designationsList}
                   placeholder="Director(Dir)"
-                  label="Request to"
+                  label="Designation"
                   classNames={classes}
                   key={form.key("designation")}
                   {...form.getInputProps("designation")}
                   required
-                />
-              </Flex>
-              <Flex direction="column" gap="xs" justify="flex-start">
-                <FileInput
-                  label="Upload Proposal(must be in .csv format)"
-                  required
-                  placeholder="Select .csv file"
-                  accept=".csv"
-                  key={form.key("csvFile")}
-                  {...form.getInputProps("csvFile")}
                 />
               </Flex>
 
