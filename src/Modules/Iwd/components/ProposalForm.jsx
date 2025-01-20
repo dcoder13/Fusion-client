@@ -59,7 +59,7 @@ function CreateProposalForm({ onBack }) {
       setIsSuccess(true);
       setTimeout(() => {
         setIsSuccess(false);
-        onBack(); // Go back on successful submission
+        onBack();
       }, 1500);
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -75,10 +75,10 @@ function CreateProposalForm({ onBack }) {
         px="lg"
         pb="xl"
         style={{
-          borderLeft: "0.6rem solid #15ABFF",
+          // borderLeft: "0.6rem solid #15ABFF",
           width: "35vw",
-          minHeight: "50vh",
-          boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
+          // minHeight: "50vh",
+          // boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
         }}
         withBorder
       >
@@ -129,7 +129,7 @@ function CreateProposalForm({ onBack }) {
                 type="submit"
                 style={{
                   width: "100px",
-                  borderRadius: "20px",
+                  borderRadius: "10px",
                   backgroundColor: "#1E90FF",
                   color: "white",
                 }}
