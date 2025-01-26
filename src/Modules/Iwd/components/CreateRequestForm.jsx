@@ -56,11 +56,16 @@ function CreateRequest({ setActiveTab }) {
       <div
         className="container"
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          position: "absolute",
-          left: "25%",
+          // display: "flex",
+          // justifyContent: "center",
+          // alignItems: "center",
+          // position: "absolute",
+          // left: "25%",
+          maxWidth: "1240px",
+          width: "100%",
+          margin: "0 auto",
+          padding: "1rem",
+          boxSizing: "border-box",
         }}
       >
         <form
@@ -82,7 +87,7 @@ function CreateRequest({ setActiveTab }) {
             pb="xl"
             style={{
               borderLeft: "0.6rem solid #15ABFF",
-              width: "60vw",
+              // width: "60vw",
               minHeight: "45vh",
               maxHeight: "70vh",
               boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
