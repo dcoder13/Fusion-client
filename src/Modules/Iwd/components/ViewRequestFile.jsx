@@ -197,12 +197,14 @@ import DirectorApproval from "./FileActions/DirectorApproval";
 import EngineerProcess from "./FileActions/EngineerProcess";
 import ProcessBill from "./FileActions/ProcessBill";
 import CreateProposalForm from "./ProposalForm";
+import ViewProposalsStatic from "./viewproposals";
 
 export default function ViewRequestFile({ request, handleBackToList }) {
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState({});
   const [fileAction, setFileAction] = useState(0);
-  const [showProposalForm, setShowProposalForm] = useState(false); // State to toggle the proposal form
+  const [showProposalForm, setShowProposalForm] = useState(false); // Toggle proposal form visibility
+  const [showViewProposals, setShowViewProposals] = useState(false); // Toggle proposals list visibility
   const role = useSelector((state) => state.user.role);
 
   const form = useForm({
@@ -346,22 +348,40 @@ export default function ViewRequestFile({ request, handleBackToList }) {
                 </Card>
               ))}
             </Stack>
-            <Button
-              variant="light"
-              radius="md"
-              onClick={() => setShowProposalForm((prev) => !prev)} // Toggle proposal form visibility
-              sx={{
-                textOverflow: "ellipsis",
-                maxWidth: "200px",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-              }}
-            >
-              Proposal Form
-            </Button>
+
+            <Group spacing="md" mt="md">
+              <Button
+                variant="light"
+                radius="md"
+                onClick={() => setShowProposalForm((prev) => !prev)}
+                sx={{
+                  textOverflow: "ellipsis",
+                  maxWidth: "200px",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Proposal Form
+              </Button>
+              <Button
+                variant="light"
+                radius="md"
+                onClick={() => setShowViewProposals((prev) => !prev)}
+                sx={{
+                  textOverflow: "ellipsis",
+                  maxWidth: "200px",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                View Proposals
+              </Button>
+            </Group>
+
             {showProposalForm && (
               <CreateProposalForm onBack={handleBackToList} />
             )}
+            {showViewProposals && <ViewProposalsStatic />}
             {fileActionsList[fileAction]}
           </>
         )}
