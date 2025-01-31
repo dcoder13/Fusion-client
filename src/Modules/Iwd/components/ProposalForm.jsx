@@ -15,10 +15,12 @@ import {
   CheckIcon,
   FileInput,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks"; // Import useMediaQuery from @mantine/hooks
 
 function CreateProposalForm({ onBack }) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
+  const isMobile = useMediaQuery("(max-width: 768px)"); // Detect mobile screens
 
   const form = useForm({
     initialValues: {
@@ -75,15 +77,17 @@ function CreateProposalForm({ onBack }) {
         px="lg"
         pb="xl"
         style={{
-          // borderLeft: "0.6rem solid #15ABFF",
-          width: "35vw",
-          // minHeight: "50vh",
-          // boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
+          width: isMobile ? "90vw" : "35vw", // Adjust width for mobile
+          boxShadow: "none", // Remove the border shadow
+          paddingRight: isMobile ? "132px" : "0", // Add padding right for mobile
         }}
-        withBorder
       >
         <Flex direction="column" gap="lg">
-          <Title size="26px" weight={700} pt="sm">
+          <Title
+            size={isMobile ? "22px" : "26px"} // Adjust title size for mobile
+            weight={700}
+            pt="sm"
+          >
             Create New Proposal
           </Title>
           <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -121,14 +125,18 @@ function CreateProposalForm({ onBack }) {
               label="Upload Document (Optional)"
               {...form.getInputProps("docs")}
             />
-            <Flex gap="xs" mt="md">
+            <Flex
+              gap="xs"
+              mt="md"
+              direction={isMobile ? "column" : "row"} // Stack buttons vertically on mobile
+            >
               <Button
                 size="sm"
                 variant="filled"
                 color="blue"
                 type="submit"
                 style={{
-                  width: "100px",
+                  width: isMobile ? "100%" : "100px", // Full width on mobile
                   borderRadius: "10px",
                   backgroundColor: "#1E90FF",
                   color: "white",
@@ -153,6 +161,7 @@ function CreateProposalForm({ onBack }) {
                 color="gray"
                 onClick={onBack}
                 style={{
+                  width: isMobile ? "100%" : "auto", // Full width on mobile
                   borderRadius: "20px",
                 }}
                 disabled={isLoading}
