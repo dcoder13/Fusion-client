@@ -12,15 +12,15 @@ import {
   Title,
   Loader,
   Center,
-  CheckIcon,
   FileInput,
 } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks"; // Import useMediaQuery from @mantine/hooks
+import { useMediaQuery } from "@mantine/hooks";
+import { HandleProposalSubmission } from "../handlers/handlers";
 
 function CreateProposalForm({ onBack }) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
-  const isMobile = useMediaQuery("(max-width: 768px)"); // Detect mobile screens
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   const form = useForm({
     initialValues: {
@@ -31,7 +31,7 @@ function CreateProposalForm({ onBack }) {
       unit: "",
       pricePerUnit: "",
       totalPrice: "",
-      docs: null, // Optional file input for document upload
+      docs: null,
     },
     validate: {
       itemId: (value) => (value ? null : "Item ID is required"),
@@ -48,28 +48,6 @@ function CreateProposalForm({ onBack }) {
     },
   });
 
-  const handleSubmit = async (values) => {
-    setIsLoading(true);
-    console.log("Submitted Values:", values);
-
-    try {
-      // Simulate an API call
-      await new Promise((resolve) => {
-        setTimeout(resolve, 2000);
-      });
-
-      setIsSuccess(true);
-      setTimeout(() => {
-        setIsSuccess(false);
-        onBack();
-      }, 1500);
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <Container>
       <Paper
@@ -77,20 +55,26 @@ function CreateProposalForm({ onBack }) {
         px="lg"
         pb="xl"
         style={{
-          width: isMobile ? "90vw" : "35vw", // Adjust width for mobile
-          boxShadow: "none", // Remove the border shadow
-          paddingRight: isMobile ? "132px" : "0", // Add padding right for mobile
+          width: isMobile ? "90vw" : "35vw",
+          boxShadow: "none",
+          paddingRight: isMobile ? "132px" : "0",
         }}
       >
         <Flex direction="column" gap="lg">
-          <Title
-            size={isMobile ? "22px" : "26px"} // Adjust title size for mobile
-            weight={700}
-            pt="sm"
-          >
+          <Title size={isMobile ? "22px" : "26px"} weight={700} pt="sm">
             Create New Proposal
           </Title>
-          <form onSubmit={form.onSubmit(handleSubmit)}>
+          <form
+            onSubmit={form.onSubmit((values) => {
+              if (form.validate(values)) {
+                HandleProposalSubmission({
+                  setIsLoading,
+                  setIsSuccess,
+                  form,
+                });
+              }
+            })}
+          >
             <TextInput
               label="Item ID"
               required
@@ -125,18 +109,14 @@ function CreateProposalForm({ onBack }) {
               label="Upload Document (Optional)"
               {...form.getInputProps("docs")}
             />
-            <Flex
-              gap="xs"
-              mt="md"
-              direction={isMobile ? "column" : "row"} // Stack buttons vertically on mobile
-            >
+            <Flex gap="xs" mt="md" direction={isMobile ? "column" : "row"}>
               <Button
                 size="sm"
                 variant="filled"
                 color="blue"
                 type="submit"
                 style={{
-                  width: isMobile ? "100%" : "100px", // Full width on mobile
+                  width: isMobile ? "100%" : "100px",
                   borderRadius: "10px",
                   backgroundColor: "#1E90FF",
                   color: "white",
@@ -149,7 +129,7 @@ function CreateProposalForm({ onBack }) {
                   </Center>
                 ) : isSuccess ? (
                   <Center>
-                    <CheckIcon size="16px" color="white" />
+                    <span style={{ color: "white" }}>Success</span>
                   </Center>
                 ) : (
                   "Submit"
@@ -161,7 +141,7 @@ function CreateProposalForm({ onBack }) {
                 color="gray"
                 onClick={onBack}
                 style={{
-                  width: isMobile ? "100%" : "auto", // Full width on mobile
+                  width: isMobile ? "100%" : "auto",
                   borderRadius: "20px",
                 }}
                 disabled={isLoading}

@@ -21,6 +21,7 @@ export const IWD_ROUTES = {
   HANDLE_DEAN_PROCESS_REQUEST: `${host}/iwdModuleV2/api/handle-dean-process-request/`,
   HANDLE_ENGINEER_PROCESS: `${host}/iwdModuleV2/api/handle-engineer-process/`,
   AUDIT_DOCUMENT: `${host}/iwdModuleV2/api/audit-document/`,
+  CREATE_PROPOSAL: `${host}/iwdModuleV2/api/create-proposal/`,
   // PATCH
   EDIT_BUDGET: `${host}/iwdModuleV2/api/edit-budget/`,
   MARK_COMPLETED: `${host}/iwdModuleV2/api/work-completed/`,

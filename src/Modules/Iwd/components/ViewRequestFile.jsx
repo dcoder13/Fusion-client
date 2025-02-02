@@ -107,14 +107,12 @@ export default function ViewRequestFile({ request, handleBackToList }) {
               </Text>
               {statusBadge()}
             </Group>
-
             <Group position="apart" mb="md">
               <Text style={{ color: "#1e90ff", fontWeight: 600 }}>
                 Created By:
               </Text>
               <Text>{messages.file?.uploader || "N/A"}</Text>
             </Group>
-
             <Text size="lg" mt="md" fw={500} style={{ color: "#1e90ff" }}>
               File Tracking Information
             </Text>
