@@ -472,6 +472,47 @@ const HandleDeanProcessRequest = async ({
     setIsLoading(false);
   }
 };
+const HandleProposalSubmission = async ({
+  setIsLoading,
+  setIsSuccess,
+  onBack,
+  form,
+}) => {
+  setIsLoading(true);
+  setIsSuccess(false);
+
+  const token = localStorage.getItem("authToken");
+  const formData = new FormData();
+
+  Object.entries(form.values).forEach(([key, value]) => {
+    if (value !== null) {
+      formData.append(key, value);
+    }
+  });
+
+  try {
+    const response = await axios.post(IWD_ROUTES.CREATE_PROPOSAL, formData, {
+      headers: {
+        Authorization: `Token ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    if (response.status !== 200) {
+      throw new Error("Failed to submit form");
+    }
+
+    setIsSuccess(true);
+    setTimeout(() => {
+      setIsSuccess(false);
+      onBack();
+    }, 1500);
+  } catch (error) {
+    console.error("Error submitting proposal:", error);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
 export {
   GetRequestsOrBills,
@@ -486,4 +527,5 @@ export {
   HandleEditBudget,
   HandleDeanProcessRequest,
   HandleEngineerProcess,
+  HandleProposalSubmission,
 };
