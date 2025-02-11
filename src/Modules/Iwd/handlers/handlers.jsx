@@ -482,23 +482,43 @@ const HandleProposalSubmission = async ({
   setIsSuccess(false);
 
   const token = localStorage.getItem("authToken");
-  const formData = new FormData();
+  // const formData = new FormData();
+  // console.log("form", form.values);
+  // Object.entries(form.values).forEach(([key, value]) => {
+  //   console.log(key, value);
+  //   if (value !== null) {
+  //     formData.append(key, value);
+  //     // console.log(2);
+  //     // console.log(formData);
+  //   }
+  // });
 
-  Object.entries(form.values).forEach(([key, value]) => {
-    if (value !== null) {
-      formData.append(key, value);
-    }
-  });
+  // construct the payload ensuring nested objects remain intact.
+  const payload = {
+    ...form.values,
+    // ensures that file fields are set to null if they are empty.
+    supporting_documents: form.values.supporting_documents || null,
+    items: form.values.items.map((item) => ({
+      name: item.name, // ensures that these fiels are not empty
+      description: item.description,
+      unit: item.unit,
+      price_per_unit: item.price_per_unit,
+      total_price: item.total_price,
+      docs: item.docs || null,
+    })),
+  };
+
+  console.log(payload);
 
   try {
-    const response = await axios.post(IWD_ROUTES.CREATE_PROPOSAL, formData, {
+    const response = await axios.post(IWD_ROUTES.CREATE_PROPOSAL, payload, {
       headers: {
         Authorization: `Token ${token}`,
-        "Content-Type": "multipart/form-data",
+        // "Content-Type": "multipart/form-data",
       },
     });
 
-    if (response.status !== 200) {
+    if (response.status < 200 || response.status >= 300) {
       throw new Error("Failed to submit form");
     }
 

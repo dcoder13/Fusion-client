@@ -1,131 +1,9 @@
 /* eslint-disable no-restricted-globals */
-// /* eslint-disable react/jsx-props-no-spreading */
-// import React from "react";
-// import PropTypes from "prop-types";
-// import { useForm } from "@mantine/form";
-// import {
-//   Container,
-//   Paper,
-//   TextInput,
-//   Textarea,
-//   Button,
-//   Flex,
-//   Title,
-//   Loader,
-//   Center,
-//   FileInput,
-// } from "@mantine/core";
-// import { useMediaQuery } from "@mantine/hooks";
-// import { HandleProposalSubmission } from "../handlers/handlers";
-
-// function CreateProposalForm({ onBack }) {
-//   const [isLoading, setIsLoading] = React.useState(false);
-//   const [isSuccess, setIsSuccess] = React.useState(false);
-//   const isMobile = useMediaQuery("(max-width: 768px)");
-
-//   const form = useForm({
-//     initialValues: {
-//       id: "",
-//       unit: "",
-//       supporting_documents: null,
-//       items: [],
-//       status: "Pending",
-//     },
-//   });
-
-//   return (
-//     <Container>
-//       <Paper
-//         radius="md"
-//         px="lg"
-//         pb="xl"
-//         style={{
-//           width: isMobile ? "90vw" : "35vw",
-//           boxShadow: "none",
-//           paddingRight: isMobile ? "132px" : "0",
-//         }}
-//       >
-//         <Flex direction="column" gap="lg">
-//           <Title size={isMobile ? "22px" : "26px"} weight={700} pt="sm">
-//             Create New Proposal
-//           </Title>
-//           <form
-//             onSubmit={form.onSubmit((values) => {
-//               if (form.validate(values)) {
-//                 HandleProposalSubmission({
-//                   setIsLoading,
-//                   setIsSuccess,
-//                   form,
-//                 });
-//               }
-//             })}
-//           >
-//             <TextInput
-//               label="request ID"
-//               disabled
-//               {...form.getInputProps("id")}
-//             />
-//             <FileInput
-//               label="Upload Document (Optional)"
-//               {...form.getInputProps("supporting_documents")}
-//             />
-//             <Flex gap="xs" mt="md" direction={isMobile ? "column" : "row"}>
-//               <Button
-//                 size="sm"
-//                 variant="filled"
-//                 color="blue"
-//                 type="submit"
-//                 style={{
-//                   width: isMobile ? "100%" : "100px",
-//                   borderRadius: "10px",
-//                   backgroundColor: "#1E90FF",
-//                   color: "white",
-//                 }}
-//                 disabled={isLoading || isSuccess}
-//               >
-//                 {isLoading ? (
-//                   <Center>
-//                     <Loader color="white" size="xs" />
-//                   </Center>
-//                 ) : isSuccess ? (
-//                   <Center>
-//                     <span style={{ color: "white" }}>Success</span>
-//                   </Center>
-//                 ) : (
-//                   "Submit"
-//                 )}
-//               </Button>
-//               <Button
-//                 size="sm"
-//                 variant="light"
-//                 color="gray"
-//                 onClick={onBack}
-//                 style={{
-//                   width: isMobile ? "100%" : "auto",
-//                   borderRadius: "20px",
-//                 }}
-//                 disabled={isLoading}
-//               >
-//                 Back
-//               </Button>
-//             </Flex>
-//           </form>
-//         </Flex>
-//       </Paper>
-//     </Container>
-//   );
-// }
-
-// CreateProposalForm.propTypes = {
-//   onBack: PropTypes.func.isRequired,
-// };
-
-// export default CreateProposalForm;
-
 /* eslint-disable react/jsx-props-no-spreading */
-import React from "react";
+import React, { useContext, useMemo } from "react";
 import PropTypes from "prop-types";
 import { useForm } from "@mantine/form";
+import { useSelector } from "react-redux";
 import {
   Container,
   Paper,
@@ -138,19 +16,34 @@ import {
   Center,
   FileInput,
   Divider,
+  Select,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
+import classes from "../iwd.module.css";
+import { DesignationsContext } from "../helper/designationContext";
 import { HandleProposalSubmission } from "../handlers/handlers";
 
 function CreateProposalForm({ onBack }) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const designations = useContext(DesignationsContext);
+  const designationsList = useMemo(
+    () =>
+      designations.map(
+        (designation) =>
+          `${designation.designation.name}|${designation.username}`,
+      ),
+    [designations],
+  );
+  // Fetch current role from Redux store.
+  const currentRole = useSelector((state) => state.user.role);
 
   const form = useForm({
     initialValues: {
       id: "",
       supporting_documents: null,
+      designation: "",
       items: [
         {
           name: "",
@@ -162,6 +55,7 @@ function CreateProposalForm({ onBack }) {
         },
       ],
       status: "Pending",
+      role: currentRole || "",
     },
 
     validate: (values) => {
@@ -260,18 +154,42 @@ function CreateProposalForm({ onBack }) {
           </Title>
           <form
             onSubmit={form.onSubmit((values) => {
+              if (!values.id) {
+                alert("ID is required!");
+                return;
+              }
+
+              if (!values.designation.includes("|")) {
+                alert(
+                  "Invalid designation format! It should be 'Role|Username'.",
+                );
+                return;
+              }
+
+              const payload = {
+                ...values,
+                items: values.items.map((item) => ({
+                  ...item,
+                  docs: item.docs || "",
+                })),
+                supporting_documents: values.supporting_documents || "",
+              };
+
+              console.log(payload);
               if (form.validate(values)) {
                 HandleProposalSubmission({
                   setIsLoading,
                   setIsSuccess,
+                  onBack,
                   form,
                 });
               }
             })}
           >
             <TextInput
-              label="Request ID"
-              disabled
+              label="ID"
+              required
+              placeholder="Enter ID"
               {...form.getInputProps("id")}
             />
 
@@ -294,16 +212,26 @@ function CreateProposalForm({ onBack }) {
             >
               Add Item
             </Button>
-
             <FileInput
               label="Supporting Documents (Optional)"
               placeholder="Choose a file"
               color="black"
-              // key={form.key("file")}
               my="sm"
               {...form.getInputProps("supporting_documents")}
             />
-
+            <Flex direction="column" gap="xs" justify="flex-start">
+              <Select
+                mt="md"
+                comboboxProps={{ withinPortal: true }}
+                data={designationsList}
+                placeholder="Director(Dir)"
+                label="Designation"
+                classNames={classes}
+                key={form.key("designation")}
+                {...form.getInputProps("designation")}
+                required
+              />
+            </Flex>
             <Flex gap="xs" mt="xl" direction={isMobile ? "column" : "row"}>
               <Button
                 size="sm"
