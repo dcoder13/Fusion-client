@@ -1,7 +1,9 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable react/jsx-props-no-spreading */
-import React from "react";
+import React, { useContext, useMemo } from "react";
 import PropTypes from "prop-types";
 import { useForm } from "@mantine/form";
+import { useSelector } from "react-redux";
 import {
   Container,
   Paper,
@@ -13,40 +15,126 @@ import {
   Loader,
   Center,
   FileInput,
+  Divider,
+  Select,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
+import classes from "../iwd.module.css";
+import { DesignationsContext } from "../helper/designationContext";
 import { HandleProposalSubmission } from "../handlers/handlers";
 
 function CreateProposalForm({ onBack }) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const designations = useContext(DesignationsContext);
+  const designationsList = useMemo(
+    () =>
+      designations.map(
+        (designation) =>
+          `${designation.designation.name}|${designation.username}`,
+      ),
+    [designations],
+  );
+  // Fetch current role from Redux store.
+  const currentRole = useSelector((state) => state.user.role);
 
   const form = useForm({
     initialValues: {
-      itemId: "",
-      proposalId: "",
-      itemName: "",
-      itemDescription: "",
-      unit: "",
-      pricePerUnit: "",
-      totalPrice: "",
-      docs: null,
+      id: "",
+      supporting_documents: null,
+      designation: "",
+      items: [
+        {
+          name: "",
+          description: "",
+          unit: "",
+          price_per_unit: "",
+          total_price: "",
+          docs: null,
+        },
+      ],
+      status: "Pending",
+      role: currentRole || "",
     },
-    validate: {
-      itemId: (value) => (value ? null : "Item ID is required"),
-      proposalId: (value) => (value ? null : "Proposal ID is required"),
-      itemName: (value) => (value ? null : "Item Name is required"),
-      pricePerUnit: (value) =>
-        value && !Number.isNaN(Number(value))
-          ? null
-          : "Price per Unit must be a number",
-      totalPrice: (value) =>
-        value && !Number.isNaN(Number(value))
-          ? null
-          : "Total Price must be a number",
+
+    validate: (values) => {
+      const errors = {};
+      values.items.forEach((item, index) => {
+        if (!item.name.trim())
+          errors[`items.${index}.name`] = "Name is required";
+        if (!item.description.trim())
+          errors[`items.${index}.description`] = "Description is required";
+        if (!item.unit.trim())
+          errors[`items.${index}.unit`] = "Unit is required";
+        if (!item.price_per_unit || isNaN(Number(item.price_per_unit)))
+          errors[`items.${index}.price_per_unit`] = "Valid price is required";
+        if (!item.total_price || isNaN(Number(item.total_price)))
+          errors[`items.${index}.total_price`] = "Valid total is required";
+      });
+      return errors;
     },
   });
+
+  const fields = form.values.items.map((_, index) => (
+    <div key={index} style={{ position: "relative", marginBottom: 20 }}>
+      {index > 0 && (
+        <Button
+          variant="light"
+          color="red"
+          size="sm"
+          style={{ position: "absolute", top: -10, right: 0 }}
+          onClick={() => form.removeListItem("items", index)}
+        >
+          Remove
+        </Button>
+      )}
+      <Title order={4} mt={index > 0 ? "xl" : "md"} mb="sm">
+        Item {index + 1}
+      </Title>
+      <TextInput
+        label="Name"
+        required
+        placeholder="Enter item name"
+        {...form.getInputProps(`items.${index}.name`)}
+      />
+      <Textarea
+        label="Description"
+        required
+        placeholder="Item description"
+        mt="sm"
+        {...form.getInputProps(`items.${index}.description`)}
+      />
+      <Flex gap="md" mt="sm">
+        <TextInput
+          label="Unit"
+          required
+          placeholder="e.g., pcs, kg"
+          {...form.getInputProps(`items.${index}.unit`)}
+        />
+        <TextInput
+          label="Price Per Unit"
+          required
+          type="number"
+          placeholder="0.00"
+          {...form.getInputProps(`items.${index}.price_per_unit`)}
+        />
+        <TextInput
+          label="Total Price"
+          required
+          type="number"
+          placeholder="0.00"
+          {...form.getInputProps(`items.${index}.total_price`)}
+        />
+      </Flex>
+      <FileInput
+        label="Item Document (Optional)"
+        mt="sm"
+        {...form.getInputProps(`items.${index}.docs`)}
+      />
+      <Divider mt="xl" />
+    </div>
+  ));
 
   return (
     <Container>
@@ -66,50 +154,85 @@ function CreateProposalForm({ onBack }) {
           </Title>
           <form
             onSubmit={form.onSubmit((values) => {
+              if (!values.id) {
+                alert("ID is required!");
+                return;
+              }
+
+              if (!values.designation.includes("|")) {
+                alert(
+                  "Invalid designation format! It should be 'Role|Username'.",
+                );
+                return;
+              }
+
+              const payload = {
+                ...values,
+                items: values.items.map((item) => ({
+                  ...item,
+                  docs: item.docs || "",
+                })),
+                supporting_documents: values.supporting_documents || "",
+              };
+
+              console.log(payload);
               if (form.validate(values)) {
                 HandleProposalSubmission({
                   setIsLoading,
                   setIsSuccess,
+                  onBack,
                   form,
                 });
               }
             })}
           >
             <TextInput
-              label="Item ID"
+              label="ID"
               required
-              {...form.getInputProps("itemId")}
+              placeholder="Enter ID"
+              {...form.getInputProps("id")}
             />
-            <TextInput
-              label="Proposal ID"
-              required
-              {...form.getInputProps("proposalId")}
-            />
-            <TextInput
-              label="Item Name"
-              required
-              {...form.getInputProps("itemName")}
-            />
-            <Textarea
-              label="Item Description"
-              {...form.getInputProps("itemDescription")}
-            />
-            <TextInput label="Unit" {...form.getInputProps("unit")} />
-            <TextInput
-              label="Price Per Unit"
-              required
-              {...form.getInputProps("pricePerUnit")}
-            />
-            <TextInput
-              label="Total Price"
-              required
-              {...form.getInputProps("totalPrice")}
-            />
+
+            {fields}
+
+            <Button
+              variant="outline"
+              fullWidth
+              mt="md"
+              onClick={() =>
+                form.insertListItem("items", {
+                  name: "",
+                  description: "",
+                  unit: "",
+                  price_per_unit: "",
+                  total_price: "",
+                  docs: null,
+                })
+              }
+            >
+              Add Item
+            </Button>
             <FileInput
-              label="Upload Document (Optional)"
-              {...form.getInputProps("docs")}
+              label="Supporting Documents (Optional)"
+              placeholder="Choose a file"
+              color="black"
+              my="sm"
+              {...form.getInputProps("supporting_documents")}
             />
-            <Flex gap="xs" mt="md" direction={isMobile ? "column" : "row"}>
+            <Flex direction="column" gap="xs" justify="flex-start">
+              <Select
+                mt="md"
+                comboboxProps={{ withinPortal: true }}
+                data={designationsList}
+                placeholder="Director(Dir)"
+                label="Designation"
+                classNames={classes}
+                key={form.key("designation")}
+                {...form.getInputProps("designation")}
+                required
+              />
+            </Flex>
+            <Flex gap="xs" mt="xl" direction={isMobile ? "column" : "row"}>
               <Button
                 size="sm"
                 variant="filled"
