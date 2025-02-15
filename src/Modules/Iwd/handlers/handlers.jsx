@@ -534,6 +534,31 @@ const HandleProposalSubmission = async ({
   }
 };
 
+const GetProposals = async ({ setLoading, setProposalList, requestId }) => {
+  setLoading(true);
+  const token = localStorage.getItem("authToken");
+
+  try {
+    const response = await axios.post(
+      `${IWD_ROUTES.VIEW_PROPOSALS}`,
+      { request_id: requestId }, // Request body
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+        params: { request_id: requestId },
+      },
+    );
+
+    console.log("response", response);
+    setProposalList(response.data || []);
+  } catch (error) {
+    console.error("Error fetching proposals:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 export {
   GetRequestsOrBills,
   GetBudgets,
@@ -548,4 +573,5 @@ export {
   HandleDeanProcessRequest,
   HandleEngineerProcess,
   HandleProposalSubmission,
+  GetProposals,
 };
