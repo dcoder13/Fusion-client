@@ -4,7 +4,6 @@ import { Loader, Container, Table } from "@mantine/core";
 // import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { GetProposals } from "../handlers/handlers";
-import "./GlobTable.css";
 
 function ProposalTable({ requestId }) {
   // const requestId = useSelector((state) => state.request.id);

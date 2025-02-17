@@ -12,6 +12,7 @@ import EngineerProcess from "./FileActions/EngineerProcess";
 import ProcessBill from "./FileActions/ProcessBill";
 import CreateProposalForm from "./ProposalForm";
 import ProposalTable from "./viewproposals";
+import ItemTable from "./Items";
 
 export default function ViewRequestFile({ request, handleBackToList }) {
   const [loading, setLoading] = useState(true);
@@ -94,6 +95,11 @@ export default function ViewRequestFile({ request, handleBackToList }) {
           <CreateProposalForm onBack={() => setView("main")} />
         ) : view === "proposalTable" ? (
           <ProposalTable
+            requestId={request.request_id}
+            onBack={() => setView("main")}
+          />
+        ) : view === "viewItem" ? (
+          <ItemTable
             requestId={request.request_id}
             onBack={() => setView("main")}
           />
@@ -196,6 +202,20 @@ export default function ViewRequestFile({ request, handleBackToList }) {
                 }}
               >
                 View Proposals
+              </Button>
+
+              <Button
+                variant="light"
+                radius="md"
+                onClick={() => setView("viewItem")}
+                sx={{
+                  textOverflow: "ellipsis",
+                  maxWidth: "200px",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                View Items
               </Button>
             </Group>
 
