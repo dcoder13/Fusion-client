@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Container, Table, Button, Title, Loader, Grid } from "@mantine/core";
 import { CaretLeft } from "@phosphor-icons/react";
 import ViewRequestFile from "./ViewRequestFile";
-import { GetItems } from "../handlers/handlers"; // Assuming this is the handler to get items
+import { GetItems } from "../handlers/handlers";
 import { IWD_ROUTES } from "../routes/iwdRoutes";
 
 function ItemList() {
@@ -100,7 +100,6 @@ function ItemList() {
           >
             Back to List
           </Button>
-          {/* Assuming ViewItemFile handles item details */}
           <ViewRequestFile
             item={selectedItem}
             handleBackToList={handleBackToList}
