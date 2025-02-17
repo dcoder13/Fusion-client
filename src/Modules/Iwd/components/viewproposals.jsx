@@ -8,16 +8,18 @@ import "./GlobTable.css";
 function ProposalTable() {
   // const { requestId } = useParams();
   const requestId = 6;
-  const [items, setItems] = useState([]);
+  const [proposals, setproposals] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (requestId) {
-      GetProposals({ setLoading, setProposalList: setItems, requestId }).then(
-        () => {
-          console.log("Fetched Items:", items);
-        },
-      );
+      GetProposals({
+        setLoading,
+        setProposalList: setproposals,
+        requestId,
+      }).then(() => {
+        console.log("Fetched proposals:", proposals);
+      });
     } else {
       setLoading(false);
     }
@@ -32,25 +34,25 @@ function ProposalTable() {
           <thead>
             <tr>
               <th>Proposal ID</th>
-              <th>Item Name</th>
-              <th>Description</th>
-              <th>Unit</th>
-              <th>Price Per Unit</th>
-              <th>Total Price</th>
-              <th>View File</th>
+              <th>Created By</th>
+              <th>Last Updated</th>
+              <th>Created At</th>
+              <th>Current Status</th>
+              <th>File ID</th>
+              <th>Proposal Budget</th>
             </tr>
           </thead>
           <tbody>
-            {items.length > 0 ? (
-              items.map((item) => (
+            {proposals.length > 0 ? (
+              proposals.map((item) => (
                 <tr key={item.id}>
                   <td>{item.proposal_id || item.id}</td>
-                  <td>{item.name}</td>
-                  <td>{item.description}</td>
-                  <td>{item.unit}</td>
-                  <td>{item.price_per_unit}</td>
-                  <td>{item.total_price}</td>
-                  <td>{item.docs}</td>
+                  <td>{item.created_by}</td>
+                  <td>{item.updated_at}</td>
+                  <td>{item.created_at}</td>
+                  <td>{item.status}</td>
+                  <td>{item.file_id}</td>
+                  <td>{item.proposal_budget}</td>
                 </tr>
               ))
             ) : (
