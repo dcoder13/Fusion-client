@@ -11,14 +11,14 @@ import DirectorApproval from "./FileActions/DirectorApproval";
 import EngineerProcess from "./FileActions/EngineerProcess";
 import ProcessBill from "./FileActions/ProcessBill";
 import CreateProposalForm from "./ProposalForm";
-import ViewProposalsStatic from "./viewproposals";
+import ProposalTable from "./viewproposals";
+import ItemTable from "./Items";
 
 export default function ViewRequestFile({ request, handleBackToList }) {
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState({});
   const [fileAction, setFileAction] = useState(0);
-  const [showProposalForm, setShowProposalForm] = useState(false); // Toggle proposal form visibility
-  const [showViewProposals, setShowViewProposals] = useState(false); // Toggle proposals list visibility
+  const [view, setView] = useState("main");
   const role = useSelector((state) => state.user.role);
 
   const form = useForm({
@@ -76,11 +76,6 @@ export default function ViewRequestFile({ request, handleBackToList }) {
     }
   }, []);
 
-  // Function to handle back from proposal form
-  const handleBackFromProposalForm = () => {
-    setShowProposalForm(false);
-  };
-
   return (
     <div
       style={{
@@ -96,9 +91,18 @@ export default function ViewRequestFile({ request, handleBackToList }) {
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         {loading ? (
           <Loader size="lg" />
-        ) : showProposalForm ? (
-          // Render the proposal form if showProposalForm is true
-          <CreateProposalForm onBack={handleBackFromProposalForm} />
+        ) : view === "proposalForm" ? (
+          <CreateProposalForm onBack={() => setView("main")} />
+        ) : view === "proposalTable" ? (
+          <ProposalTable
+            requestId={request.request_id}
+            onBack={() => setView("main")}
+          />
+        ) : view === "viewItem" ? (
+          <ItemTable
+            requestId={request.request_id}
+            onBack={() => setView("main")}
+          />
         ) : (
           <>
             <Group position="apart" mb="md">
@@ -175,7 +179,7 @@ export default function ViewRequestFile({ request, handleBackToList }) {
               <Button
                 variant="light"
                 radius="md"
-                onClick={() => setShowProposalForm(true)} // Show proposal form
+                onClick={() => setView("proposalForm")}
                 sx={{
                   textOverflow: "ellipsis",
                   maxWidth: "200px",
@@ -185,10 +189,11 @@ export default function ViewRequestFile({ request, handleBackToList }) {
               >
                 Proposal Form
               </Button>
+
               <Button
                 variant="light"
                 radius="md"
-                onClick={() => setShowViewProposals((prev) => !prev)}
+                onClick={() => setView("proposalTable")}
                 sx={{
                   textOverflow: "ellipsis",
                   maxWidth: "200px",
@@ -198,9 +203,22 @@ export default function ViewRequestFile({ request, handleBackToList }) {
               >
                 View Proposals
               </Button>
+
+              <Button
+                variant="light"
+                radius="md"
+                onClick={() => setView("viewItem")}
+                sx={{
+                  textOverflow: "ellipsis",
+                  maxWidth: "200px",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                View Items
+              </Button>
             </Group>
 
-            {showViewProposals && <ViewProposalsStatic />}
             {fileActionsList[fileAction]}
           </>
         )}

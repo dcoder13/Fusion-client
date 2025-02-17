@@ -534,6 +534,53 @@ const HandleProposalSubmission = async ({
   }
 };
 
+const GetProposals = async ({ setLoading, setProposalList, requestId }) => {
+  setLoading(true);
+  const token = localStorage.getItem("authToken");
+
+  try {
+    console.log("Requesting proposals with Request ID:", requestId);
+    const response = await axios.post(
+      `${IWD_ROUTES.VIEW_PROPOSALS}`,
+      { request_id: requestId }, // Request body
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+        params: { request_id: requestId },
+      },
+    );
+
+    console.log("response", response);
+    setProposalList(response.data || []);
+  } catch (error) {
+    console.error("Error fetching proposals:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+const GetItems = async ({ setLoading, setItemList, role }) => {
+  setLoading(true);
+  const token = localStorage.getItem("authToken");
+
+  try {
+    console.log("Requesting items for role:", role);
+    const response = await axios.get(`${IWD_ROUTES.ITEMS_LIST}`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    });
+
+    console.log("response", response);
+    setItemList(response.data || []);
+  } catch (error) {
+    console.error("Error fetching items:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 export {
   GetRequestsOrBills,
   GetBudgets,
@@ -548,4 +595,6 @@ export {
   HandleDeanProcessRequest,
   HandleEngineerProcess,
   HandleProposalSubmission,
+  GetProposals,
+  GetItems,
 };
