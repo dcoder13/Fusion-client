@@ -539,6 +539,7 @@ const GetProposals = async ({ setLoading, setProposalList, requestId }) => {
   const token = localStorage.getItem("authToken");
 
   try {
+    console.log("Requesting proposals with Request ID:", requestId);
     const response = await axios.post(
       `${IWD_ROUTES.VIEW_PROPOSALS}`,
       { request_id: requestId }, // Request body

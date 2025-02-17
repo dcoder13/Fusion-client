@@ -2,16 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Loader, Container, Table } from "@mantine/core";
 // import { useSelector } from "react-redux";
 // import { useParams } from "react-router-dom";
+import PropTypes from "prop-types";
 import { GetProposals } from "../handlers/handlers";
 import "./GlobTable.css";
 
-function ProposalTable() {
-  // const { requestId } = useParams();
-  const requestId = 6;
+function ProposalTable({ requestId }) {
+  // const requestId = useSelector((state) => state.request.id);
+  // const requestId = 6;
   const [proposals, setproposals] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("Request ID:", requestId);
     if (requestId) {
       GetProposals({
         setLoading,
@@ -24,6 +26,10 @@ function ProposalTable() {
       setLoading(false);
     }
   }, [requestId]);
+
+  useEffect(() => {
+    console.log("Updated proposals:", proposals);
+  }, [proposals]);
 
   return (
     <Container>
@@ -68,5 +74,8 @@ function ProposalTable() {
     </Container>
   );
 }
+ProposalTable.propTypes = {
+  requestId: PropTypes.number.isRequired,
+};
 
 export default ProposalTable;
