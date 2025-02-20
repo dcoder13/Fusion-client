@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Loader, Container, Table } from "@mantine/core";
-// import { useSelector } from "react-redux";
-// import { useParams } from "react-router-dom";
+import { Loader, Container, Table, Button } from "@mantine/core";
 import PropTypes from "prop-types";
 import { GetProposals } from "../handlers/handlers";
-
+// import ViewSelectedProposal from "./viewSelectedProposal";
 function ProposalTable({ requestId }) {
-  // const requestId = useSelector((state) => state.request.id);
-  // const requestId = 6;
   const [proposals, setproposals] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -18,17 +14,11 @@ function ProposalTable({ requestId }) {
         setLoading,
         setProposalList: setproposals,
         requestId,
-      }).then(() => {
-        console.log("Fetched proposals:", proposals);
       });
     } else {
       setLoading(false);
     }
   }, [requestId]);
-
-  useEffect(() => {
-    console.log("Updated proposals:", proposals);
-  }, [proposals]);
 
   return (
     <Container>
@@ -39,12 +29,12 @@ function ProposalTable({ requestId }) {
           <thead>
             <tr>
               <th>Proposal ID</th>
+              <th>Current Status</th>
               <th>Created By</th>
               <th>Last Updated</th>
               <th>Created At</th>
-              <th>Current Status</th>
-              <th>File ID</th>
               <th>Proposal Budget</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -52,12 +42,22 @@ function ProposalTable({ requestId }) {
               proposals.map((item) => (
                 <tr key={item.id}>
                   <td>{item.proposal_id || item.id}</td>
+                  <td>{item.status}</td>
                   <td>{item.created_by}</td>
                   <td>{item.updated_at}</td>
                   <td>{item.created_at}</td>
-                  <td>{item.status}</td>
-                  <td>{item.file_id}</td>
                   <td>{item.proposal_budget}</td>
+                  <Button
+                    size="xs"
+                    // onClick={() => handleViewProposal(item)}
+                    style={{
+                      backgroundColor: "#1E90FF",
+                      color: "white",
+                      borderRadius: "20px",
+                    }}
+                  >
+                    View File
+                  </Button>
                 </tr>
               ))
             ) : (

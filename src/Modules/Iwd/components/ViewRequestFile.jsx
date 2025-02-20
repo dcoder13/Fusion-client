@@ -12,7 +12,7 @@ import EngineerProcess from "./FileActions/EngineerProcess";
 import ProcessBill from "./FileActions/ProcessBill";
 import CreateProposalForm from "./ProposalForm";
 import ProposalTable from "./viewproposals";
-import ItemTable from "./Items";
+import ItemTable from "./viewSelectedProposal";
 
 export default function ViewRequestFile({ request, handleBackToList }) {
   const [loading, setLoading] = useState(true);
@@ -75,14 +75,14 @@ export default function ViewRequestFile({ request, handleBackToList }) {
       setFileAction(2);
     }
   }, []);
-
+  console.log(1, request.active_proposal);
   return (
     <div
       style={{
         padding: "20px",
         borderRadius: "15px",
         boxShadow: "0px 4px 12px rgba(0,0,0,0.1)",
-        maxWidth: "850px",
+        maxWidth: "1024px",
         margin: "0 auto",
         backgroundColor: "#fff",
         borderLeft: "8px solid #1e90ff",
@@ -92,7 +92,10 @@ export default function ViewRequestFile({ request, handleBackToList }) {
         {loading ? (
           <Loader size="lg" />
         ) : view === "proposalForm" ? (
-          <CreateProposalForm onBack={() => setView("main")} />
+          <CreateProposalForm
+            onBack={() => setView("main")}
+            request_id={request.request_id}
+          />
         ) : view === "proposalTable" ? (
           <ProposalTable
             requestId={request.request_id}
@@ -176,20 +179,21 @@ export default function ViewRequestFile({ request, handleBackToList }) {
             </Stack>
 
             <Group spacing="md" mt="md">
-              <Button
-                variant="light"
-                radius="md"
-                onClick={() => setView("proposalForm")}
-                sx={{
-                  textOverflow: "ellipsis",
-                  maxWidth: "200px",
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                Proposal Form
-              </Button>
-
+              {request.active_proposal != null ? null : (
+                <Button
+                  variant="light"
+                  radius="md"
+                  onClick={() => setView("proposalForm")}
+                  sx={{
+                    textOverflow: "ellipsis",
+                    maxWidth: "200px",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Proposal Form
+                </Button>
+              )}
               <Button
                 variant="light"
                 radius="md"
@@ -219,7 +223,7 @@ export default function ViewRequestFile({ request, handleBackToList }) {
               </Button>
             </Group>
 
-            {fileActionsList[fileAction]}
+            {/* {fileActionsList[fileAction]} */}
           </>
         )}
       </Card>
@@ -239,6 +243,7 @@ ViewRequestFile.propTypes = {
     processed_by_dean: PropTypes.number,
     issuedWorkOrder: PropTypes.number,
     workCompleted: PropTypes.number,
+    active_proposal: PropTypes.number,
   }).isRequired,
   handleBackToList: PropTypes.func.isRequired,
 };

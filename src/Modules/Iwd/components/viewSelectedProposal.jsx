@@ -2,24 +2,44 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Container, Table, Button, Title, Loader, Grid } from "@mantine/core";
 import { CaretLeft } from "@phosphor-icons/react";
-import { GetItems } from "../handlers/handlers";
-import { IWD_ROUTES } from "../routes/iwdRoutes";
+import PropTypes from "prop-types";
+import { GetItems, GetProposals } from "../handlers/handlers";
 
-function ItemList() {
+function ViewSelectedProposal({ requestId }) {
   const role = useSelector((state) => state.user.role);
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [itemsList, setItemsList] = useState([]);
+  const [proposalId, setProposalId] = useState(null);
 
   useEffect(() => {
-    GetItems({
-      setLoading,
-      setList: setItemsList,
-      role,
-      URL: IWD_ROUTES.ITEMS_LIST,
-    });
-  }, [role, refresh]);
+    if (requestId) {
+      GetProposals({
+        setLoading,
+        setProposalList: (proposals) => {
+          if (proposals.length > 0) {
+            setProposalId(proposals.proposal_id || proposals.id);
+          }
+        },
+        requestId,
+      });
+    }
+  }, [requestId]);
+
+  useEffect(() => {
+    if (proposalId) {
+      GetItems({
+        setLoading,
+        setList: (items) => {
+          console.log("Setting itemsList:", items);
+          setItemsList(items);
+        },
+        role,
+        proposalId,
+      });
+    }
+  }, [proposalId, role, refresh]);
 
   const viewDoc = (item) => setSelectedItem(item);
   const handleBackToList = () => {
@@ -56,7 +76,7 @@ function ItemList() {
                 <th>Unit</th>
                 <th>Price Per Unit</th>
                 <th>Total Amount</th>
-                <th>Assets</th>
+                <th>Document (if any)</th>
               </tr>
             </thead>
             <tbody>
@@ -74,9 +94,7 @@ function ItemList() {
                         size="xs"
                         color="blue"
                         onClick={() => viewDoc(item)}
-                        style={{
-                          borderRadius: "20px",
-                        }}
+                        style={{ borderRadius: "20px" }}
                       >
                         View Docs
                       </Button>
@@ -107,4 +125,8 @@ function ItemList() {
   );
 }
 
-export default ItemList;
+ViewSelectedProposal.propTypes = {
+  requestId: PropTypes.number.isRequired,
+};
+
+export default ViewSelectedProposal;

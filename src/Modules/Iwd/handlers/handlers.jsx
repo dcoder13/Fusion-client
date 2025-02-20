@@ -482,39 +482,24 @@ const HandleProposalSubmission = async ({
   setIsSuccess(false);
 
   const token = localStorage.getItem("authToken");
-  // const formData = new FormData();
-  // console.log("form", form.values);
-  // Object.entries(form.values).forEach(([key, value]) => {
-  //   console.log(key, value);
-  //   if (value !== null) {
-  //     formData.append(key, value);
-  //     // console.log(2);
-  //     // console.log(formData);
-  //   }
-  // });
-
-  // construct the payload ensuring nested objects remain intact.
   const payload = {
     ...form.values,
-    // ensures that file fields are set to null if they are empty.
     supporting_documents: form.values.supporting_documents || null,
     items: form.values.items.map((item) => ({
-      name: item.name, // ensures that these fiels are not empty
+      name: item.name,
       description: item.description,
       unit: item.unit,
       price_per_unit: item.price_per_unit,
-      total_price: item.total_price,
+      quantity: item.quantity,
       docs: item.docs || null,
     })),
   };
-
   console.log(payload);
 
   try {
     const response = await axios.post(IWD_ROUTES.CREATE_PROPOSAL, payload, {
       headers: {
         Authorization: `Token ${token}`,
-        // "Content-Type": "multipart/form-data",
       },
     });
 
@@ -540,42 +525,33 @@ const GetProposals = async ({ setLoading, setProposalList, requestId }) => {
 
   try {
     console.log("Requesting proposals with Request ID:", requestId);
-    const response = await axios.post(
-      `${IWD_ROUTES.VIEW_PROPOSALS}`,
-      { request_id: requestId }, // Request body
-      {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-        params: { request_id: requestId },
+    const response = await axios.get(`${IWD_ROUTES.VIEW_PROPOSALS}`, {
+      headers: {
+        Authorization: `Token ${token}`,
       },
-    );
+      params: { request_id: requestId },
+    });
 
-    console.log("response", response);
     setProposalList(response.data || []);
   } catch (error) {
-    console.error("Error fetching proposals:", error);
+    console.log(error);
   } finally {
     setLoading(false);
   }
 };
 
-const GetItems = async ({ setLoading, setItemList, role }) => {
+const GetItems = async ({ setLoading, setList, proposalId }) => {
   setLoading(true);
   const token = localStorage.getItem("authToken");
 
   try {
-    console.log("Requesting items for role:", role);
-    const response = await axios.get(`${IWD_ROUTES.ITEMS_LIST}`, {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
+    const response = await axios.get(IWD_ROUTES.VIEW_ITEMS, {
+      headers: { Authorization: `Token ${token}` },
+      params: { proposal_id: proposalId },
     });
-
-    console.log("response", response);
-    setItemList(response.data || []);
+    setList(response.data);
   } catch (error) {
-    console.error("Error fetching items:", error);
+    console.log("Error fetching items:", error);
   } finally {
     setLoading(false);
   }

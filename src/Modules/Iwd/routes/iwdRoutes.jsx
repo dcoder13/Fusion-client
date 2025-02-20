@@ -13,7 +13,7 @@ export const IWD_ROUTES = {
   REQUESTS_STATUS: `${host}/iwdModuleV2/api/requests-status/`,
   WORK_UNDER_PROGRESS: `${host}/iwdModuleV2/api/work-under-progress/`,
   VIEW_PROPOSALS: `${host}/iwdModuleV2/api/get-proposals/`,
-  VIEW_ITEMS: `${host}/iwdModuleV2/api/view-items/`,
+  VIEW_ITEMS: `${host}/iwdModuleV2/api/get-items/`,
   // POST
   HANDLE_PROCESS_BILLS: `${host}/iwdModuleV2/api/handle-process-bills/`,
   CREATE_REQUESTS: `${host}/iwdModuleV2/api/create-request/`,

@@ -23,7 +23,7 @@ import classes from "../iwd.module.css";
 import { DesignationsContext } from "../helper/designationContext";
 import { HandleProposalSubmission } from "../handlers/handlers";
 
-function CreateProposalForm({ onBack }) {
+function CreateProposalForm({ onBack, request_id }) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -41,7 +41,7 @@ function CreateProposalForm({ onBack }) {
 
   const form = useForm({
     initialValues: {
-      id: "",
+      id: request_id,
       supporting_documents: null,
       designation: "",
       items: [
@@ -50,7 +50,7 @@ function CreateProposalForm({ onBack }) {
           description: "",
           unit: "",
           price_per_unit: "",
-          total_price: "",
+          quantity: "",
           docs: null,
         },
       ],
@@ -69,8 +69,8 @@ function CreateProposalForm({ onBack }) {
           errors[`items.${index}.unit`] = "Unit is required";
         if (!item.price_per_unit || isNaN(Number(item.price_per_unit)))
           errors[`items.${index}.price_per_unit`] = "Valid price is required";
-        if (!item.total_price || isNaN(Number(item.total_price)))
-          errors[`items.${index}.total_price`] = "Valid total is required";
+        if (!item.quantity || isNaN(Number(item.quantity)))
+          errors[`items.${index}.quantity`] = "Valid quantity is required";
       });
       return errors;
     },
@@ -120,11 +120,11 @@ function CreateProposalForm({ onBack }) {
           {...form.getInputProps(`items.${index}.price_per_unit`)}
         />
         <TextInput
-          label="Total Price"
+          label="Quantity"
           required
           type="number"
-          placeholder="0.00"
-          {...form.getInputProps(`items.${index}.total_price`)}
+          placeholder="0"
+          {...form.getInputProps(`items.${index}.quantity`)}
         />
       </Flex>
       <FileInput
@@ -154,11 +154,7 @@ function CreateProposalForm({ onBack }) {
           </Title>
           <form
             onSubmit={form.onSubmit((values) => {
-              if (!values.id) {
-                alert("ID is required!");
-                return;
-              }
-
+              console.log("testtest");
               if (!values.designation.includes("|")) {
                 alert(
                   "Invalid designation format! It should be 'Role|Username'.",
@@ -191,6 +187,7 @@ function CreateProposalForm({ onBack }) {
               required
               placeholder="Enter ID"
               {...form.getInputProps("id")}
+              disabled
             />
 
             {fields}
@@ -205,7 +202,7 @@ function CreateProposalForm({ onBack }) {
                   description: "",
                   unit: "",
                   price_per_unit: "",
-                  total_price: "",
+                  quantity: "",
                   docs: null,
                 })
               }
@@ -281,6 +278,7 @@ function CreateProposalForm({ onBack }) {
 
 CreateProposalForm.propTypes = {
   onBack: PropTypes.func.isRequired,
+  request_id: PropTypes.number.isRequired,
 };
 
 export default CreateProposalForm;
