@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 import axios from "axios";
 import { IWD_ROUTES } from "../routes/iwdRoutes";
 
@@ -518,8 +520,12 @@ const HandleProposalSubmission = async ({
     setIsLoading(false);
   }
 };
-
-const GetProposals = async ({ setLoading, setProposalList, requestId }) => {
+const GetProposals = async ({
+  setLoading,
+  setProposalList,
+  requestId,
+  setProposalIds,
+}) => {
   setLoading(true);
   const token = localStorage.getItem("authToken");
 
@@ -531,6 +537,9 @@ const GetProposals = async ({ setLoading, setProposalList, requestId }) => {
       },
       params: { request_id: requestId },
     });
+    const proposals = response.data || [];
+    const proposalIds = proposals.map((proposal) => proposal.id);
+    setProposalIds(proposalIds);
 
     setProposalList(response.data || []);
   } catch (error) {
@@ -540,18 +549,23 @@ const GetProposals = async ({ setLoading, setProposalList, requestId }) => {
   }
 };
 
-const GetItems = async ({ setLoading, setList, proposalId }) => {
+const GetItems = async ({ setLoading, setItemsList, proposalIds }) => {
   setLoading(true);
   const token = localStorage.getItem("authToken");
 
   try {
-    const response = await axios.get(IWD_ROUTES.VIEW_ITEMS, {
-      headers: { Authorization: `Token ${token}` },
-      params: { proposal_id: proposalId },
-    });
-    setList(response.data);
+    let allItems = [];
+    for (const proposalId of proposalIds) {
+      const response = await axios.get(IWD_ROUTES.VIEW_ITEMS, {
+        headers: { Authorization: `Token ${token}` },
+        params: { proposal_id: proposalId },
+      });
+
+      allItems = [...allItems, ...response.data];
+    }
+    setItemsList(allItems);
   } catch (error) {
-    console.log("Error fetching items:", error);
+    console.error("Error fetching items:", error);
   } finally {
     setLoading(false);
   }

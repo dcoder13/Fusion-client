@@ -223,7 +223,7 @@ export default function ViewRequestFile({ request, handleBackToList }) {
               </Button>
             </Group>
 
-            {/* {fileActionsList[fileAction]} */}
+            {fileActionsList[fileAction]}
           </>
         )}
       </Card>

@@ -11,35 +11,33 @@ function ViewSelectedProposal({ requestId }) {
   const [refresh, setRefresh] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [itemsList, setItemsList] = useState([]);
-  const [proposalId, setProposalId] = useState(null);
+  const [proposalIds, setProposalIds] = useState([]);
 
+  // Fetches all proposal IDs
   useEffect(() => {
+    console.log("Request ID:", requestId);
+    console.log("Role:", role);
     if (requestId) {
       GetProposals({
         setLoading,
-        setProposalList: (proposals) => {
-          if (proposals.length > 0) {
-            setProposalId(proposals.proposal_id || proposals.id);
-          }
-        },
+        setProposalIds,
         requestId,
       });
     }
   }, [requestId]);
 
+  // Fetches all items when proposalIds are available
   useEffect(() => {
-    if (proposalId) {
+    if (proposalIds.length > 0) {
       GetItems({
         setLoading,
-        setList: (items) => {
-          console.log("Setting itemsList:", items);
-          setItemsList(items);
-        },
+        setItemsList,
+        proposalIds,
         role,
-        proposalId,
       });
     }
-  }, [proposalId, role, refresh]);
+  }, [proposalIds, refresh, role]);
+  console.log("proposalIds:", proposalIds);
 
   const viewDoc = (item) => setSelectedItem(item);
   const handleBackToList = () => {
