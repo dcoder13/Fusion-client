@@ -14,6 +14,7 @@ function ProposalTable({ requestId }) {
         setLoading,
         setProposalList: setproposals,
         requestId,
+        setProposalIds: () => {},
       });
     } else {
       setLoading(false);

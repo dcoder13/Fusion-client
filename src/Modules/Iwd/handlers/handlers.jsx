@@ -520,8 +520,12 @@ const HandleProposalSubmission = async ({
     setIsLoading(false);
   }
 };
-
-const GetProposals = async ({ setLoading, setProposalIds, requestId }) => {
+const GetProposals = async ({
+  setLoading,
+  setProposalList,
+  requestId,
+  setProposalIds,
+}) => {
   setLoading(true);
   const token = localStorage.getItem("authToken");
 
@@ -536,8 +540,10 @@ const GetProposals = async ({ setLoading, setProposalIds, requestId }) => {
     const proposals = response.data || [];
     const proposalIds = proposals.map((proposal) => proposal.id);
     setProposalIds(proposalIds);
+
+    setProposalList(response.data || []);
   } catch (error) {
-    console.error("Error fetching proposals:", error);
+    console.log(error);
   } finally {
     setLoading(false);
   }
