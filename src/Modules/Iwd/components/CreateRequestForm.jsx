@@ -54,18 +54,19 @@ function CreateRequest({ setActiveTab }) {
 
     <Grid mt="md">
       <div
-        className="container"
+        className="contains"
         style={{
           // display: "flex",
           // justifyContent: "center",
           // alignItems: "center",
           // position: "absolute",
           // left: "25%",
-          maxWidth: "1240px",
-          width: "100%",
+          // maxWidth: "1240px",
+          maxWidth: "100vw", // changed 1240px --> 100vw
+          width: "100vw",
           margin: "0 auto",
           padding: "1rem",
-          boxSizing: "border-box",
+          // boxSizing: "border-box",
         }}
       >
         <form
