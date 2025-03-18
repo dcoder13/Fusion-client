@@ -1,4 +1,3 @@
-import ModuleNotifications from "../components/ModuleNotifications";
 import CreateRequest from "../components/CreateRequestForm";
 import IssueWorkOrder from "../components/IssueWorkOrder";
 import RejectedRequests from "../components/RejectedRequest";
@@ -14,7 +13,6 @@ import AuditDocument from "../components/AuditDocument";
 
 const RoleBasedFilter = ({ setActiveTab }) => {
   const tabItems = [
-    { title: "Notifications", component: <ModuleNotifications /> },
     {
       title: "Create Request",
       component: <CreateRequest setActiveTab={setActiveTab} />,
@@ -46,7 +44,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
   const roleBasedTabs = {
     Director: tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Created Requests",
         "Approve/Reject Requests",
@@ -57,7 +54,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     "Dean (P&D)": tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Created Requests",
         "Requests Status",
@@ -66,7 +62,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     Auditor: tabItems.filter((tab) =>
       [
-        "Notifications",
         "View Budget",
         "Created Requests",
         "Audit Document",
@@ -76,7 +71,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     SectionHead_IWD: tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Created Requests",
         "Requests in Progress",
@@ -90,7 +84,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     Professor: tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Requests in Progress",
         "Created Requests",
@@ -101,7 +94,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     EE: tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Created Requests",
         "Requests in Progress",
@@ -115,7 +107,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     "Executive Engineer (Civil)": tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Created Requests",
         "Requests in Progress",
@@ -129,7 +120,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     Civil_AE: tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Created Requests",
         "Requests in Progress",
@@ -143,7 +133,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     Civil_JE: tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Created Requests",
         "Requests in Progress",
@@ -157,7 +146,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     Electrical_JE: tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Created Requests",
         "Requests in Progress",
@@ -171,7 +159,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     Electrical_AE: tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Created Requests",
         "Requests in Progress",
@@ -185,7 +172,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     "Junior Engineer": tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Created Requests",
         "Requests in Progress",
@@ -199,7 +185,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     "Admin IWD": tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Created Requests",
         "Requests in Progress",
@@ -210,7 +195,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     "Accounts Admin": tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Processed Bills",
         "Manage Budget",
