@@ -36,15 +36,21 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
 
   return (
     /* eslint-disable react/jsx-props-no-spreading */
-    <Grid mt="xs">
+    <Grid mt="md">
       <div
-        className="container"
+        className="contains"
         style={{
-          maxWidth: "1240px",
-          width: "100%",
+          // display: "flex",
+          // justifyContent: "center",
+          // alignItems: "center",
+          // position: "absolute",
+          // left: "25%",
+          // maxWidth: "1240px",
+          maxWidth: "100vw", // changed 1240px --> 100vw
+          width: "100vw",
           margin: "0 auto",
           padding: "1rem",
-          boxSizing: "border-box",
+          // boxSizing: "border-box",
         }}
       >
         <form
@@ -68,19 +74,33 @@ function EditBudget({ selectedBudget, onBack, checkOperation }) {
           })}
         >
           <Paper
+            // radius={{ base: "sm", md: "md" }}
+            // px={{ base: "sm", md: "lg" }}
+            // pt={{ base: "xs", md: "sm" }}
+            // pb={{ base: "lg", md: "xl" }}
+            // style={{
+            //   borderLeft: "0.6rem solid #15ABFF",
+            //   width: "100%",
+            //   minWidth: "1240px",
+            //   // maxWidth: "800px",
+            //   marginLeft: 0,
+            //   boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
+            //   textAlign: "left",
+            // }}
+            // withBorder
+            // // maw="100vw"
+            // backgroundColor="white"
             radius="md"
             px="lg"
-            pt="sm"
+            // pt="sm"
             pb="xl"
             style={{
               borderLeft: "0.6rem solid #15ABFF",
               // width: "60vw",
-              minHeight: "45vh",
-              maxHeight: "70vh",
               boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
             }}
             withBorder
-            maw="1240px"
+            // maw="1240px"
             backgroundColor="white"
           >
             <Flex
