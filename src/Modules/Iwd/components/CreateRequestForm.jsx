@@ -94,7 +94,7 @@ function CreateRequest({ setActiveTab }) {
               boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
             }}
             withBorder
-            maw="1240px"
+            // maw="1240px"
             backgroundColor="white"
           >
             <Flex

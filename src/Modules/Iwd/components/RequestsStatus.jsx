@@ -164,7 +164,7 @@ function CreatedRequests() {
 
   // Filter the requests based on statusFilter state
   const filteredRequests = createdRequestsList.filter(
-    (request) => statusFilter === "all" || request.status === statusFilter
+    (request) => statusFilter === "all" || request.status === statusFilter,
   );
 
   return (
@@ -193,7 +193,6 @@ function CreatedRequests() {
           <Title size="26px" align="center" mb="md">
             Requests Status
           </Title>
-          {}
           <Select
             label="Filter by Status"
             placeholder="Select status"
@@ -202,14 +201,22 @@ function CreatedRequests() {
             data={[
               { value: "all", label: "All" },
               { value: "Work Completed", label: "Work Completed" },
-              { value: "Approved by the director", label: "Approved by the director" },
+              {
+                value: "Approved by the director",
+                label: "Approved by the director",
+              },
               { value: "Rejected", label: "Rejected" },
               { value: "Pending", label: "Pending" },
               { value: "Work Order issued", label: "Work Order issued" },
               { value: "Approved by the dean", label: "Approved by the dean" },
-
             ]}
-            style={{ marginBottom: "20px" }}
+            style={{
+              top: "10px",
+              right: "10px",
+              marginBottom: "20px",
+              width: "200px",
+              padding: "auto",
+            }}
           />
           <Table highlightOnHover>
             <thead style={{ backgroundColor: "#f5f5f5" }}>
