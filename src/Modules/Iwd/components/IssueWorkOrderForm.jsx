@@ -26,7 +26,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
-      request_id: workOrder.id,
+      request_id: workOrder.request_id,
       name: workOrder.name,
       amount: null,
       deposit: null,
@@ -51,7 +51,6 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
       xxl: "300em",
     },
   });
-
   return (
     /* eslint-disable react/jsx-props-no-spreading */
     <MantineProvider theme={theme}>
@@ -331,7 +330,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
 
 IssueWorkOrderForm.propTypes = {
   workOrder: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    request_id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     description: PropTypes.string,
     area: PropTypes.string,
