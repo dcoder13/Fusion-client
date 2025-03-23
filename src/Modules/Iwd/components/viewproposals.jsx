@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Loader, Container, Table, Button } from "@mantine/core";
+import { Loader, Container, Table, Button, Flex } from "@mantine/core";
 import PropTypes from "prop-types";
 import { GetProposals } from "../handlers/handlers";
-// import ViewSelectedProposal from "./viewSelectedProposal";
-function ProposalTable({ requestId }) {
+
+function ProposalTable({ requestId, onBack }) {
   const [proposals, setproposals] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -71,10 +71,28 @@ function ProposalTable({ requestId }) {
           </tbody>
         </Table>
       )}
+      <Flex direction="row" gap="xs">
+        <Button
+          size="sm"
+          variant="light"
+          color="gray"
+          style={{
+            width: "100px",
+            backgroundColor: "#1E90FF",
+            color: "white",
+            border: "none",
+            borderRadius: "20px",
+          }}
+          onClick={onBack}
+        >
+          Back
+        </Button>
+      </Flex>
     </Container>
   );
 }
 ProposalTable.propTypes = {
+  onBack: PropTypes.func.isRequired,
   requestId: PropTypes.number.isRequired,
 };
 

@@ -1,7 +1,16 @@
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { Card, Text, Group, Stack, Loader, Button, Badge } from "@mantine/core";
+import {
+  Card,
+  Text,
+  Group,
+  Stack,
+  Loader,
+  Button,
+  Badge,
+  Paper,
+} from "@mantine/core";
 import { Paperclip } from "@phosphor-icons/react";
 import { useForm } from "@mantine/form";
 import { host } from "../../../routes/globalRoutes/index";
@@ -12,7 +21,7 @@ import EngineerProcess from "./FileActions/EngineerProcess";
 import ProcessBill from "./FileActions/ProcessBill";
 import CreateProposalForm from "./ProposalForm";
 import ProposalTable from "./viewproposals";
-import ItemTable from "./viewSelectedProposal";
+import IssueWorkOrderForm from "./IssueWorkOrderForm";
 
 export default function ViewRequestFile({ request, handleBackToList }) {
   const [loading, setLoading] = useState(true);
@@ -20,7 +29,6 @@ export default function ViewRequestFile({ request, handleBackToList }) {
   const [fileAction, setFileAction] = useState(0);
   const [view, setView] = useState("main");
   const role = useSelector((state) => state.user.role);
-
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -32,15 +40,18 @@ export default function ViewRequestFile({ request, handleBackToList }) {
       designation: (value) => (value ? null : "Field is required"),
     },
   });
-
   const statusBadge = () => {
-    if (request.directorApproval === 0)
-      return <Badge color="yellow">ONGOING</Badge>;
-    if (request.directorApproval === 1)
+    if (request.status === "Pending")
+      return <Badge color="yellow">PENDING</Badge>;
+    if (request.status === "Work Completed")
+      return <Badge color="#1e90ff">WORK COMPLETED</Badge>;
+    if (request.status === "Work Order issued")
+      return <Badge color="#1e90ff">WORK ISSUED</Badge>;
+    if (request.status === "Approved by the director")
       return <Badge color="green">APPROVED</Badge>;
     return <Badge color="red">REJECTED</Badge>;
   };
-
+  console.log(request);
   const fileActionsList = [
     <br />,
     <DeanProcess
@@ -64,28 +75,54 @@ export default function ViewRequestFile({ request, handleBackToList }) {
       request={request}
     />,
   ];
-
+  const allowedFormList = [
+    "admin iwd",
+    "ee",
+    "executive engineer(civil)",
+    "electrical_ae",
+    "civil_ae",
+    "civil_je",
+    "electrical_je",
+    "electrical_ae",
+    "junior engineer",
+    "sectionhead_iwd",
+  ];
+  const allowedRoleslist = [
+    "director",
+    "admin iwd",
+    "ee",
+    "executive engineer(civil)",
+    "electrical_ae",
+    "civil_ae",
+    "civil_je",
+    "electrical_je",
+    "electrical_ae",
+    "auditor",
+    "accounts admin",
+    "junior engineer",
+    "sectionhead_iwd",
+  ];
   useEffect(() => {
     GetFileData({ form, setLoading, request, setMessages });
-    if (role === "Director" && request.directorApproval === 0) {
-      setFileAction(3);
+    if (role === "Director") {
+      if (request.processed_by_director === 0) setFileAction(3);
+      else setFileAction(0);
     } else if (role === "Dean (P&D)" && request.processed_by_dean === 0) {
       setFileAction(1);
-    } else {
+    } else if (allowedRoleslist.includes(role.toLowerCase())) {
       setFileAction(2);
+    } else {
+      setFileAction(0);
     }
   }, []);
-  console.log(1, request.active_proposal);
   return (
-    <div
+    <Paper
       style={{
-        padding: "20px",
-        borderRadius: "15px",
+        border: "1px solid #ccc",
         boxShadow: "0px 4px 12px rgba(0,0,0,0.1)",
-        maxWidth: "1024px",
         margin: "0 auto",
         backgroundColor: "#fff",
-        borderLeft: "8px solid #1e90ff",
+        borderLeft: "8px solid #15ABFF",
       }}
     >
       <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -101,9 +138,9 @@ export default function ViewRequestFile({ request, handleBackToList }) {
             requestId={request.request_id}
             onBack={() => setView("main")}
           />
-        ) : view === "viewItem" ? (
-          <ItemTable
-            requestId={request.request_id}
+        ) : view === "IssueWorkOrderForm" ? (
+          <IssueWorkOrderForm
+            workOrder={request}
             onBack={() => setView("main")}
           />
         ) : (
@@ -179,7 +216,8 @@ export default function ViewRequestFile({ request, handleBackToList }) {
             </Stack>
 
             <Group spacing="md" mt="md">
-              {request.active_proposal != null ? null : (
+              {request.active_proposal != null ||
+              !allowedFormList.includes(role.toLowerCase()) ? null : (
                 <Button
                   variant="light"
                   radius="md"
@@ -207,27 +245,29 @@ export default function ViewRequestFile({ request, handleBackToList }) {
               >
                 View Proposals
               </Button>
-
-              <Button
-                variant="light"
-                radius="md"
-                onClick={() => setView("viewItem")}
-                sx={{
-                  textOverflow: "ellipsis",
-                  maxWidth: "200px",
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                View Items
-              </Button>
+              {request.work_order === 0 &&
+              request.processed_by_director === 1 ? (
+                <Button
+                  variant="light"
+                  radius="md"
+                  onClick={() => setView("IssueWorkOrderForm")}
+                  sx={{
+                    textOverflow: "ellipsis",
+                    maxWidth: "200px",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Issue Work Order
+                </Button>
+              ) : null}
             </Group>
 
             {fileActionsList[fileAction]}
           </>
         )}
       </Card>
-    </div>
+    </Paper>
   );
 }
 
@@ -238,11 +278,12 @@ ViewRequestFile.propTypes = {
     area: PropTypes.string,
     description: PropTypes.string,
     requestCreatedBy: PropTypes.string,
+    status: PropTypes.string.isRequired,
     file_id: PropTypes.number.isRequired,
-    directorApproval: PropTypes.number,
+    processed_by_director: PropTypes.number,
     processed_by_dean: PropTypes.number,
-    issuedWorkOrder: PropTypes.number,
-    workCompleted: PropTypes.number,
+    work_order: PropTypes.number,
+    work_completed: PropTypes.number,
     active_proposal: PropTypes.number,
   }).isRequired,
   handleBackToList: PropTypes.func.isRequired,

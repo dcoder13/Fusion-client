@@ -264,7 +264,7 @@ function CreateProposalForm({ onBack, request_id }) {
                   width: isMobile ? "100%" : "auto",
                   borderRadius: "20px",
                 }}
-                disabled={isLoading}
+                disabled={isLoading || isSuccess}
               >
                 Back
               </Button>
