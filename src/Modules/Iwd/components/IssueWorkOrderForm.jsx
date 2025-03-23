@@ -18,7 +18,7 @@ import { DateInput } from "@mantine/dates";
 import classes from "./EngineerIssueWorkOrder.module.css";
 import { HandleIssueWorkOrder } from "../handlers/handlers";
 
-function IssueWorkOrderForm({ workOrder, onBack }) {
+function IssueWorkOrderForm({ workOrder, onBack, submitter }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -70,7 +70,7 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                 data,
                 setIsLoading,
                 setIsSuccess,
-                onBack,
+                submitter,
               });
             })}
           >
@@ -338,6 +338,7 @@ IssueWorkOrderForm.propTypes = {
     "created-by": PropTypes.string,
   }).isRequired,
   onBack: PropTypes.func.isRequired,
+  submitter: PropTypes.func.isRequired,
 };
 
 export default IssueWorkOrderForm;

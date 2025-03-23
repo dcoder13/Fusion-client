@@ -23,7 +23,7 @@ import classes from "../iwd.module.css";
 import { DesignationsContext } from "../helper/designationContext";
 import { HandleProposalSubmission } from "../handlers/handlers";
 
-function CreateProposalForm({ onBack, request_id }) {
+function CreateProposalForm({ onBack, request_id, submitter }) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -154,7 +154,6 @@ function CreateProposalForm({ onBack, request_id }) {
           </Title>
           <form
             onSubmit={form.onSubmit((values) => {
-              console.log("testtest");
               if (!values.designation.includes("|")) {
                 alert(
                   "Invalid designation format! It should be 'Role|Username'.",
@@ -176,7 +175,7 @@ function CreateProposalForm({ onBack, request_id }) {
                 HandleProposalSubmission({
                   setIsLoading,
                   setIsSuccess,
-                  onBack,
+                  submitter,
                   form,
                 });
               }
@@ -279,6 +278,7 @@ function CreateProposalForm({ onBack, request_id }) {
 CreateProposalForm.propTypes = {
   onBack: PropTypes.func.isRequired,
   request_id: PropTypes.number.isRequired,
+  submitter: PropTypes.func.isRequired,
 };
 
 export default CreateProposalForm;

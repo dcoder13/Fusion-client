@@ -132,6 +132,9 @@ export default function ViewRequestFile({ request, handleBackToList }) {
           <CreateProposalForm
             onBack={() => setView("main")}
             request_id={request.request_id}
+            submitter={() => {
+              handleBackToList();
+            }}
           />
         ) : view === "proposalTable" ? (
           <ProposalTable
@@ -142,6 +145,9 @@ export default function ViewRequestFile({ request, handleBackToList }) {
           <IssueWorkOrderForm
             workOrder={request}
             onBack={() => setView("main")}
+            submitter={() => {
+              handleBackToList();
+            }}
           />
         ) : (
           <>

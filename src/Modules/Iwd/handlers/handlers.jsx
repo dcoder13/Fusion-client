@@ -142,7 +142,7 @@ const HandleIssueWorkOrder = async ({
   data,
   setIsLoading,
   setIsSuccess,
-  onBack,
+  submitter,
 }) => {
   /* 
     This function is for issuing work order for requests approved by director
@@ -177,7 +177,7 @@ const HandleIssueWorkOrder = async ({
       setIsLoading(false);
       setIsSuccess(true);
       setTimeout(() => {
-        onBack();
+        submitter();
       }, 1000);
     }, 1000);
   } catch (error) {
@@ -477,7 +477,7 @@ const HandleDeanProcessRequest = async ({
 const HandleProposalSubmission = async ({
   setIsLoading,
   setIsSuccess,
-  onBack,
+  submitter,
   form,
 }) => {
   setIsLoading(true);
@@ -512,7 +512,7 @@ const HandleProposalSubmission = async ({
     setIsSuccess(true);
     setTimeout(() => {
       setIsSuccess(false);
-      onBack();
+      submitter();
     }, 1500);
   } catch (error) {
     console.error("Error submitting proposal:", error);
