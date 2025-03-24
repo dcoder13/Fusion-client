@@ -4,7 +4,6 @@ import {
   Flex,
   Grid,
   Loader,
-  Paper,
   Title,
   Center,
   CheckIcon,
@@ -19,7 +18,7 @@ import { DateInput } from "@mantine/dates";
 import classes from "./EngineerIssueWorkOrder.module.css";
 import { HandleIssueWorkOrder } from "../handlers/handlers";
 
-function IssueWorkOrderForm({ workOrder, onBack }) {
+function IssueWorkOrderForm({ workOrder, onBack, submitter }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -70,257 +69,258 @@ function IssueWorkOrderForm({ workOrder, onBack }) {
                 data,
                 setIsLoading,
                 setIsSuccess,
-                onBack,
+                submitter,
               });
             })}
           >
-            <Paper
-              radius="md"
-              px="lg"
-              pt="sm"
-              pb="xl"
-              w="xxl"
+            <Flex
+              direction="column"
+              gap="lg"
               style={{
-                borderLeft: "0.6rem solid #15ABFF",
-                marginBottom: "10px",
+                textAlign: "left",
+                width: "100%",
+                fontFamily: "Arial",
               }}
-              withBorder
-              backgroundColor="white"
             >
-              <Flex
-                direction="column"
-                gap="lg"
-                style={{
-                  textAlign: "left",
-                  width: "100%",
-                  fontFamily: "Arial",
-                }}
-              >
-                <Flex direction="column">
-                  <Title size="26px">Issue Work Order</Title>
-                </Flex>
-
-                <Grid columns="2" style={{ width: "100%" }}>
-                  <Grid.Col span={1}>
-                    <Flex direction="column" gap="xs">
-                      <TextInput
-                        label="Request ID"
-                        disabled
-                        classNames={classes}
-                        key={form.key("request_id")}
-                        {...form.getInputProps("request_id")}
-                      />
-                    </Flex>
-                  </Grid.Col>
-                  <Grid.Col span={1}>
-                    <Flex direction="column" gap="xs">
-                      <TextInput
-                        label="Request Name"
-                        disabled
-                        classNames={classes}
-                        key={form.key("name")}
-                        {...form.getInputProps("name")}
-                      />
-                    </Flex>
-                  </Grid.Col>
-                </Grid>
-
-                <Grid columns="2" style={{ width: "100%" }}>
-                  <Grid.Col span={1}>
-                    <Flex direction="column" gap="xs">
-                      <DateInput
-                        label="Date"
-                        placeholder="yyyy/mm/dd"
-                        classNames={classes}
-                        key={form.key("date")}
-                        {...form.getInputProps("date")}
-                        valueFormat="YYYY-MM-DD"
-                        size="xs"
-                        styles={{
-                          calendarHeader: {
-                            // backgroundColor: "#e0f7fa",
-                            color: "#1E90FF",
-                            fontSize: "16px",
-                            width: "300px",
-                            display: "flex",
-                            height: "",
-                            fontWeight: "bold",
-                          },
-                          calendarHeaderIcon: {
-                            color: "#00796b",
-                            fontSize: "20px",
-                            fontWeight: "bold",
-                          },
-                          dropdown: {
-                            width: "300px",
-                            maxHeight: "350px",
-                            overflow: "auto",
-                          },
-                          calendar: {
-                            fontSize: "14px",
-                          },
-                        }}
-                      />
-                    </Flex>
-                  </Grid.Col>
-                  <Grid.Col span={1}>
-                    <Flex direction="column" gap="xs">
-                      <TextInput
-                        label="Agency"
-                        placeholder="Agency Name"
-                        classNames={classes}
-                        key={form.key("agency")}
-                        {...form.getInputProps("agency")}
-                        required
-                      />
-                    </Flex>
-                  </Grid.Col>
-                </Grid>
-
-                <Grid columns="2" style={{ width: "100%" }}>
-                  <Grid.Col span={1}>
-                    <Flex direction="column" gap="xs">
-                      <NumberInput
-                        label="Amount"
-                        placeholder="Enter amount"
-                        classNames={classes}
-                        key={form.key("amount")}
-                        {...form.getInputProps("amount")}
-                        required
-                      />
-                    </Flex>
-                  </Grid.Col>
-                  <Grid.Col span={1}>
-                    <Flex direction="column" gap="xs">
-                      <NumberInput
-                        label="Deposit"
-                        placeholder="Enter deposit"
-                        classNames={classes}
-                        key={form.key("deposit")}
-                        {...form.getInputProps("deposit")}
-                      />
-                    </Flex>
-                  </Grid.Col>
-                </Grid>
-
-                <Flex direction="column" gap="xs" justify="flex-start">
-                  <TextInput
-                    label="Alloted Time"
-                    placeholder="Enter allotted time"
-                    classNames={classes}
-                    key={form.key("alloted_time")}
-                    {...form.getInputProps("alloted_time")}
-                    style={{ width: "100%" }}
-                  />
-                </Flex>
-
-                <Grid columns="1" style={{ width: "100%" }}>
-                  <Grid.Col span={1}>
-                    <Flex direction="column" gap="xs">
-                      <DateInput
-                        label="Start Date"
-                        placeholder="yyyy/mm/dd"
-                        classNames={classes}
-                        key={form.key("start_date")}
-                        {...form.getInputProps("start_date")}
-                        valueFormat="YYYY-MM-DD"
-                        styles={{
-                          calendarHeader: {
-                            // backgroundColor: "#e0f7fa",
-                            color: "#1E90FF",
-                            fontSize: "16px",
-                            width: "300px",
-                            display: "flex",
-                            height: "",
-                            fontWeight: "bold",
-                          },
-                          calendarHeaderIcon: {
-                            color: "#00796b",
-                            fontSize: "20px",
-                            fontWeight: "bold",
-                          },
-                          dropdown: {
-                            width: "300px",
-                            maxHeight: "350px",
-                            overflow: "auto",
-                          },
-                          calendar: {
-                            fontSize: "14px",
-                          },
-                        }}
-                        required
-                      />
-                    </Flex>
-                  </Grid.Col>
-                  <Grid.Col span={1}>
-                    <Flex direction="column" gap="xs">
-                      <DateInput
-                        label="Completion Date"
-                        placeholder="yyyy/mm/dd"
-                        classNames={classes}
-                        key={form.key("completion_date")}
-                        {...form.getInputProps("completion_date")}
-                        valueFormat="YYYY-MM-DD"
-                        styles={{
-                          calendarHeader: {
-                            // backgroundColor: "#e0f7fa",
-                            color: "#1E90FF",
-                            fontSize: "16px",
-                            width: "300px",
-                            display: "flex",
-                            height: "",
-                            fontWeight: "bold",
-                          },
-                          calendarHeaderIcon: {
-                            color: "#00796b",
-                            fontSize: "20px",
-                            fontWeight: "bold",
-                          },
-                          dropdown: {
-                            width: "300px",
-                            maxHeight: "350px",
-                            overflow: "auto",
-                          },
-                          calendar: {
-                            fontSize: "14px",
-                          },
-                        }}
-                        required
-                      />
-                    </Flex>
-                  </Grid.Col>
-                </Grid>
-
-                <Flex direction="row" gap="xs">
-                  <Button
-                    size="sm"
-                    variant="filled"
-                    color="black"
-                    type="submit"
-                    style={{
-                      width: "100px",
-                      backgroundColor: "#1E90FF",
-                      color: isSuccess ? "black" : "white",
-                      border: "none",
-                      borderRadius: "20px",
-                    }}
-                    disabled={isLoading || isSuccess}
-                  >
-                    {isLoading ? (
-                      <Center>
-                        <Loader color="black" size="xs" />
-                      </Center>
-                    ) : isSuccess ? (
-                      <Center>
-                        <CheckIcon size="16px" color="black" />
-                      </Center>
-                    ) : (
-                      "Submit"
-                    )}
-                  </Button>
-                </Flex>
+              <Flex direction="column">
+                <Title size="26px">Issue Work Order</Title>
               </Flex>
-            </Paper>
+
+              <Grid columns="2" style={{ width: "100%" }}>
+                <Grid.Col span={1}>
+                  <Flex direction="column" gap="xs">
+                    <TextInput
+                      label="Request ID"
+                      disabled
+                      classNames={classes}
+                      key={form.key("request_id")}
+                      {...form.getInputProps("request_id")}
+                    />
+                  </Flex>
+                </Grid.Col>
+                <Grid.Col span={1}>
+                  <Flex direction="column" gap="xs">
+                    <TextInput
+                      label="Request Name"
+                      disabled
+                      classNames={classes}
+                      key={form.key("name")}
+                      {...form.getInputProps("name")}
+                    />
+                  </Flex>
+                </Grid.Col>
+              </Grid>
+
+              <Grid columns="2" style={{ width: "100%" }}>
+                <Grid.Col span={1}>
+                  <Flex direction="column" gap="xs">
+                    <DateInput
+                      label="Date"
+                      placeholder="yyyy/mm/dd"
+                      classNames={classes}
+                      key={form.key("date")}
+                      {...form.getInputProps("date")}
+                      valueFormat="YYYY-MM-DD"
+                      size="xs"
+                      styles={{
+                        calendarHeader: {
+                          // backgroundColor: "#e0f7fa",
+                          color: "#1E90FF",
+                          fontSize: "16px",
+                          width: "300px",
+                          display: "flex",
+                          height: "",
+                          fontWeight: "bold",
+                        },
+                        calendarHeaderIcon: {
+                          color: "#00796b",
+                          fontSize: "20px",
+                          fontWeight: "bold",
+                        },
+                        dropdown: {
+                          width: "300px",
+                          maxHeight: "350px",
+                          overflow: "auto",
+                        },
+                        calendar: {
+                          fontSize: "14px",
+                        },
+                      }}
+                    />
+                  </Flex>
+                </Grid.Col>
+                <Grid.Col span={1}>
+                  <Flex direction="column" gap="xs">
+                    <TextInput
+                      label="Agency"
+                      placeholder="Agency Name"
+                      classNames={classes}
+                      key={form.key("agency")}
+                      {...form.getInputProps("agency")}
+                      required
+                    />
+                  </Flex>
+                </Grid.Col>
+              </Grid>
+
+              <Grid columns="2" style={{ width: "100%" }}>
+                <Grid.Col span={1}>
+                  <Flex direction="column" gap="xs">
+                    <NumberInput
+                      label="Amount"
+                      placeholder="Enter amount"
+                      classNames={classes}
+                      key={form.key("amount")}
+                      {...form.getInputProps("amount")}
+                      required
+                    />
+                  </Flex>
+                </Grid.Col>
+                <Grid.Col span={1}>
+                  <Flex direction="column" gap="xs">
+                    <NumberInput
+                      label="Deposit"
+                      placeholder="Enter deposit"
+                      classNames={classes}
+                      key={form.key("deposit")}
+                      {...form.getInputProps("deposit")}
+                    />
+                  </Flex>
+                </Grid.Col>
+              </Grid>
+
+              <Flex direction="column" gap="xs" justify="flex-start">
+                <TextInput
+                  label="Alloted Time"
+                  placeholder="Enter allotted time"
+                  classNames={classes}
+                  key={form.key("alloted_time")}
+                  {...form.getInputProps("alloted_time")}
+                  style={{ width: "100%" }}
+                />
+              </Flex>
+
+              <Grid columns="1" style={{ width: "100%" }}>
+                <Grid.Col span={1}>
+                  <Flex direction="column" gap="xs">
+                    <DateInput
+                      label="Start Date"
+                      placeholder="yyyy/mm/dd"
+                      classNames={classes}
+                      key={form.key("start_date")}
+                      {...form.getInputProps("start_date")}
+                      valueFormat="YYYY-MM-DD"
+                      styles={{
+                        calendarHeader: {
+                          // backgroundColor: "#e0f7fa",
+                          color: "#1E90FF",
+                          fontSize: "16px",
+                          width: "300px",
+                          display: "flex",
+                          height: "",
+                          fontWeight: "bold",
+                        },
+                        calendarHeaderIcon: {
+                          color: "#00796b",
+                          fontSize: "20px",
+                          fontWeight: "bold",
+                        },
+                        dropdown: {
+                          width: "300px",
+                          maxHeight: "350px",
+                          overflow: "auto",
+                        },
+                        calendar: {
+                          fontSize: "14px",
+                        },
+                      }}
+                      required
+                    />
+                  </Flex>
+                </Grid.Col>
+                <Grid.Col span={1}>
+                  <Flex direction="column" gap="xs">
+                    <DateInput
+                      label="Completion Date"
+                      placeholder="yyyy/mm/dd"
+                      classNames={classes}
+                      key={form.key("completion_date")}
+                      {...form.getInputProps("completion_date")}
+                      valueFormat="YYYY-MM-DD"
+                      styles={{
+                        calendarHeader: {
+                          // backgroundColor: "#e0f7fa",
+                          color: "#1E90FF",
+                          fontSize: "16px",
+                          width: "300px",
+                          display: "flex",
+                          height: "",
+                          fontWeight: "bold",
+                        },
+                        calendarHeaderIcon: {
+                          color: "#00796b",
+                          fontSize: "20px",
+                          fontWeight: "bold",
+                        },
+                        dropdown: {
+                          width: "300px",
+                          maxHeight: "350px",
+                          overflow: "auto",
+                        },
+                        calendar: {
+                          fontSize: "14px",
+                        },
+                      }}
+                      required
+                    />
+                  </Flex>
+                </Grid.Col>
+              </Grid>
+
+              <Flex direction="row" gap="xs">
+                <Button
+                  size="sm"
+                  variant="filled"
+                  color="black"
+                  type="submit"
+                  style={{
+                    width: "100px",
+                    backgroundColor: "#1E90FF",
+                    color: isSuccess ? "black" : "white",
+                    border: "none",
+                    borderRadius: "20px",
+                  }}
+                  disabled={isLoading || isSuccess}
+                >
+                  {isLoading ? (
+                    <Center>
+                      <Loader color="black" size="xs" />
+                    </Center>
+                  ) : isSuccess ? (
+                    <Center>
+                      <CheckIcon size="16px" color="black" />
+                    </Center>
+                  ) : (
+                    "Submit"
+                  )}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="light"
+                  color="gray"
+                  style={{
+                    width: "100px",
+                    backgroundColor: "#1E90FF",
+                    color: isSuccess ? "black" : "white",
+                    border: "none",
+                    borderRadius: "20px",
+                  }}
+                  onClick={onBack}
+                >
+                  Back
+                </Button>
+              </Flex>
+            </Flex>
           </form>
         </div>
       </Grid>
@@ -337,6 +337,7 @@ IssueWorkOrderForm.propTypes = {
     "created-by": PropTypes.string,
   }).isRequired,
   onBack: PropTypes.func.isRequired,
+  submitter: PropTypes.func.isRequired,
 };
 
 export default IssueWorkOrderForm;

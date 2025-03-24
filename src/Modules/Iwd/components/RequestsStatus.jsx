@@ -8,12 +8,12 @@ import {
   Loader,
   Grid,
   Select,
+  Paper,
 } from "@mantine/core";
 import { CaretLeft } from "@phosphor-icons/react";
 import ViewRequestFile from "./ViewRequestFile";
 import { IWD_ROUTES } from "../routes/iwdRoutes";
 import { GetRequestsOrBills } from "../handlers/handlers";
-import IssueWorkOrderForm from "./IssueWorkOrderForm";
 
 function CreatedRequests() {
   const role = useSelector((state) => state.user.role);
@@ -21,22 +21,13 @@ function CreatedRequests() {
   const [refresh, setRefresh] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [statusFilter, setStatusFilter] = useState("all");
-  const [selectedWorkOrder, setSelectedWorkOrder] = useState(null);
 
   const handleViewRequest = (request) => {
     setSelectedRequest(request);
-    setSelectedWorkOrder(null);
-  };
-  // When clicking "Issue Work Order", we set selectedWorkOrder and clear the request view.
-  const handleWorkOrderSelect = (request) => {
-    console.log("Work Order Selected:", request);
-    setSelectedWorkOrder(request);
-    setSelectedRequest(null);
   };
 
   const handleBackToList = () => {
     setSelectedRequest(null);
-    setSelectedWorkOrder(null);
     setRefresh((prev) => !prev);
   };
 
@@ -50,53 +41,23 @@ function CreatedRequests() {
     });
   }, [role, refresh]);
 
-  // Filter the requests based on statusFilter state
   const filteredRequests = createdRequestsList.filter(
     (request) => statusFilter === "all" || request.status === statusFilter,
   );
-
-  // render the Issue Work Order Form if selectedWorkOrder exists.
-  if (selectedWorkOrder) {
-    return (
-      <Container style={{ padding: "10px", fontFamily: "Arial, sans-serif" }}>
-        <Button
-          variant="subtle"
-          leftIcon={<CaretLeft size={12} />}
-          onClick={handleBackToList}
-          style={{ marginBottom: "10px" }}
-        >
-          Back to List
-        </Button>
-        <IssueWorkOrderForm
-          key={selectedWorkOrder.request_id}
-          workOrder={selectedWorkOrder}
-          onBack={handleBackToList}
-        />
-      </Container>
-    );
-  }
-
-  // render the Request File view if selectedRequest exists.
-  if (selectedRequest) {
-    return (
-      <Container style={{ padding: "10px", fontFamily: "Arial, sans-serif" }}>
-        <Button
-          variant="subtle"
-          leftIcon={<CaretLeft size={12} />}
-          onClick={handleBackToList}
-          style={{ marginBottom: "10px" }}
-        >
-          Back to List
-        </Button>
-        <ViewRequestFile
-          request={selectedRequest}
-          handleBackToList={handleBackToList}
-        />
-      </Container>
-    );
-  }
+  const statusList = [
+    { value: "all", label: "All" },
+    { value: "Work Completed", label: "Work Completed" },
+    {
+      value: "Approved by the director",
+      label: "Approved",
+    },
+    { value: "Rejected by the director", label: "Rejected" },
+    { value: "Pending", label: "Pending" },
+    { value: "Work Order issued", label: "Work Order issued" },
+    { value: "Approved by the dean", label: "Approved by the dean" },
+  ];
   return (
-    <Container style={{ padding: "10px", fontFamily: "Arial, sans-serif" }}>
+    <Container style={{ fontFamily: "Arial, sans-serif" }}>
       <br />
       {loading ? (
         <Grid mt="xl">
@@ -104,13 +65,12 @@ function CreatedRequests() {
             <Loader size="lg" />
           </Container>
         </Grid>
-      ) : (
-        <div
+      ) : !selectedRequest ? (
+        <Paper
           style={{
-            border: "1px solid #ccc",
             padding: "20px",
             boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
-            borderLeft: "10px solid #1E90FF",
+            borderLeft: "0.6rem solid #15ABFF",
             width: "80vw",
             position: "absolute",
             right: "10vw",
@@ -126,23 +86,13 @@ function CreatedRequests() {
             placeholder="Select status"
             value={statusFilter}
             onChange={setStatusFilter}
-            data={[
-              { value: "all", label: "All" },
-              { value: "Work Completed", label: "Work Completed" },
-              {
-                value: "Approved by the director",
-                label: "Approved by the director",
-              },
-              { value: "Rejected", label: "Rejected" },
-              { value: "Pending", label: "Pending" },
-              { value: "Work Order issued", label: "Work Order issued" },
-              { value: "Approved by the dean", label: "Approved by the dean" },
-            ]}
+            data={statusList}
             style={{
               top: "10px",
               right: "10px",
               marginBottom: "20px",
               width: "200px",
+              padding: "auto",
             }}
           />
           <Table highlightOnHover>
@@ -178,27 +128,27 @@ function CreatedRequests() {
                     >
                       View File
                     </Button>
-                    {(request.status === "Approved by the director" ||
-                      request.status === "Approved by the dean") && (
-                      <Button
-                        size="xs"
-                        onClick={() => handleWorkOrderSelect(request)}
-                        style={{
-                          backgroundColor: "#1E90FF",
-                          color: "white",
-                          borderRadius: "20px",
-                          marginTop: "5px",
-                        }}
-                      >
-                        Issue Work Order
-                      </Button>
-                    )}
                   </td>
                 </tr>
               ))}
             </tbody>
           </Table>
-        </div>
+        </Paper>
+      ) : (
+        <>
+          <Button
+            variant="subtle"
+            leftIcon={<CaretLeft size={12} />}
+            onClick={handleBackToList}
+            style={{ marginBottom: "10px" }}
+          >
+            Back to List
+          </Button>
+          <ViewRequestFile
+            request={selectedRequest}
+            handleBackToList={handleBackToList}
+          />
+        </>
       )}
     </Container>
   );
