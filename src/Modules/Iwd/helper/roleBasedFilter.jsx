@@ -1,4 +1,3 @@
-import ModuleNotifications from "../components/ModuleNotifications";
 import CreateRequest from "../components/CreateRequestForm";
 // import IssueWorkOrder from "../components/IssueWorkOrder";
 // import RejectedRequests from "../components/RejectedRequest";
@@ -14,7 +13,6 @@ import RequestsStatus from "../components/RequestsStatus";
 
 const RoleBasedFilter = ({ setActiveTab }) => {
   const tabItems = [
-    { title: "Notifications", component: <ModuleNotifications /> },
     {
       title: "Create Request",
       component: <CreateRequest setActiveTab={setActiveTab} />,
@@ -45,24 +43,16 @@ const RoleBasedFilter = ({ setActiveTab }) => {
   ];
   const roleBasedTabs = {
     Director: tabItems.filter((tab) =>
-      [
-        "Notifications",
-        "Create Request",
-        "View Budget",
-        "Requests Status",
-      ].includes(tab.title),
+      ["Create Request", "View Budget", "Requests Status"].includes(tab.title),
     ),
     "Dean (P&D)": tabItems.filter((tab) =>
-      ["Notifications", "Create Request", "Requests Status"].includes(
-        tab.title,
-      ),
+      ["Create Request", "Requests Status"].includes(tab.title),
     ),
     Auditor: tabItems.filter((tab) =>
-      ["Notifications", "View Budget", "Requests Status"].includes(tab.title),
+      ["View Budget", "Requests Status"].includes(tab.title),
     ),
     SectionHead_IWD: tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Manage Budget",
         "View Budget",
@@ -70,13 +60,10 @@ const RoleBasedFilter = ({ setActiveTab }) => {
       ].includes(tab.title),
     ),
     Professor: tabItems.filter((tab) =>
-      ["Notifications", "Create Request", "Requests Status"].includes(
-        tab.title,
-      ),
+      ["Create Request", "Requests Status"].includes(tab.title),
     ),
     EE: tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Manage Budget",
         "View Budget",
@@ -85,7 +72,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     "Executive Engineer (Civil)": tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Manage Budget",
         "View Budget",
@@ -94,7 +80,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     Civil_AE: tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Manage Budget",
         "View Budget",
@@ -103,7 +88,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     Civil_JE: tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Manage Budget",
         "View Budget",
@@ -112,7 +96,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     Electrical_JE: tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Manage Budget",
         "View Budget",
@@ -121,7 +104,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     Electrical_AE: tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Manage Budget",
         "View Budget",
@@ -130,7 +112,6 @@ const RoleBasedFilter = ({ setActiveTab }) => {
     ),
     "Junior Engineer": tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Manage Budget",
         "View Budget",
@@ -138,16 +119,12 @@ const RoleBasedFilter = ({ setActiveTab }) => {
       ].includes(tab.title),
     ),
     "Admin IWD": tabItems.filter((tab) =>
-      [
-        "Notifications",
-        "Create Request",
-        "Manage Budget",
-        "Requests Status",
-      ].includes(tab.title),
+      ["Create Request", "Manage Budget", "Requests Status"].includes(
+        tab.title,
+      ),
     ),
     "Accounts Admin": tabItems.filter((tab) =>
       [
-        "Notifications",
         "Create Request",
         "Manage Budget",
         "View Budget",
