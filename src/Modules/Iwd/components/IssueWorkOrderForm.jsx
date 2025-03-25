@@ -50,7 +50,6 @@ function IssueWorkOrderForm({ workOrder, onBack, submitter }) {
       xxl: "300em",
     },
   });
-
   return (
     /* eslint-disable react/jsx-props-no-spreading */
     <MantineProvider theme={theme}>
