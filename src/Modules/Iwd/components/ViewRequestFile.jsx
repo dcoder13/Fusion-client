@@ -22,6 +22,7 @@ import ProcessBill from "./FileActions/ProcessBill";
 import CreateProposalForm from "./ProposalForm";
 import ProposalTable from "./viewproposals";
 import IssueWorkOrderForm from "./IssueWorkOrderForm";
+import AdminApproval from "./FileActions/AdminApproval";
 
 export default function ViewRequestFile({ request, handleBackToList }) {
   const [loading, setLoading] = useState(true);
@@ -47,8 +48,10 @@ export default function ViewRequestFile({ request, handleBackToList }) {
       return <Badge color="#1e90ff">WORK COMPLETED</Badge>;
     if (request.status === "Work Order issued")
       return <Badge color="#1e90ff">WORK ISSUED</Badge>;
-    if (request.status === "Approved by the director")
+    if (request.status === "Approved by Director")
       return <Badge color="green">APPROVED</Badge>;
+    if (request.status === "Approved by IWD Admin")
+      return <Badge color="#1e90ff">Approved by IWD Admin</Badge>;
     return <Badge color="red">REJECTED</Badge>;
   };
   console.log(request);
@@ -70,6 +73,11 @@ export default function ViewRequestFile({ request, handleBackToList }) {
       request={request}
     />,
     <ProcessBill
+      handleBackToList={handleBackToList}
+      form={form}
+      request={request}
+    />,
+    <AdminApproval
       handleBackToList={handleBackToList}
       form={form}
       request={request}
@@ -109,6 +117,8 @@ export default function ViewRequestFile({ request, handleBackToList }) {
       else setFileAction(0);
     } else if (role === "Dean (P&D)" && request.processed_by_dean === 0) {
       setFileAction(1);
+    } else if (role === "Admin IWD" && request.processed_by_admin === 0) {
+      setFileAction(5);
     } else if (allowedRoleslist.includes(role.toLowerCase())) {
       setFileAction(2);
     } else {
@@ -286,6 +296,7 @@ ViewRequestFile.propTypes = {
     requestCreatedBy: PropTypes.string,
     status: PropTypes.string.isRequired,
     file_id: PropTypes.number.isRequired,
+    processed_by_admin: PropTypes.number,
     processed_by_director: PropTypes.number,
     processed_by_dean: PropTypes.number,
     work_order: PropTypes.number,
