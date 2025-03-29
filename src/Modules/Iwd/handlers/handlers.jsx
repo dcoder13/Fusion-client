@@ -383,6 +383,54 @@ const HandleEngineerProcess = async ({
   }
 };
 
+const HandleAdminApproval = async ({
+  form,
+  request,
+  setIsLoading,
+  setIsSuccess,
+  handleBackToList,
+  role,
+  action,
+}) => {
+  /* 
+    This function is for approving/rejecting requests for IWD Admin
+    Used in :
+    - ViewRequestFile
+  */
+  console.log("admin approval");
+  setIsLoading(true);
+  setIsSuccess(false);
+  const token = localStorage.getItem("authToken");
+  const formData = form.getValues();
+  formData.fileid = request.file_id;
+  formData.role = role;
+  formData.action = action;
+  try {
+    const response = await axios.post(
+      IWD_ROUTES.HANDLE_ADMIN_APPROVAL,
+      formData,
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+    console.log(response);
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+        handleBackToList();
+      }, 1000);
+    }, 1000);
+  } catch (error) {
+    console.log(error);
+    setIsLoading(false);
+  }
+};
+
 const HandleDirectorApproval = async ({
   form,
   request,
@@ -579,6 +627,7 @@ export {
   HandleAddBudget,
   HandleIssueWorkOrder,
   HandleUpdateRequest,
+  HandleAdminApproval,
   HandleDirectorApproval,
   HandleMarkAsCompleted,
   HandleEditBudget,
