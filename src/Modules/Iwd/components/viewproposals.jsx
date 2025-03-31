@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-// import { useSelector } from "react-redux";
 import { Container, Table, Button, Title, Loader, Flex } from "@mantine/core";
 import PropTypes from "prop-types";
 import { GetItems, GetProposals } from "../handlers/handlers";
 import ItemList from "./ItemsTable";
 
 function ProposalTable({ requestId, onBack }) {
-  // const role = useSelector((state) => state.user.role);
   const [proposals, setProposals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedProposalId, setSelectedProposalId] = useState(null);

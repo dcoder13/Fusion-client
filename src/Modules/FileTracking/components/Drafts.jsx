@@ -134,7 +134,11 @@ export default function Draft() {
       )}
 
       {editFile ? (
-        <EditDraft file={editFile} onBack={handleBack} />
+        <EditDraft
+          file={editFile}
+          onBack={handleBack}
+          deleteDraft={(fileID) => handleDeleteFile(fileID)}
+        />
       ) : (
         <Box
           style={{
@@ -150,7 +154,7 @@ export default function Draft() {
             style={{
               width: "100%",
               borderCollapse: "collapse",
-              tableLayout: "fixed",
+              tableLayout: "auto",
               fontSize: "14px",
             }}
           >
@@ -175,7 +179,7 @@ export default function Draft() {
                     border: "1px solid #ddd",
                   }}
                 >
-                  Being Sent to
+                  Created By
                 </th>
                 <th
                   style={{
@@ -194,6 +198,24 @@ export default function Draft() {
                   }}
                 >
                   Subject
+                </th>
+                <th
+                  style={{
+                    padding: "12px",
+                    width: "33%",
+                    border: "1px solid #ddd",
+                  }}
+                >
+                  Description
+                </th>
+                <th
+                  style={{
+                    padding: "12px",
+                    width: "33%",
+                    border: "1px solid #ddd",
+                  }}
+                >
+                  Remarks
                 </th>
                 <th
                   style={{
@@ -249,15 +271,7 @@ export default function Draft() {
                       </ActionIcon>
                     </Tooltip>
                   </td>
-                  {/* <td
-                    style={{
-                      padding: "12px",
-                      border: "1px solid #ddd",
-                      textAlign: "center",
-                    }}
-                  >
-                    {file.fileType}
-                  </td> */}
+
                   <td
                     style={{
                       padding: "12px",
@@ -274,7 +288,11 @@ export default function Draft() {
                       textAlign: "center",
                     }}
                   >
-                    {file.id}
+                    {new Date(file.upload_date).getFullYear()}-
+                    {(new Date(file.upload_date).getMonth() + 1)
+                      .toString()
+                      .padStart(2, "0")}
+                    -#{file.id}
                   </td>
                   <td
                     style={{
@@ -283,7 +301,25 @@ export default function Draft() {
                       textAlign: "center",
                     }}
                   >
-                    {file.subject}
+                    {file.file_extra_JSON.subject}
+                  </td>
+                  <td
+                    style={{
+                      padding: "12px",
+                      border: "1px solid #ddd",
+                      textAlign: "center",
+                    }}
+                  >
+                    {file.file_extra_JSON.description}
+                  </td>
+                  <td
+                    style={{
+                      padding: "12px",
+                      border: "1px solid #ddd",
+                      textAlign: "center",
+                    }}
+                  >
+                    {file.file_extra_JSON.remarks}
                   </td>
                   <td
                     style={{
