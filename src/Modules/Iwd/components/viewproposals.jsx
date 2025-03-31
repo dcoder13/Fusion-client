@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 // import { useSelector } from "react-redux";
 import { Container, Table, Button, Title, Loader, Flex } from "@mantine/core";
-import { CaretLeft } from "@phosphor-icons/react";
 import PropTypes from "prop-types";
 import { GetItems, GetProposals } from "../handlers/handlers";
+import ItemList from "./ItemsTable";
 
 function ProposalTable({ requestId, onBack }) {
   // const role = useSelector((state) => state.user.role);
   const [proposals, setProposals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedProposalId, setSelectedProposalId] = useState(null);
-  const [itemsList, setItemsList] = useState([]);
+  const [proposaldata, setProposalData] = useState({});
 
   useEffect(() => {
     if (requestId) {
@@ -24,10 +24,8 @@ function ProposalTable({ requestId, onBack }) {
   }, [requestId]);
 
   const handleViewItems = (proposalId) => {
-    GetItems({
-      setLoading,
-      setItemsList,
-      proposalIds: [proposalId],
+    GetItems(setLoading, proposalId).then((data) => {
+      setProposalData(data);
     });
     setSelectedProposalId(proposalId);
   };
@@ -107,66 +105,10 @@ function ProposalTable({ requestId, onBack }) {
           </Flex>
         </>
       ) : (
-        <div>
-          <Title size="26px" mb="md">
-            Items for Proposal {selectedProposalId}
-          </Title>
-
-          <Table striped highlightOnHover>
-            <thead style={{ backgroundColor: "#f5f5f5" }}>
-              <tr>
-                <th>Item ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Unit</th>
-                <th>Price/Unit</th>
-                <th>Total</th>
-                <th>Document</th>
-              </tr>
-            </thead>
-            <tbody>
-              {itemsList.length > 0 ? (
-                itemsList.map((item) => (
-                  <tr key={item.id}>
-                    <td>{item.id}</td>
-                    <td>{item.name}</td>
-                    <td>{item.description}</td>
-                    <td>{item.unit}</td>
-                    <td>{item.price_per_unit}</td>
-                    <td>{item.total_price}</td>
-                    <td>
-                      <Button
-                        size="xs"
-                        color="blue"
-                        onClick={() => window.open(item.docs, "_blank")}
-                        disabled={!item.docs}
-                        style={{ borderRadius: "20px" }}
-                      >
-                        View Docs
-                      </Button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="7" style={{ textAlign: "center" }}>
-                    No items available
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </Table>
-          <Button
-            // variant="subtle"
-            mt="md"
-            leftIcon={<CaretLeft size={12} />}
-            onClick={() => setSelectedProposalId(null)}
-            // onClick={onBack}
-            style={{ borderRadius: "25px" }}
-          >
-            Back
-          </Button>
-        </div>
+        <ItemList
+          setSelectedProposalId={setSelectedProposalId}
+          proposaldata={proposaldata}
+        />
       )}
     </Container>
   );

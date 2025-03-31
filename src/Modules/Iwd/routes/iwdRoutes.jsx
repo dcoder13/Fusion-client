@@ -22,7 +22,7 @@ export const IWD_ROUTES = {
   HANDLE_ADMIN_APPROVAL: `${host}/iwdModuleV2/api/handle-admin-approval/`,
   HANDLE_DIRECTOR_APPROVAL: `${host}/iwdModuleV2/api/handle-director-approval/`,
   HANDLE_DEAN_PROCESS_REQUEST: `${host}/iwdModuleV2/api/handle-dean-process-request/`,
-  HANDLE_ENGINEER_PROCESS: `${host}/iwdModuleV2/api/handle-engineer-process/`,
+  FORWARD_REQUEST: `${host}/iwdModuleV2/api/forward-request/`,
   AUDIT_DOCUMENT: `${host}/iwdModuleV2/api/audit-document/`,
   CREATE_PROPOSAL: `${host}/iwdModuleV2/api/create-proposal/`,
   // PATCH

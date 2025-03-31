@@ -67,6 +67,8 @@ function AdminApproval({ form, request, handleBackToList }) {
             key={form.key("designation")}
             {...form.getInputProps("designation")}
             required
+            searchable
+            clearable
           />
         </Flex>
       </Flex>
@@ -153,7 +155,7 @@ function AdminApproval({ form, request, handleBackToList }) {
 AdminApproval.propTypes = {
   form: PropTypes.isRequired,
   handleBackToList: PropTypes.func.isRequired,
-  request: PropTypes,
+  request: PropTypes.isRequired,
 };
 
 export default AdminApproval;

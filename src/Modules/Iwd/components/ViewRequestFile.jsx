@@ -14,15 +14,16 @@ import {
 import { Paperclip } from "@phosphor-icons/react";
 import { useForm } from "@mantine/form";
 import { host } from "../../../routes/globalRoutes/index";
-import { GetFileData } from "../handlers/handlers";
+import { GetFileData, GetItems } from "../handlers/handlers";
 import DeanProcess from "./FileActions/DeanProcess";
 import DirectorApproval from "./FileActions/DirectorApproval";
-import EngineerProcess from "./FileActions/EngineerProcess";
+import ForwardFile from "./FileActions/ForwardFile";
 import ProcessBill from "./FileActions/ProcessBill";
 import CreateProposalForm from "./ProposalForm";
 import ProposalTable from "./viewproposals";
 import IssueWorkOrderForm from "./IssueWorkOrderForm";
 import AdminApproval from "./FileActions/AdminApproval";
+import ItemsTable from "./ItemsTable";
 
 export default function ViewRequestFile({ request, handleBackToList }) {
   const [loading, setLoading] = useState(true);
@@ -30,6 +31,7 @@ export default function ViewRequestFile({ request, handleBackToList }) {
   const [fileAction, setFileAction] = useState(0);
   const [view, setView] = useState("main");
   const role = useSelector((state) => state.user.role);
+  const [proposaldata, setProposalData] = useState({});
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -54,7 +56,6 @@ export default function ViewRequestFile({ request, handleBackToList }) {
       return <Badge color="#1e90ff">Approved by IWD Admin</Badge>;
     return <Badge color="red">REJECTED</Badge>;
   };
-  console.log(request);
   const fileActionsList = [
     <br />,
     <DeanProcess
@@ -62,7 +63,7 @@ export default function ViewRequestFile({ request, handleBackToList }) {
       form={form}
       request={request}
     />,
-    <EngineerProcess
+    <ForwardFile
       handleBackToList={handleBackToList}
       form={form}
       request={request}
@@ -111,7 +112,7 @@ export default function ViewRequestFile({ request, handleBackToList }) {
     "sectionhead_iwd",
   ];
   useEffect(() => {
-    GetFileData({ form, setLoading, request, setMessages });
+    GetFileData({ setLoading, form, request, setMessages });
     if (role === "Director") {
       if (request.processed_by_director === 0) setFileAction(3);
       else setFileAction(0);
@@ -119,10 +120,20 @@ export default function ViewRequestFile({ request, handleBackToList }) {
       setFileAction(1);
     } else if (role === "Admin IWD" && request.processed_by_admin === 0) {
       setFileAction(5);
-    } else if (allowedRoleslist.includes(role.toLowerCase())) {
+    } else if (
+      request.processed_by_admin === 1 &&
+      allowedRoleslist.includes(role.toLowerCase())
+    ) {
       setFileAction(2);
     } else {
       setFileAction(0);
+    }
+    if (request.active_proposal) {
+      // setSelectedProposalId(request.active_proposal);
+      GetItems(setLoading, request.active_proposal).then((data) => {
+        console.log("datadata\n\n", data);
+        setProposalData(data);
+      });
     }
   }, []);
   return (
@@ -233,7 +244,8 @@ export default function ViewRequestFile({ request, handleBackToList }) {
 
             <Group spacing="md" mt="md">
               {request.active_proposal != null ||
-              !allowedFormList.includes(role.toLowerCase()) ? null : (
+              !allowedFormList.includes(role.toLowerCase()) ||
+              request.processed_by_admin === 0 ? null : (
                 <Button
                   variant="light"
                   radius="md"
@@ -278,7 +290,20 @@ export default function ViewRequestFile({ request, handleBackToList }) {
                 </Button>
               ) : null}
             </Group>
-
+            {request.active_proposal ? (
+              Object.keys(proposaldata).length > 0 ? (
+                <div
+                  style={{
+                    marginTop: "20px",
+                    marginBottom: "20px",
+                  }}
+                >
+                  <ItemsTable proposaldata={proposaldata} />
+                </div>
+              ) : (
+                <Loader size="lg" />
+              )
+            ) : null}
             {fileActionsList[fileAction]}
           </>
         )}

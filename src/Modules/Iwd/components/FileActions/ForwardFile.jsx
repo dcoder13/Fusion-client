@@ -14,9 +14,9 @@ import {
 
 import { DesignationsContext } from "../../helper/designationContext";
 import classes from "../../iwd.module.css";
-import { HandleEngineerProcess } from "../../handlers/handlers";
+import { ForwardRequest } from "../../handlers/handlers";
 
-function EngineerProcess({ form, request, handleBackToList }) {
+function ForwardFile({ form, request, handleBackToList }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const role = useSelector((state) => state.user.role);
@@ -65,6 +65,8 @@ function EngineerProcess({ form, request, handleBackToList }) {
             key={form.key("designation")}
             {...form.getInputProps("designation")}
             required
+            searchable
+            clearable
           />
         </Flex>
       </Flex>
@@ -83,7 +85,7 @@ function EngineerProcess({ form, request, handleBackToList }) {
           }}
           disabled={isLoading || isSuccess}
           onClick={() => {
-            HandleEngineerProcess({
+            ForwardRequest({
               form,
               request,
               setIsLoading,
@@ -110,10 +112,10 @@ function EngineerProcess({ form, request, handleBackToList }) {
     /* eslint-enable react/jsx-props-no-spreading */
   );
 }
-EngineerProcess.propTypes = {
+ForwardFile.propTypes = {
   form: PropTypes.isRequired,
   handleBackToList: PropTypes.func.isRequired,
   request: PropTypes.isRequired,
 };
 
-export default EngineerProcess;
+export default ForwardFile;
