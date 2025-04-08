@@ -10,7 +10,7 @@ import {
   Select,
   Paper,
 } from "@mantine/core";
-import { CaretLeft } from "@phosphor-icons/react";
+// import { CaretLeft } from "@phosphor-icons/react";
 import ViewRequestFile from "./ViewRequestFile";
 import { IWD_ROUTES } from "../routes/iwdRoutes";
 import { GetRequestsOrBills } from "../handlers/handlers";
@@ -136,14 +136,17 @@ function CreatedRequests() {
         </Paper>
       ) : (
         <>
-          <Button
+          {/* <Button
             variant="subtle"
             leftIcon={<CaretLeft size={12} />}
             onClick={handleBackToList}
-            style={{ marginBottom: "10px" }}
+            style={{
+              marginBottom: "10px",
+              right: "18vw",
+            }}
           >
             Back to List
-          </Button>
+          </Button> */}
           <ViewRequestFile
             request={selectedRequest}
             handleBackToList={handleBackToList}

@@ -11,7 +11,7 @@ import {
   Badge,
   Paper,
 } from "@mantine/core";
-import { Paperclip } from "@phosphor-icons/react";
+import { Paperclip, CaretLeft } from "@phosphor-icons/react";
 import { useForm } from "@mantine/form";
 import { host } from "../../../routes/globalRoutes/index";
 import { GetFileData, GetItems } from "../handlers/handlers";
@@ -139,13 +139,28 @@ export default function ViewRequestFile({ request, handleBackToList }) {
   return (
     <Paper
       style={{
-        border: "1px solid #ccc",
-        boxShadow: "0px 4px 12px rgba(0,0,0,0.1)",
+        padding: "20px",
+        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
+        borderLeft: "0.6rem solid #15ABFF",
+        width: "80vw",
+        position: "absolute",
+        right: "10vw",
+        overflow: "auto",
         margin: "0 auto",
-        backgroundColor: "#fff",
-        borderLeft: "8px solid #15ABFF",
       }}
     >
+      <Button
+        variant="light"
+        leftIcon={<CaretLeft size={12} />}
+        onClick={handleBackToList}
+        style={{
+          marginBottom: "10px",
+          borderRadius: "5px",
+          // right: "18vw",
+        }}
+      >
+        Back to List
+      </Button>
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         {loading ? (
           <Loader size="lg" />
