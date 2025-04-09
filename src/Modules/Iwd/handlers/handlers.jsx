@@ -523,6 +523,7 @@ const HandleProposalSubmission = async ({
   setIsSuccess,
   submitter,
   form,
+  proposalType,
 }) => {
   setIsLoading(true);
   setIsSuccess(false);
@@ -543,14 +544,27 @@ const HandleProposalSubmission = async ({
   console.log(payload);
 
   try {
-    const response = await axios.post(IWD_ROUTES.CREATE_PROPOSAL, payload, {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    });
+    console.log(proposalType);
+    if (proposalType === "create") {
+      const response = await axios.post(IWD_ROUTES.CREATE_PROPOSAL, payload, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      });
 
-    if (response.status < 200 || response.status >= 300) {
-      throw new Error("Failed to submit form");
+      if (response.status < 200 || response.status >= 300) {
+        throw new Error("Failed to submit form");
+      }
+    } else if (proposalType === "update") {
+      const response = await axios.post(IWD_ROUTES.UPDATE_REQUESTS, payload, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      });
+
+      if (response.status < 200 || response.status >= 300) {
+        throw new Error("Failed to submit form");
+      }
     }
 
     setIsSuccess(true);
