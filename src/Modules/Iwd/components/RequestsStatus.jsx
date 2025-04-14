@@ -51,10 +51,13 @@ function CreatedRequests() {
       value: "Approved by the director",
       label: "Approved",
     },
-    { value: "Rejected by the director", label: "Rejected" },
+    { value: "Approved by the IWD Admin", label: "Approved by the IWD Admin" },
+    { value: "Rejected by the IWD Admin", label: "Rejected" },
+    { value: "Rejected by the director", label: "Rejected by the Director" },
     { value: "Pending", label: "Pending" },
     { value: "Work Order issued", label: "Work Order issued" },
-    { value: "Approved by the dean", label: "Approved by the dean" },
+    { value: "Approved by the dean", label: "Approved by the Dean" },
+    { value: "Proposal created", label: "Proposal Created" },
   ];
   return (
     <Container style={{ fontFamily: "Arial, sans-serif" }}>

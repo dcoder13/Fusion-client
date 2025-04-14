@@ -32,6 +32,7 @@ export default function ViewRequestFile({ request, handleBackToList }) {
   const [view, setView] = useState("main");
   const role = useSelector((state) => state.user.role);
   const [proposaldata, setProposalData] = useState({});
+  const [proposalType, setProposalType] = useState("");
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -47,13 +48,17 @@ export default function ViewRequestFile({ request, handleBackToList }) {
     if (request.status === "Pending")
       return <Badge color="yellow">PENDING</Badge>;
     if (request.status === "Work Completed")
-      return <Badge color="#1e90ff">WORK COMPLETED</Badge>;
+      return <Badge color="green">WORK COMPLETED</Badge>;
     if (request.status === "Work Order issued")
-      return <Badge color="#1e90ff">WORK ISSUED</Badge>;
-    if (request.status === "Approved by Director")
+      return <Badge color="#1e90ff">WORK ORDER ISSUED</Badge>;
+    if (request.status === "Approved by the director")
       return <Badge color="green">APPROVED</Badge>;
-    if (request.status === "Approved by IWD Admin")
-      return <Badge color="#1e90ff">Approved by IWD Admin</Badge>;
+    if (request.status === "Approved by the IWD Admin")
+      return <Badge color="#1e90ff">Approved BY THE IWD ADMIN</Badge>;
+    if (request.status === "Rejected by the director")
+      return <Badge color="red">REJECTED BY THE DIRECTOR</Badge>;
+    if (request.status === "Proposal created")
+      return <Badge color="#1e90ff">PROPOSAL CREATED</Badge>;
     return <Badge color="red">REJECTED</Badge>;
   };
   const fileActionsList = [
@@ -83,6 +88,24 @@ export default function ViewRequestFile({ request, handleBackToList }) {
       form={form}
       request={request}
     />,
+    <Group spacing="md" mt="md">
+      <Button
+        variant="light"
+        radius="md"
+        onClick={() => {
+          setView("proposalForm");
+          setProposalType("update");
+        }}
+        sx={{
+          textOverflow: "ellipsis",
+          maxWidth: "200px",
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+        }}
+      >
+        Update Requests
+      </Button>
+    </Group>,
   ];
   const allowedFormList = [
     "admin iwd",
@@ -113,9 +136,20 @@ export default function ViewRequestFile({ request, handleBackToList }) {
   ];
   useEffect(() => {
     GetFileData({ setLoading, form, request, setMessages });
-    if (role === "Director") {
-      if (request.processed_by_director === 0) setFileAction(3);
-      else setFileAction(0);
+    console.log(request);
+    if (request.status === "Rejected") {
+      setFileAction(0);
+    } else if (
+      request.status === "Rejected by the director" &&
+      allowedRoleslist.includes(role.toLowerCase())
+    ) {
+      setFileAction(6);
+    } else if (role === "Director") {
+      if (
+        request.status === "Proposal created" &&
+        request.processed_by_director === 0
+      )
+        setFileAction(3);
     } else if (role === "Dean (P&D)" && request.processed_by_dean === 0) {
       setFileAction(1);
     } else if (role === "Admin IWD" && request.processed_by_admin === 0) {
@@ -156,6 +190,7 @@ export default function ViewRequestFile({ request, handleBackToList }) {
             submitter={() => {
               handleBackToList();
             }}
+            proposalType={proposalType}
           />
         ) : view === "proposalTable" ? (
           <ProposalTable
@@ -249,7 +284,10 @@ export default function ViewRequestFile({ request, handleBackToList }) {
                 <Button
                   variant="light"
                   radius="md"
-                  onClick={() => setView("proposalForm")}
+                  onClick={() => {
+                    setView("proposalForm");
+                    setProposalType("create");
+                  }}
                   sx={{
                     textOverflow: "ellipsis",
                     maxWidth: "200px",
