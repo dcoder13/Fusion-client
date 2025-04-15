@@ -8,11 +8,16 @@ import {
   Stack,
   Loader,
   Button,
-  Badge,
   Paper,
+  Title,
+  Collapse,
+  Divider,
+  Tooltip,
+  Box,
 } from "@mantine/core";
-import { Paperclip, CaretLeft } from "@phosphor-icons/react";
+import { Paperclip, CaretLeft, CaretDown } from "@phosphor-icons/react";
 import { useForm } from "@mantine/form";
+import dayjs from "dayjs";
 import { host } from "../../../routes/globalRoutes/index";
 import { GetFileData, GetItems } from "../handlers/handlers";
 import DeanProcess from "./FileActions/DeanProcess";
@@ -24,6 +29,7 @@ import ProposalTable from "./viewproposals";
 import IssueWorkOrderForm from "./IssueWorkOrderForm";
 import AdminApproval from "./FileActions/AdminApproval";
 import ItemsTable from "./ItemsTable";
+import StatusBar from "./subcomponents/StatusBar";
 
 export default function ViewRequestFile({ request, handleBackToList }) {
   const [loading, setLoading] = useState(true);
@@ -33,6 +39,7 @@ export default function ViewRequestFile({ request, handleBackToList }) {
   const role = useSelector((state) => state.user.role);
   const [proposaldata, setProposalData] = useState({});
   const [proposalType, setProposalType] = useState("");
+  const [opened, setOpened] = useState(false);
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -44,23 +51,6 @@ export default function ViewRequestFile({ request, handleBackToList }) {
       designation: (value) => (value ? null : "Field is required"),
     },
   });
-  const statusBadge = () => {
-    if (request.status === "Pending")
-      return <Badge color="yellow">PENDING</Badge>;
-    if (request.status === "Work Completed")
-      return <Badge color="green">WORK COMPLETED</Badge>;
-    if (request.status === "Work Order issued")
-      return <Badge color="#1e90ff">WORK ORDER ISSUED</Badge>;
-    if (request.status === "Approved by the director")
-      return <Badge color="green">APPROVED</Badge>;
-    if (request.status === "Approved by the IWD Admin")
-      return <Badge color="#1e90ff">Approved BY THE IWD ADMIN</Badge>;
-    if (request.status === "Rejected by the director")
-      return <Badge color="red">REJECTED BY THE DIRECTOR</Badge>;
-    if (request.status === "Proposal created")
-      return <Badge color="#1e90ff">PROPOSAL CREATED</Badge>;
-    return <Badge color="red">REJECTED</Badge>;
-  };
   const fileActionsList = [
     <br />,
     <DeanProcess
@@ -103,7 +93,7 @@ export default function ViewRequestFile({ request, handleBackToList }) {
           whiteSpace: "nowrap",
         }}
       >
-        Update Requests
+        Update Request
       </Button>
     </Group>,
   ];
@@ -136,7 +126,6 @@ export default function ViewRequestFile({ request, handleBackToList }) {
   ];
   useEffect(() => {
     GetFileData({ setLoading, form, request, setMessages });
-    console.log(request);
     if (request.status === "Rejected") {
       setFileAction(0);
     } else if (
@@ -165,22 +154,20 @@ export default function ViewRequestFile({ request, handleBackToList }) {
     if (request.active_proposal) {
       // setSelectedProposalId(request.active_proposal);
       GetItems(setLoading, request.active_proposal).then((data) => {
-        console.log("datadata\n\n", data);
         setProposalData(data);
       });
     }
   }, []);
+  console.log("this is message data\n\n : ", messages);
   return (
     <Paper
       style={{
         padding: "20px",
         boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
-        borderLeft: "0.6rem solid #15ABFF",
-        width: "80vw",
-        position: "absolute",
-        right: "10vw",
+        borderLeft: view === "main" ? "0.6rem solid #15ABFF" : "none",
         overflow: "auto",
         margin: "0 auto",
+        maxHeight: "100vh",
       }}
     >
       <Button
@@ -188,14 +175,16 @@ export default function ViewRequestFile({ request, handleBackToList }) {
         leftIcon={<CaretLeft size={12} />}
         onClick={handleBackToList}
         style={{
-          marginBottom: "10px",
+          marginBottom: "20px",
+          marginLeft: "20px",
           borderRadius: "5px",
-          // right: "18vw",
         }}
+        color="black"
       >
-        Back to List
+        <CaretLeft size={20} />
+        back to list
       </Button>
-      <Card shadow="sm" padding="lg" radius="md" withBorder>
+      <Card radius="md" style={{ overflowY: "auto", maxHeight: "65vh" }}>
         {loading ? (
           <Loader size="lg" />
         ) : view === "proposalForm" ? (
@@ -222,90 +211,161 @@ export default function ViewRequestFile({ request, handleBackToList }) {
           />
         ) : (
           <>
-            <Group position="apart" mb="md">
-              <Text fw={700} size="xl" style={{ color: "#1e90ff" }}>
-                Request Information
-              </Text>
-              {statusBadge()}
-            </Group>
-            <Group position="apart" mb="md">
-              <Text style={{ color: "#1e90ff", fontWeight: 600 }}>
-                Created By:
-              </Text>
-              <Text>{messages.file?.uploader || "N/A"}</Text>
-            </Group>
-            <Text size="lg" mt="md" fw={500} style={{ color: "#1e90ff" }}>
-              File Tracking Information
-            </Text>
-            <Stack spacing="md">
-              {messages.tracks?.map((message, index) => (
-                <Card
-                  key={index}
-                  shadow="sm"
-                  padding="lg"
-                  radius="md"
-                  withBorder
-                >
-                  <Group position="apart">
-                    <Text style={{ color: "#1e90ff", fontWeight: 600 }}>
-                      Sent by:
-                    </Text>
-                    <Text>{message.current_id}</Text>
-                  </Group>
-                  <Group position="apart">
-                    <Text style={{ color: "#1e90ff", fontWeight: 600 }}>
-                      Sent Date & Time:
-                    </Text>
-                    <Text>{message.forward_date || "N/A"}</Text>
-                  </Group>
-                  <Group position="apart">
-                    <Text style={{ color: "#1e90ff", fontWeight: 600 }}>
-                      Received by:
-                    </Text>
-                    <Text>{message.receiver_id || "N/A"}</Text>
-                  </Group>
-                  <Text style={{ color: "#1e90ff", fontWeight: 600 }}>
-                    Remarks:
-                  </Text>
-                  <Text>{message.remarks}</Text>
-                  {message.upload_file && (
-                    <Group spacing="xs" mt="xs">
-                      <Paperclip size="1rem" />
-                      <Button
-                        variant="light"
-                        component="a"
-                        href={`${host}/${message.upload_file}`}
-                        target="_blank"
-                        radius="md"
-                        sx={{
-                          textOverflow: "ellipsis",
-                          maxWidth: "200px",
-                          overflow: "hidden",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {message.upload_file.split("/")[2]}
-                      </Button>
-                    </Group>
-                  )}
-                </Card>
-              ))}
-            </Stack>
+            <StatusBar request={request} />
+            <Box my="lg">
+              <Group position="apart" mb="sm">
+                <Title order={4}>File Tracking Information</Title>
 
-            <Group spacing="md" mt="md">
+                <Tooltip label={opened ? "Collapse section" : "Expand section"}>
+                  <Button
+                    onClick={() => setOpened((o) => !o)}
+                    size="xs"
+                    variant="light"
+                    radius="md"
+                    leftIcon={
+                      <CaretDown
+                        size={16}
+                        style={{
+                          transition: "transform 300ms ease",
+                          transform: opened ? "rotate(180deg)" : "rotate(0deg)",
+                        }}
+                      />
+                    }
+                  >
+                    {opened ? "Collapse" : "Expand"}
+                  </Button>
+                </Tooltip>
+              </Group>
+
+              <Divider mb="md" />
+
+              <Collapse
+                in={opened}
+                transitionDuration={300}
+                transitionTimingFunction="ease"
+              >
+                <Stack spacing="md">
+                  {messages.tracks?.map((message, index) => (
+                    <Card
+                      key={index}
+                      shadow="md"
+                      padding="lg"
+                      radius="lg"
+                      withBorder
+                      sx={(theme) => ({
+                        transition:
+                          "box-shadow 150ms ease, transform 150ms ease",
+                        "&:hover": {
+                          boxShadow: theme.shadows.md,
+                          transform: "translateY(-2px)",
+                        },
+                      })}
+                    >
+                      <Stack spacing="sm">
+                        <Group position="apart">
+                          <Text size="sm" color="dimmed" weight={600}>
+                            Sent by:
+                          </Text>
+                          <Text size="sm" weight={500}>
+                            {message.current_id}
+                          </Text>
+                        </Group>
+
+                        <Group position="apart">
+                          <Text size="sm" color="dimmed" weight={600}>
+                            Sent Date & Time:
+                          </Text>
+                          <Text size="sm" weight={500}>
+                            {dayjs(message.forward_date).format(
+                              "MMMM D, YYYY [at] h:mm A",
+                            )}
+                          </Text>
+                        </Group>
+
+                        <Group position="apart">
+                          <Text size="sm" color="dimmed" weight={600}>
+                            Received by:
+                          </Text>
+                          <Text size="sm" weight={500}>
+                            {message.receiver_id || "N/A"}
+                          </Text>
+                        </Group>
+
+                        <Group position="apart" align="flex-start">
+                          <Text size="sm" color="dimmed" weight={600}>
+                            Remarks:
+                          </Text>
+                          <Text size="sm" weight={500}>
+                            {message.remarks}
+                          </Text>
+                        </Group>
+                        {index === 1
+                          ? message.upload_file && (
+                              <Group spacing="xs" mt="sm" noWrap>
+                                <Paperclip size="1rem" />
+                                <Button
+                                  variant="light"
+                                  component="a"
+                                  href={`${host}/${message.upload_file}`}
+                                  target="_blank"
+                                  radius="md"
+                                  size="xs"
+                                  sx={{
+                                    textOverflow: "ellipsis",
+                                    overflow: "hidden",
+                                    whiteSpace: "nowrap",
+                                    maxWidth: 220,
+                                  }}
+                                >
+                                  {message.upload_file.split("/").slice(-1)[0]}
+                                </Button>
+                              </Group>
+                            )
+                          : messages.file.upload_file && (
+                              <Group spacing="xs" mt="sm" noWrap>
+                                <Paperclip size="1rem" />
+                                <Button
+                                  variant="light"
+                                  component="a"
+                                  href={`${host}/${messages.file.upload_file}`}
+                                  target="_blank"
+                                  radius="md"
+                                  size="xs"
+                                  sx={{
+                                    textOverflow: "ellipsis",
+                                    overflow: "hidden",
+                                    whiteSpace: "nowrap",
+                                    maxWidth: 220,
+                                  }}
+                                >
+                                  {
+                                    messages.file.upload_file
+                                      .split("/")
+                                      .slice(-1)[0]
+                                  }
+                                </Button>
+                              </Group>
+                            )}
+                      </Stack>
+                    </Card>
+                  ))}
+                </Stack>
+              </Collapse>
+            </Box>
+            <Group spacing="md" mt="sm" mb="md">
               {request.active_proposal != null ||
               !allowedFormList.includes(role.toLowerCase()) ||
-              request.processed_by_admin === 0 ? null : (
+              request.processed_by_admin === null ||
+              request.processed_by_admin === -1 ? null : (
                 <Button
                   variant="light"
-                  radius="md"
+                  radius="sm"
                   onClick={() => {
                     setView("proposalForm");
                     setProposalType("create");
                   }}
                   sx={{
                     textOverflow: "ellipsis",
-                    maxWidth: "200px",
                     overflow: "hidden",
                     whiteSpace: "nowrap",
                   }}
@@ -315,11 +375,10 @@ export default function ViewRequestFile({ request, handleBackToList }) {
               )}
               <Button
                 variant="light"
-                radius="md"
+                radius="sm"
                 onClick={() => setView("proposalTable")}
                 sx={{
                   textOverflow: "ellipsis",
-                  maxWidth: "200px",
                   overflow: "hidden",
                   whiteSpace: "nowrap",
                 }}
@@ -327,14 +386,14 @@ export default function ViewRequestFile({ request, handleBackToList }) {
                 View Proposals
               </Button>
               {request.work_order === 0 &&
-              request.processed_by_director === 1 ? (
+              request.processed_by_director === 1 &&
+              request.processed_by_admin >= 0 ? (
                 <Button
                   variant="light"
-                  radius="md"
+                  radius="sm"
                   onClick={() => setView("IssueWorkOrderForm")}
                   sx={{
                     textOverflow: "ellipsis",
-                    maxWidth: "200px",
                     overflow: "hidden",
                     whiteSpace: "nowrap",
                   }}
