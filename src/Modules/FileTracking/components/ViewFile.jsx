@@ -13,7 +13,6 @@ import {
   Box,
   TextInput,
   Divider,
-  ActionIcon,
   Grid,
   Autocomplete,
   Modal,
@@ -57,6 +56,12 @@ export default function ViewFile({ onBack, fileID, updateFiles }) {
   const [opened, setOpened] = useState(false);
   const [selectedRemarks, setSelectedRemarks] = useState("");
   const token = localStorage.getItem("authToken");
+  const [showForwardModal, setShowForwardModal] = useState(false);
+  const [selectedForwardFile, setSelectedForwardFile] = useState(null);
+  const openForwardModal = (x) => {
+    setSelectedForwardFile(x);
+    setShowForwardModal(true);
+  };
   const receiverRoles = Array.isArray(receiver_designations)
     ? receiver_designations.map((role) => ({
         value: role,
@@ -74,11 +79,10 @@ export default function ViewFile({ onBack, fileID, updateFiles }) {
   };
 
   const handleOpenRemarksModal = (x) => {
-    setSelectedRemarks(x); // Set the remarks to show
-    setOpened(true); // Open the modal
+    setSelectedRemarks(x);
+    setOpened(true);
   };
 
-  // Fetch file details when component mounts or fileID changes
   useEffect(() => {
     const getFile = async () => {
       try {
@@ -89,6 +93,7 @@ export default function ViewFile({ onBack, fileID, updateFiles }) {
           },
         });
         setFile(response.data);
+        setSelectedForwardFile(response.data);
         setUploadedFile(response.data.upload_file);
         console.log("File: ", response.data);
       } catch (err) {
@@ -175,34 +180,6 @@ export default function ViewFile({ onBack, fileID, updateFiles }) {
   const handleFileChange = (data) => {
     setFiles(data);
   };
-  // Handle file deletion
-  const handleDelete = async () => {
-    try {
-      const response = await axios.delete(`${createFileRoute}${fileID}`, {
-        withCredentials: true,
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      });
-      if (response.status === 204) {
-        updateFiles();
-        onBack();
-        notifications.show({
-          title: "File deleted successfully",
-          message: "The file has been deleted successfully.",
-          color: "green",
-          position: "top-center",
-        });
-      }
-    } catch (err) {
-      notifications.show({
-        title: "Failed to delete file",
-        message: "Some error occurred. Please try again later.",
-        color: "red",
-        position: "top-center",
-      });
-    }
-  };
 
   // Handle file forwarding
   const handleForward = async () => {
@@ -260,7 +237,16 @@ export default function ViewFile({ onBack, fileID, updateFiles }) {
       setIsForwarding(false);
     }
   };
-
+  const confirmForward = () => {
+    if (selectedForwardFile) {
+      handleForward();
+      setShowForwardModal(false);
+      setSelectedForwardFile(null);
+      toggleSection(null);
+      updateFiles();
+      onBack();
+    }
+  };
   // Handle file download
   const downloadAttachment = (url) => {
     window.open(`${host}${url}`, "_blank");
@@ -285,16 +271,12 @@ export default function ViewFile({ onBack, fileID, updateFiles }) {
             <ArrowLeft size={20} />
           </Button>
           <Title order={3} style={{ textAlign: "center", flex: 1 }}>
-            {file?.subject || "File Details"}
+            {file.branch}-{new Date(file.upload_date).getFullYear()}-
+            {(new Date(file.upload_date).getMonth() + 1)
+              .toString()
+              .padStart(2, "0")}
+            -#{file.id}: {file?.subject || "File Details"}
           </Title>
-          <ActionIcon
-            color="red"
-            variant="light"
-            size="lg"
-            onClick={() => handleDelete()}
-          >
-            <Trash size={24} />
-          </ActionIcon>
         </Group>
 
         <Divider mb="lg" />
@@ -362,7 +344,6 @@ export default function ViewFile({ onBack, fileID, updateFiles }) {
           borderRadius: "8px",
           overflowY: "auto",
           overflowX: "auto",
-          height: "56vh",
           backgroundColor: "#fff",
         }}
       >
@@ -559,9 +540,18 @@ export default function ViewFile({ onBack, fileID, updateFiles }) {
         {file?.upload_file && (
           <Button
             leftIcon={<DownloadSimple size={20} />}
-            onClick={() => downloadAttachment(file.upload_file)}
+            onClick={() => {
+              trackingHistory.forEach((track) => {
+                if (track.upload_file) {
+                  downloadAttachment(track.upload_file);
+                }
+              });
+              if (file.upload_file) {
+                downloadAttachment(file.upload_file);
+              }
+            }}
           >
-            Download Main Attachment
+            Download All Attachments
           </Button>
         )}
       </Group>
@@ -630,7 +620,6 @@ export default function ViewFile({ onBack, fileID, updateFiles }) {
             value={files} // Set the file state as the value
             onChange={handleFileChange} // Update file state on change
             mb="sm"
-            withAsterisk
             multiple
           />
 
@@ -644,7 +633,11 @@ export default function ViewFile({ onBack, fileID, updateFiles }) {
             >
               Cancel
             </Button>
-            <Button color="blue" onClick={handleForward} loading={isForwarding}>
+            <Button
+              color="blue"
+              onClick={() => openForwardModal(file)}
+              loading={isForwarding}
+            >
               Forward File
             </Button>
             {files && (
@@ -662,6 +655,50 @@ export default function ViewFile({ onBack, fileID, updateFiles }) {
           </Group>
         </Card>
       )}
+      <Modal
+        opened={showForwardModal}
+        onClose={() => setShowForwardModal(false)}
+        title={
+          <Text align="center" weight={600} size="lg">
+            Confirm Forward
+          </Text>
+        }
+        centered
+      >
+        <Text weight={600} mb="md">
+          Are you sure you want to forward this file?
+        </Text>
+        {selectedForwardFile && (
+          <>
+            <Text mb="ls">Subject: {selectedForwardFile.subject}</Text>
+            <Text mb="md">
+              {" "}
+              File ID: {selectedForwardFile.branch}-
+              {new Date(selectedForwardFile.upload_date).getFullYear()}-
+              {(new Date(selectedForwardFile.upload_date).getMonth() + 1)
+                .toString()
+                .padStart(2, "0")}
+              -#{selectedForwardFile.id}
+            </Text>
+          </>
+        )}
+        <Group justify="center" gap="xl" style={{ width: "100%" }}>
+          <Button
+            onClick={confirmForward}
+            color="blue"
+            style={{ width: "120px" }}
+          >
+            Confirm
+          </Button>
+          <Button
+            onClick={() => setShowForwardModal(false)}
+            variant="outline"
+            style={{ width: "120px" }}
+          >
+            Cancel
+          </Button>
+        </Group>
+      </Modal>
     </Card>
   );
 }

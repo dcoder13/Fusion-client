@@ -43,9 +43,9 @@ function SidebarContent({ isCollapsed, toggleSidebar }) {
   const role = useSelector((state) => state.user.role);
 
   const deployedModules = [
-    "home",
-    "fts",
     "complaint_management",
+    "fts",
+    "home",
     "mess_management",
     "visitor_hostel",
     "hostel_management",
@@ -58,6 +58,11 @@ function SidebarContent({ isCollapsed, toggleSidebar }) {
     "purchase_and_store",
     "rspc",
     "inventory_management",
+    "program_and_curriculum",
+    "course_registration",
+    "examinations",
+    "other_academics",
+    "hr",
   ];
 
   const Modules = [
@@ -67,7 +72,6 @@ function SidebarContent({ isCollapsed, toggleSidebar }) {
       icon: <HomeIcon size={18} />,
       url: "/dashboard",
     },
-    // { label: "Course Management", id:"course_management", icon: <OtherIcon size={18} />, url: "/" },
     {
       label: "Academics",
       id: "course_registration",
@@ -78,7 +82,12 @@ function SidebarContent({ isCollapsed, toggleSidebar }) {
       label: "Program & Curriculum",
       id: "program_and_curriculum",
       icon: <CurriculumIcon size={18} />,
-      url: "/",
+      url:
+        role === "acadadmin" || role === "studentacadadmin"
+          ? "/programme_curriculum/acad_view_all_programme"
+          : role === "student"
+            ? "/programme_curriculum/view_all_programmes"
+            : "/programme_curriculum/faculty_view_all_programmes",
     },
     {
       label: "Mess Management",
@@ -150,13 +159,13 @@ function SidebarContent({ isCollapsed, toggleSidebar }) {
       label: "Human Resource",
       id: "hr",
       icon: <HumanResourceIcon size={18} />,
-      url: "/",
+      url: "/hr",
     },
     {
       label: "Examination",
       id: "examinations",
       icon: <ExamIcon size={18} />,
-      url: "/",
+      url: "/examination",
     },
     {
       label: "Gymkhana",
@@ -180,7 +189,7 @@ function SidebarContent({ isCollapsed, toggleSidebar }) {
       label: "Other Academic Procedure",
       id: "other_academics",
       icon: <OtherAcademicIcon size={18} />,
-      url: "/",
+      url: "/otherAcadProcedures",
     },
   ];
 
@@ -208,7 +217,6 @@ function SidebarContent({ isCollapsed, toggleSidebar }) {
     const filterModules = Modules.filter(
       (module) => accessibleModules[module.id] || module.id === "home",
     );
-
     setFilteredModules(filterModules);
   }, [accessibleModules]);
 

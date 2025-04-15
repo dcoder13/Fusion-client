@@ -11,6 +11,8 @@ import InventoryIndex from "./Modules/Inventory/components/InventoryIndex";
 // eslint-disable-next-line import/no-unresolved
 import { DesignationsProvider } from "./Modules/Iwd/helper/designationContext";
 import UserBreadcrumbs from "./Modules/Scholarship/user/components/UserBreadcumbs";
+import OtherAcadProcedures from "./Modules/Otheracademic/OtherAcademicProcedures";
+import PendingReqs from "./Modules/Visitors_Hostel/pendingRequests.jsx";
 
 const PlacementCellPage = lazy(() => import("./Modules/PlacementCell"));
 const JobApplicationForm = lazy(
@@ -61,6 +63,7 @@ const LoginPage = lazy(() => import("./pages/login"));
 const ForgotPassword = lazy(() => import("./pages/forgotPassword"));
 const AcademicPage = lazy(() => import("./Modules/Academic/index"));
 const ValidateAuth = lazy(() => import("./helper/validateauth"));
+const HR = lazy(() => import("./Modules/HR/index"));
 const MessPage = lazy(() => import("./Modules/Mess/pages/index"));
 const FileTracking = lazy(() => import("./Modules/FileTracking"));
 const ResearchProjects = lazy(() => import("./Modules/RSPC/researchProjects"));
@@ -105,6 +108,12 @@ const GymkhanaDashboard = lazy(
   () => import("./Modules/Gymkhana/GymkhanaDashboard.jsx"),
 );
 
+const Examination = lazy(() => import("./Modules/Examination/examination"));
+
+const ProgrammeCurriculumRoutes = lazy(
+  () => import("./Modules/Program_curriculum/programmCurriculum"),
+);
+
 const theme = createTheme({
   breakpoints: { xs: "30em", sm: "48em", md: "64em", lg: "74em", xl: "90em" },
 });
@@ -136,6 +145,36 @@ export default function App() {
             <Layout>
               <Suspense fallback={<div>Loading .... </div>}>
                 <AcademicPage />
+              </Suspense>
+            </Layout>
+          }
+        />
+        <Route
+          path="/programme_curriculum/*"
+          element={
+            <Layout>
+              <Suspense fallback={<div>Loading .... </div>}>
+                <ProgrammeCurriculumRoutes />
+              </Suspense>
+            </Layout>
+          }
+        />
+        <Route
+          path="/hr/*"
+          element={
+            <Layout>
+              <Suspense fallback={<div>Loading .... </div>}>
+                <HR />
+              </Suspense>
+            </Layout>
+          }
+        />
+        <Route
+          path="/examination/*"
+          element={
+            <Layout>
+              <Suspense fallback={<div>Loading .... </div>}>
+                <Examination />
               </Suspense>
             </Layout>
           }
@@ -227,6 +266,17 @@ export default function App() {
               <Suspense fallback={<div>Loading .... </div>}>
                 <VisitorsContent />
                 <Bookings />
+              </Suspense>
+            </Layout>
+          }
+        />
+        <Route
+          path="/visitors_hostel/pending_requests"
+          element={
+            <Layout>
+              <Suspense fallback={<div>Loading .... </div>}>
+                <VisitorsContent />
+                <PendingReqs />
               </Suspense>
             </Layout>
           }
@@ -434,7 +484,6 @@ export default function App() {
               <Suspense fallback={<div>Loading .... </div>}>
                 <PurchaseNavbar />
                 <div style={{ margin: "32px" }}>
-                  {/* <MultiItemIndentForm /> */}
                   <IndentForm />
                 </div>
               </Suspense>
@@ -473,7 +522,6 @@ export default function App() {
             <Layout>
               <Suspense fallback={<div>Loading .... </div>}>
                 <PurchaseNavbar />
-                {/* <ForwardIndent /> */}
                 <NewForwardIndent />
               </Suspense>
             </Layout>
@@ -571,6 +619,16 @@ export default function App() {
             <Layout>
               <Suspense fallback={<div>Loading .... </div>}>
                 <GymkhanaDashboard />
+              </Suspense>
+            </Layout>
+          }
+        />
+        <Route
+          path="/otherAcadProcedures"
+          element={
+            <Layout>
+              <Suspense fallback={<div>Loading .... </div>}>
+                <OtherAcadProcedures />
               </Suspense>
             </Layout>
           }
