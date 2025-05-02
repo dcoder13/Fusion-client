@@ -166,9 +166,6 @@ const HandleIssueWorkOrder = async ({
     data.date = formatDate(data.date);
   }
   data.start_date = formatDate(data.start_date);
-  data.completion_date = formatDate(data.completion_date);
-
-  console.log(data);
   try {
     const response = await axios.post(IWD_ROUTES.ISSUE_WORK_ORDER, data, {
       headers: {

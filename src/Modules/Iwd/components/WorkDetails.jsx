@@ -7,23 +7,20 @@ import {
   Title,
   Loader,
   Grid,
-  Select,
   Paper,
   TextInput,
-  Group,
   Text,
 } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
-import ViewRequestFile from "./ViewRequestFile";
+import ViewWorkFile from "./viewWorkFile";
 import { IWD_ROUTES } from "../routes/iwdRoutes";
 import { GetRequestsOrBills } from "../handlers/handlers";
 
-function CreatedRequests() {
+export default function WorkDetails() {
   const role = useSelector((state) => state.user.role);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
-  const [statusFilter, setStatusFilter] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleViewRequest = (request) => {
@@ -41,43 +38,23 @@ function CreatedRequests() {
       setLoading,
       setList: setRequestsList,
       role,
-      URL: IWD_ROUTES.REQUESTS_STATUS,
+      URL: IWD_ROUTES.ISSUED_WORK,
     });
   }, [role, refresh]);
 
-  // const filteredRequests = createdRequestsList.filter(
-  //   (request) => statusFilter === "all" || request.status === statusFilter,
-  // );
   const filteredRequests = createdRequestsList
-    .sort((a, b) => new Date(b.creatiion_time) - new Date(a.creatiion_time))
+    .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))
     .filter((request) => {
-      const matchesStatus = !statusFilter || request.status === statusFilter;
-
       const query = searchQuery.toLowerCase();
       const matchesSearch =
         request.name?.toLowerCase().includes(query) ||
-        request.description?.toLowerCase().includes(query) ||
         request.status?.toLowerCase().includes(query) ||
         request.area?.toLowerCase().includes(query) ||
-        request.requestCreatedBy?.toLowerCase().includes(query);
+        request.work_issuer?.toLowerCase().includes(query);
 
-      return matchesStatus && matchesSearch;
+      return matchesSearch;
     });
-  const statusList = [
-    { value: "all", label: "All" },
-    { value: "Work Completed", label: "Work Completed" },
-    {
-      value: "Approved by the director",
-      label: "Approved",
-    },
-    { value: "Approved by the IWD Admin", label: "Approved by the IWD Admin" },
-    { value: "Rejected by the IWD Admin", label: "Rejected" },
-    { value: "Rejected by the director", label: "Rejected by the Director" },
-    { value: "Pending", label: "Pending" },
-    { value: "Work Order issued", label: "Work Order issued" },
-    { value: "Approved by the dean", label: "Approved by the Dean" },
-    { value: "Proposal created", label: "Proposal Created" },
-  ];
+
   return (
     <Grid
       style={{
@@ -113,27 +90,18 @@ function CreatedRequests() {
             }}
           >
             <Title align="center" mt="md">
-              Requests Status
+              Work Details
             </Title>
-            <Group align="end" spacing="md" mb="md">
-              <Select
-                label="Filter by Status"
-                placeholder="Select status"
-                value={statusFilter}
-                onChange={setStatusFilter}
-                data={statusList}
-                radius="sm"
-                size="md"
-                withinPortal
-                searchable
-                nothingFound="No status found"
-                style={{
-                  marginBottom: "20px",
-                  width: "30vw",
-                }}
-              />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                width: "100%",
+              }}
+            >
               <TextInput
                 placeholder="Search requests..."
+                align="center"
                 icon={<IconSearch size="0.9rem" />}
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.currentTarget.value)}
@@ -141,7 +109,7 @@ function CreatedRequests() {
                 size="md"
                 style={{ marginBottom: "20px", width: "50vw" }}
               />
-            </Group>
+            </div>
             <div style={{ maxHeight: "55vh", overflow: "auto" }}>
               <Table
                 highlightOnHover
@@ -158,13 +126,13 @@ function CreatedRequests() {
                       <Title size="lg">Title</Title>
                     </th>
                     <th>
-                      <Title size="lg">Description</Title>
-                    </th>
-                    <th>
                       <Title size="lg">Area</Title>
                     </th>
                     <th>
-                      <Title size="lg">Created By</Title>
+                      <Title size="lg">Work Issuer</Title>
+                    </th>
+                    <th>
+                      <Title size="lg">Start Date</Title>
                     </th>
                     <th>
                       <Title size="lg">Status</Title>
@@ -192,13 +160,6 @@ function CreatedRequests() {
                         <Text
                           style={{ marginTop: "10px", marginBottom: "10px" }}
                         >
-                          {request.description}
-                        </Text>
-                      </td>
-                      <td>
-                        <Text
-                          style={{ marginTop: "10px", marginBottom: "10px" }}
-                        >
                           {request.area}
                         </Text>
                       </td>
@@ -206,14 +167,23 @@ function CreatedRequests() {
                         <Text
                           style={{ marginTop: "10px", marginBottom: "10px" }}
                         >
-                          {request.requestCreatedBy}
+                          {request.work_issuer}
                         </Text>
                       </td>
                       <td>
                         <Text
                           style={{ marginTop: "10px", marginBottom: "10px" }}
                         >
-                          {request.status}
+                          {request.start_date}
+                        </Text>
+                      </td>
+                      <td>
+                        <Text
+                          style={{ marginTop: "10px", marginBottom: "10px" }}
+                        >
+                          {request.work_completed === 1
+                            ? "Work Completed"
+                            : "Pending"}
                         </Text>
                       </td>
                       <td>
@@ -235,7 +205,7 @@ function CreatedRequests() {
             </div>
           </Paper>
         ) : (
-          <ViewRequestFile
+          <ViewWorkFile
             request={selectedRequest}
             handleBackToList={handleBackToList}
           />
@@ -244,5 +214,3 @@ function CreatedRequests() {
     </Grid>
   );
 }
-
-export default CreatedRequests;

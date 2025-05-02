@@ -14,6 +14,7 @@ export const IWD_ROUTES = {
   WORK_UNDER_PROGRESS: `${host}/iwdModuleV2/api/work-under-progress/`,
   VIEW_PROPOSALS: `${host}/iwdModuleV2/api/get-proposals/`,
   VIEW_ITEMS: `${host}/iwdModuleV2/api/get-items/`,
+  ISSUED_WORK: `${host}/iwdModuleV2/api/issued-work/`,
   // POST
   HANDLE_PROCESS_BILLS: `${host}/iwdModuleV2/api/handle-process-bills/`,
   CREATE_REQUESTS: `${host}/iwdModuleV2/api/create-request/`,

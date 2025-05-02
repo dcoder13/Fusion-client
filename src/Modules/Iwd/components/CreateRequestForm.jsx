@@ -25,15 +25,6 @@ function CreateRequest({ setActiveTab }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [confirmationModalOpen, setConfirmationModal] = useState(false);
-  // const designations = useContext(DesignationsContext);
-  // const designationsList = useMemo(
-  //   () =>
-  //     designations.map(
-  //       (designation) =>
-  //         `${designation.designation.name}|${designation.username}`,
-  //     ),
-  //   [designations],
-  // );
 
   const form = useForm({
     mode: "uncontrolled",
@@ -90,9 +81,9 @@ function CreateRequest({ setActiveTab }) {
 
               <Flex direction="column" gap="xs" justify="flex-start">
                 <TextInput
-                  label="Name"
+                  label="Title"
                   required
-                  placeholder="Name"
+                  placeholder="Title"
                   key={form.key("name")}
                   {...form.getInputProps("name")}
                   styles={{
