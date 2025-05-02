@@ -230,9 +230,11 @@ export default function Inboxfunc() {
             mb="md"
             style={{
               fontSize: "26px",
+              textAlign: "center",
+              width: "100%",
             }}
           >
-            File Subject
+            {selectedFile.subject}
           </Title>
           <View
             onBack={handleBack}
@@ -278,39 +280,34 @@ export default function Inboxfunc() {
                   <th style={{ padding: "6px", width: "8.5%", height: "36px" }}>
                     Archive
                   </th>
-                  {[
-                    "File ID",
-                    "Uploader",
-                    "Sent By",
-                    "Sender's Designation",
-                    "Subject",
-                    "Date",
-                  ].map((key) => (
-                    <th
-                      key={key}
-                      onClick={() => handleSort(key)}
-                      style={{
-                        cursor: "pointer",
-                        padding: "6px",
-                        width: "15.5%",
-                        border: "1px solid #0000",
-                        alignItems: "center",
-                        gap: "5px",
-                        height: "36px",
-                      }}
-                    >
-                      {key.charAt(0).toUpperCase() + key.slice(1)}
-                      {sortConfig.key === key ? (
-                        sortConfig.direction === "asc" ? (
-                          <CaretUp size={16} />
+                  {["File ID", "Sent By", "Subject", "Date", "Created By"].map(
+                    (key) => (
+                      <th
+                        key={key}
+                        onClick={() => handleSort(key)}
+                        style={{
+                          cursor: "pointer",
+                          padding: "6px",
+                          width: "15.5%",
+                          border: "1px solid #0000",
+                          alignItems: "center",
+                          gap: "5px",
+                          height: "36px",
+                        }}
+                      >
+                        {key.charAt(0).toUpperCase() + key.slice(1)}
+                        {sortConfig.key === key ? (
+                          sortConfig.direction === "asc" ? (
+                            <CaretUp size={16} />
+                          ) : (
+                            <CaretDown size={16} />
+                          )
                         ) : (
-                          <CaretDown size={16} />
-                        )
-                      ) : (
-                        <ArrowsDownUp size={16} opacity={0.6} />
-                      )}
-                    </th>
-                  ))}
+                          <ArrowsDownUp size={16} opacity={0.6} />
+                        )}
+                      </th>
+                    ),
+                  )}
                   <th
                     style={{
                       padding: "6px",
@@ -366,6 +363,7 @@ export default function Inboxfunc() {
                       >
                         {`${file.branch}-${new Date(file.upload_date).getFullYear()}-${(new Date(file.upload_date).getMonth() + 1).toString().padStart(2, "0")}-#${file.id}`}
                       </td>
+
                       <td
                         style={{
                           padding: "6px",
@@ -374,27 +372,7 @@ export default function Inboxfunc() {
                           height: "36px",
                         }}
                       >
-                        {file.uploader}
-                      </td>
-                      <td
-                        style={{
-                          padding: "6px",
-                          border: "1px solid #ddd",
-                          textAlign: "center",
-                          height: "36px",
-                        }}
-                      >
-                        {file.sent_by_user}
-                      </td>
-                      <td
-                        style={{
-                          padding: "6px",
-                          border: "1px solid #ddd",
-                          textAlign: "center",
-                          height: "36px",
-                        }}
-                      >
-                        {file.sent_by_designation}
+                        {file.sent_by_user}[{file.sent_by_designation}]
                       </td>
                       <td
                         style={{
@@ -415,6 +393,16 @@ export default function Inboxfunc() {
                         }}
                       >
                         {convertDate(file.upload_date)}
+                      </td>
+                      <td
+                        style={{
+                          padding: "6px",
+                          border: "1px solid #ddd",
+                          textAlign: "center",
+                          height: "36px",
+                        }}
+                      >
+                        {file.uploader}[{file.uploader_designation}]
                       </td>
                       <td
                         style={{

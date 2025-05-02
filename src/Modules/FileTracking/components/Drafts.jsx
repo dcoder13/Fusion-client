@@ -326,12 +326,11 @@ export default function Draft() {
                       Archive
                     </th> */}
                     {[
-                      { key: "file_id", label: "File ID" },
-                      { key: "uploader", label: "Created By" },
                       { key: "subject", label: "Subject" },
                       { key: "description", label: "Description" },
                       { key: "remarks", label: "Remarks" },
                       { key: "upload_date", label: "Date" },
+                      { key: "uploader", label: "Created By" },
                     ].map(({ key, label }) => (
                       <th
                         key={key}
@@ -388,59 +387,6 @@ export default function Draft() {
                     )
                     .map((file, index) => (
                       <tr key={index}>
-                        {/* <td
-                          style={{
-                            padding: "8px",
-                            textAlign: "center",
-                            border: "1px solid #ddd",
-                            height: "36px",
-                          }}
-                        >
-                          <Tooltip
-                            label="Archive file"
-                            position="top"
-                            withArrow
-                          >
-                            <ActionIcon
-                              variant="light"
-                              color="blue"
-                              className="archive-icon"
-                              data-default-color="transparent"
-                              data-hover-color="#ffebee"
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.backgroundColor =
-                                  "#ffebee";
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor =
-                                  "transparent";
-                              }}
-                              onClick={() => openArchiveModal(file)}
-                            >
-                              <Archive size="1.5rem" />
-                            </ActionIcon>
-                          </Tooltip>
-                        </td> */}
-                        <td
-                          style={{
-                            padding: "6px",
-                            border: "1px solid #ddd",
-                            textAlign: "center",
-                            height: "36px",
-                          }}
-                        >
-                          {`${file.branch}-${new Date(file.upload_date).getFullYear()}-${(new Date(file.upload_date).getMonth() + 1).toString().padStart(2, "0")}-#${file.id}`}
-                        </td>
-                        <td
-                          style={{
-                            padding: "6px",
-                            border: "1px solid #ddd",
-                            textAlign: "center",
-                            height: "36px",
-                          }}
-                        >
-                          {file.uploader}
-                        </td>
                         <td
                           style={{
                             padding: "6px",
@@ -480,6 +426,16 @@ export default function Draft() {
                           }}
                         >
                           {new Date(file.upload_date).toLocaleString()}
+                        </td>
+                        <td
+                          style={{
+                            padding: "6px",
+                            border: "1px solid #ddd",
+                            textAlign: "center",
+                            height: "36px",
+                          }}
+                        >
+                          {file.uploader}
                         </td>
                         <td
                           style={{

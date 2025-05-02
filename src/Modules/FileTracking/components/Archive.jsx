@@ -62,7 +62,7 @@ export default function ArchiveFiles() {
           },
         );
         setFiles(response.data);
-        console.log("Archived Files: ", files);
+        console.log("Archived Files: ", response.data);
         // Set the response data to the files state
       } catch (err) {
         console.error("Error fetching files:", err);
@@ -188,9 +188,11 @@ export default function ArchiveFiles() {
             mb="md"
             style={{
               fontSize: "26px",
+              textAlign: "center",
+              width: "100%",
             }}
           >
-            File Subject
+            {selectedFile.subject}
           </Title>
           <View
             onBack={handleBack}
@@ -236,9 +238,9 @@ export default function ArchiveFiles() {
                   <th style={{ ...tableStyles, width: "8%" }}>Unarchive</th>
                   {[
                     { key: "id", label: "File ID", width: "15%" },
-                    { key: "uploader", label: "Uploader", width: "15%" },
                     { key: "subject", label: "Subject", width: "25%" },
                     { key: "upload_date", label: "Date", width: "15%" },
+                    { key: "uploader", label: "Created by", width: "15%" },
                   ].map(({ key, label, width }) => (
                     <th
                       key={key}
@@ -298,10 +300,12 @@ export default function ArchiveFiles() {
                           .toString()
                           .padStart(2, "0")}-#${file.id}`}
                       </td>
-                      <td style={tableStyles}>{file.uploader}</td>
                       <td style={tableStyles}>{file.subject}</td>
                       <td style={tableStyles}>
                         {convertDate(file.upload_date)}
+                      </td>
+                      <td style={tableStyles}>
+                        {file.uploader}[{file.uploader_designation}]
                       </td>
                       <td style={tableStyles}>
                         <ActionIcon
